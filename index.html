@@ -5,23 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bongeum</title>
     <style>
-        /* [1. 공통 리셋] ----------------------------------------- */
+        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background-color: #ffffff; 
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
             color: #000;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
         img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
 
-        /* [2. 모바일 버전 (Mobile Specific Design)] ------------- */
-        .mobile-only { display: block; }
-        .pc-only { display: none; }
-
-        .m-header {
+        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        header {
             position: fixed;
             top: 0;
             width: 100%;
@@ -29,55 +27,126 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 1000;
+            z-index: 2000; /* 메뉴보다 위에 위치 */
         }
-        .m-logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-        .m-nav ul { display: flex; gap: 12px; }
-        .m-nav li a { font-size: 0.7rem; letter-spacing: 0.05em; }
 
-        .m-main {
+        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+
+        /* 햄버거 버튼 디자인 */
+        .menu-trigger {
+            cursor: pointer;
+            width: 24px;
+            height: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .menu-trigger span {
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            transition: 0.3s;
+        }
+
+        /* [3. 모바일 메뉴 (Top to Bottom)] -------------------- */
+        .nav-overlay {
+            position: fixed;
+            top: -100%; /* 평소에는 위로 숨김 */
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #fff;
+            z-index: 1500;
+            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .nav-overlay.active { top: 0; } /* 활성화 시 아래로 툭 */
+
+        .nav-list { text-align: center; }
+        .nav-list li { margin: 30px 0; }
+        .nav-list li a { font-size: 1.2rem; letter-spacing: 0.1em; text-transform: uppercase; }
+
+        /* [4. 메인 컨텐츠 영역] ------------------------------- */
+        main {
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 0 20px;
         }
-        .m-product-box {
-            width: 100%;
-            /* 이미지가 불러와지기 전까지 공간 확보를 위한 최소 높이 */
-            min-height: 200px;
-        }
+        .product-box { width: 100%; max-width: 500px; }
 
-        /* [3. PC 버전 (PC Specific Design)] -------------------- */
+        /* [5. PC 환경 독립 설계 (Right to Left)] -------------- */
         @media (min-width: 1024px) {
-            .mobile-only { display: none; }
-            .pc-only { display: block; }
+            header { padding: 60px 80px; }
+            .logo { font-size: 1.3rem; }
 
-            .pc-header {
-                position: fixed;
+            /* PC용 메뉴 슬라이드 (우측에서 툭) */
+            .nav-overlay {
                 top: 0;
-                width: 100%;
-                padding: 60px 80px;
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                z-index: 1000;
+                left: 100%; /* 평소에는 우측 밖으로 숨김 */
+                width: 400px; /* PC는 전체가 아닌 일부만 차지 */
+                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                border-left: 1px solid #eee;
             }
-            .pc-logo { font-size: 1.3rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
-            .pc-nav ul { display: flex; gap: 50px; }
-            .pc-nav li a { font-size: 0.9rem; transition: 0.3s; }
-            .pc-nav li a:hover { opacity: 0.4; }
+            .nav-overlay.active { left: calc(100% - 400px); }
 
-            .pc-main {
-                width: 100%;
-                height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-            .pc-product-box {
-                width: 45%; /* PC 화면에서 이미지가 차지할 적정 비율 */
-            }
+            .nav-list { text-align: left; padding-left: 60px; }
+            .nav-list li { margin: 40px 0; }
+            .nav-list li a { font-size: 1rem; }
+
+            .product-box { max-width: 45%; }
         }
     </style>
-</head
+</head>
+<body>
+
+    <header>
+        <div class="logo"><a href="index.html">Bongeum</a></div>
+        <div class="menu-trigger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <nav class="nav-overlay" id="navOverlay">
+        <ul class="nav-list">
+            <li><a href="about.html" onclick="toggleMenu()">About</a></li>
+            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
+            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+            <li><a href="shop.html" onclick="toggleMenu()">Shop</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="product-box">
+            <img src="index_image_1.png" alt="index_image_1">
+        </div>
+    </main>
+
+    <script>
+        // 메뉴 열고 닫기 스크립트
+        function toggleMenu() {
+            const nav = document.getElementById('navOverlay');
+            nav.classList.toggle('active');
+            
+            // 버튼 모양 변경 애니메이션 (선택사항)
+            const spans = document.querySelectorAll('.menu-trigger span');
+            if(nav.classList.contains('active')) {
+                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        }
+    </script>
+
+</body>
+</html>
