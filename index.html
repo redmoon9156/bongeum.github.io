@@ -28,9 +28,10 @@
             justify-content: space-between;
             align-items: center;
             z-index: 2000; /* 메뉴보다 위에 위치 */
+            mix-blend-mode: difference; /* 스크롤 시 로고/버튼 가독성 확보 (레퍼런스 스타일) */
         }
 
-        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #fff; /* mix-blend-mode와 함께 사용 */ }
 
         /* 햄버거 버튼 디자인 */
         .menu-trigger {
@@ -45,7 +46,7 @@
             display: block;
             width: 100%;
             height: 1px;
-            background-color: #000;
+            background-color: #fff; /* mix-blend-mode와 함께 사용 */
             transition: 0.3s;
         }
 
@@ -61,13 +62,13 @@
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: center; /* 모바일은 중앙 정렬 유지 */
         }
         .nav-overlay.active { top: 0; } /* 활성화 시 아래로 툭 */
 
         .nav-list { text-align: center; }
         .nav-list li { margin: 30px 0; }
-        .nav-list li a { font-size: 1.2rem; letter-spacing: 0.1em; text-transform: uppercase; }
+        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
         /* [4. 메인 컨텐츠 영역] ------------------------------- */
         main {
@@ -79,22 +80,29 @@
         }
         .product-box { width: 100%; max-width: 500px; }
 
-        /* [5. PC 환경 독립 설계 (Right to Left)] -------------- */
+        /* [5. PC 환경 독립 설계 (Right to Left & Top Alignment)] - */
         @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
+            header { padding: 60px 80px; mix-blend-mode: normal; /* PC에선 투명 헤더이므로 블렌드 모드 해제 */ }
+            .logo { font-size: 1.3rem; color: #000; }
+            .menu-trigger span { background-color: #000; }
 
             /* PC용 메뉴 슬라이드 (우측에서 툭) */
             .nav-overlay {
                 top: 0;
                 left: 100%; /* 평소에는 우측 밖으로 숨김 */
-                width: 400px; /* PC는 전체가 아닌 일부만 차지 */
+                width: 450px; /* Sゝゝ 느낌을 살린 넓은 너비 */
+                height: 100vh;
                 transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
                 border-left: 1px solid #eee;
+                
+                display: flex;
+                justify-content: flex-start; /* 가로 왼쪽 정렬 */
+                align-items: flex-start; /* [지시사항] 세로 상단 정렬로 변경 */
+                padding: 150px 0 0 80px; /* 상단 및 왼쪽 여백으로 위치 조정 */
             }
-            .nav-overlay.active { left: calc(100% - 400px); }
+            .nav-overlay.active { left: calc(100% - 450px); }
 
-            .nav-list { text-align: left; padding-left: 60px; }
+            .nav-list { text-align: left; }
             .nav-list li { margin: 40px 0; }
             .nav-list li a { font-size: 1rem; }
 
@@ -134,7 +142,7 @@
             const nav = document.getElementById('navOverlay');
             nav.classList.toggle('active');
             
-            // 버튼 모양 변경 애니메이션 (선택사항)
+            // 버튼 모양 변경 애니메이션 (X 모양으로 전환)
             const spans = document.querySelectorAll('.menu-trigger span');
             if(nav.classList.contains('active')) {
                 spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
