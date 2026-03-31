@@ -17,72 +17,41 @@
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* [2. 헤더 및 햄버거 버튼 - index.html과 동일] ----------- */
+        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
         header {
             position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 30px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 2000;
+            top: 0; width: 100%; padding: 30px 20px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
         }
-
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        .menu-trigger {
-            cursor: pointer;
-            width: 24px;
-            height: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .menu-trigger span {
-            display: block;
-            width: 100%;
-            height: 1px;
-            background-color: #000;
-            transition: 0.3s;
-        }
-
-        /* [3. 네비게이션 오버레이 - index.html과 동일] ---------- */
+        /* [3. 네비게이션 오버레이] ---------------------------- */
         .nav-overlay {
-            position: fixed;
-            top: -100%; 
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #fff;
-            z-index: 1500;
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; 
-            padding-top: 120px;
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
+            background-color: #fff; z-index: 1500; transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
         }
         .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 메인 컨텐츠 영역 - 모바일 위치 및 크기 수정] ----- */
+        /* [4. 메인 컨텐츠 영역 - 모바일 위치 및 크기] --------- */
         main {
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; 
+            display: flex; justify-content: center; align-items: flex-start; 
             padding: 140px 20px 0; 
         }
         .contact-wrap { text-align: center; width: 100%; }
         
         .page-title {
-            /* [수정] 모바일 크기 50% 축소 (0.9rem) */
-            font-size: 0.9rem;
+            /* [수정] 모바일 폰트 크기 1.2rem */
+            font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 40px;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
         
@@ -91,52 +60,34 @@
         .contact-icon { color: rgba(0,0,0,.72); }
         .contact-link { font-size: 15px; letter-spacing: .02em; color: rgba(0,0,0,.72); }
 
-        /* [5. PC 환경 독립 설계 - 크기 및 위치 수정] ----------- */
+        /* [5. PC 환경 독립 설계] ------------------------------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
-
-            .nav-overlay {
-                top: 0; left: 100%; width: 450px; height: 100vh;
-                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                border-left: 1px solid #eee;
-                justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
-            }
+            .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px; }
             .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
             .nav-list li { margin: 35px 0; }
             .nav-list li a { font-size: 1rem; }
 
-            main {
-                align-items: flex-start; 
-                padding: 220px 80px 0; 
-            }
+            main { align-items: flex-start; padding: 220px 80px 0; }
             
             .page-title { 
-                /* [수정] PC 크기 50% 축소 (1.5rem) */
-                font-size: 1.5rem; 
+                /* [수정] PC 폰트 크기 2.0rem */
+                font-size: 2.0rem; 
                 margin-bottom: 60px; 
             }
             
             .contact-stack { gap: 40px; }
-            .contact-link { 
-                font-size: 1.2rem; 
-                letter-spacing: 0.05em;
-            }
+            .contact-link { font-size: 1.2rem; letter-spacing: 0.05em; }
         }
     </style>
 </head>
 <body>
-
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
-        <div class="menu-trigger" id="menuBtn" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </header>
-
     <nav class="nav-overlay" id="navOverlay">
         <ul class="nav-list">
             <li><a href="about.html" onclick="toggleMenu()">About</a></li>
@@ -145,11 +96,9 @@
             <li><a href="shop.html" onclick="toggleMenu()">Shop</a></li>
         </ul>
     </nav>
-
     <main>
         <div class="contact-wrap">
             <h1 class="page-title">CONTACT</h1>
-
             <section class="contact-stack">
                 <div class="contact-item">
                     <div class="contact-icon">
@@ -160,7 +109,6 @@
                     </div>
                     <a class="contact-link" href="mailto:#">info@bongeum.com</a>
                 </div>
-
                 <div class="contact-item">
                     <div class="contact-icon">
                         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -174,24 +122,14 @@
             </section>
         </div>
     </main>
-
     <script>
         function toggleMenu() {
             const nav = document.getElementById('navOverlay');
             const spans = document.querySelectorAll('.menu-trigger span');
             nav.classList.toggle('active');
-            
-            if(nav.classList.contains('active')) {
-                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
+            if(nav.classList.contains('active')) { spans[0].style.transform = 'translateY(8.5px) rotate(45deg)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)'; } 
+            else { spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none'; }
         }
     </script>
-
 </body>
 </html>
