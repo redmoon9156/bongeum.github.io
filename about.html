@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABOUT | Bongeum</title>
     <style>
-        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
+        /* [공통 리셋 및 헤더/메뉴 로직은 동일하게 유지] */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background-color: #ffffff; 
@@ -18,151 +18,70 @@
         ul { list-style: none; }
         img { max-width: 100%; height: auto; display: block; border-radius: 0; }
 
-        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
         header {
             position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 30px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 2000;
+            top: 0; width: 100%; padding: 30px 20px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
         }
-
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        .menu-trigger {
-            cursor: pointer;
-            width: 24px;
-            height: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .menu-trigger span {
-            display: block;
-            width: 100%;
-            height: 1px;
-            background-color: #000;
-            transition: 0.3s;
-        }
-
-        /* [3. 네비게이션 오버레이] ---------------------------- */
         .nav-overlay {
-            position: fixed;
-            top: -100%; 
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #fff;
-            z-index: 1500;
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; 
-            padding-top: 120px;
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
+            background-color: #fff; z-index: 1500; transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
         }
         .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 모바일 레이아웃 (ABOUT 타이틀 추가)] ----------- */
-        main {
-            /* contact.html과 동일한 상단 여백 유지 */
-            padding: 140px 20px 60px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        /* [ABOUT 레이아웃 및 타이틀 수정] */
+        main { padding: 140px 20px 60px; display: flex; flex-direction: column; align-items: center; }
 
-        /* CONTACT와 동일한 타이틀 스타일 */
         .page-title {
             width: 100%;
             text-align: center;
-            font-size: 1.8rem;
+            /* [수정] 모바일 크기 반으로 축소 (1.8rem -> 0.9rem) */
+            font-size: 0.9rem; 
             font-weight: 700;
             margin-bottom: 40px;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.15em; /* 자간을 조금 더 넓혀 가독성 확보 */
             text-transform: uppercase;
         }
 
-        .about-image {
-            width: 100%;
-            margin-bottom: 40px;
-        }
+        .about-image { width: 100%; margin-bottom: 40px; }
+        .about-text { width: 100%; text-align: left; font-size: 1rem; line-height: 1.8; letter-spacing: 0.02em; }
 
-        .about-text {
-            width: 100%;
-            text-align: left;
-            font-size: 1rem;
-            line-height: 1.8;
-            letter-spacing: 0.02em;
-        }
-
-        /* [5. PC 환경 독립 설계 (ABOUT 타이틀 및 구조)] ------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
-
-            .nav-overlay {
-                top: 0; left: 100%; width: 450px; height: 100vh;
-                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                border-left: 1px solid #eee;
-                display: flex; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
-            }
+            .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px; }
             .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
             .nav-list li { margin: 35px 0; }
             .nav-list li a { font-size: 1rem; }
 
-            /* PC 레이아웃: 타이틀은 상단, 이미지와 텍스트는 중앙 배치 */
-            main {
-                flex-direction: column; /* 타이틀을 위에 두기 위해 column으로 변경 */
-                justify-content: flex-start;
-                align-items: center;
-                height: auto;
-                min-height: 100vh;
-                padding: 220px 10vw 100px;
-            }
-
+            main { padding: 220px 10vw 100px; }
+            
             .page-title {
-                font-size: 3rem; /* PC 버전 CONTACT와 동일 크기 */
+                /* [수정] PC 크기 반으로 축소 (3rem -> 1.5rem) */
+                font-size: 1.5rem; 
                 margin-bottom: 60px;
             }
 
-            .content-container {
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-            }
-
-            .about-image {
-                width: 45%;
-                margin-bottom: 0;
-            }
-
-            .about-text {
-                width: 45%;
-                font-size: 1.2rem;
-            }
+            .content-container { display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; }
+            .about-image { width: 45%; margin-bottom: 0; }
+            .about-text { width: 45%; font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
-
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
-        <div class="menu-trigger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </header>
-
     <nav class="nav-overlay" id="navOverlay">
         <ul class="nav-list">
             <li><a href="about.html" onclick="toggleMenu()">About</a></li>
@@ -171,38 +90,21 @@
             <li><a href="shop.html" onclick="toggleMenu()">Shop</a></li>
         </ul>
     </nav>
-
     <main>
         <h1 class="page-title">ABOUT</h1>
-
         <div class="content-container">
-            <div class="about-image">
-                <img src="images/about/about_image_1.png" alt="about_image_1">
-            </div>
-
-            <div class="about-text">
-                I am designer Bongeum.
-            </div>
+            <div class="about-image"><img src="images/about/about_image_1.png" alt="about_image_1"></div>
+            <div class="about-text">I am designer Bongeum.</div>
         </div>
     </main>
-
     <script>
         function toggleMenu() {
             const nav = document.getElementById('navOverlay');
             const spans = document.querySelectorAll('.menu-trigger span');
             nav.classList.toggle('active');
-            
-            if(nav.classList.contains('active')) {
-                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
+            if(nav.classList.contains('active')) { spans[0].style.transform = 'translateY(8.5px) rotate(45deg)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)'; } 
+            else { spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none'; }
         }
     </script>
-
 </body>
 </html>
