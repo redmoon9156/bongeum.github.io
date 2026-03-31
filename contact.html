@@ -1,193 +1,311 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact | Bongeum</title>
-    <style>
-        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background-color: #ffffff; 
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
-            color: #000;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-        a { text-decoration: none; color: inherit; transition: opacity 0.3s; }
-        a:hover { opacity: 0.5; }
-        ul { list-style: none; }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Contact — Bongeum</title>
+  <meta name="description" content="Contact — Bongeum" />
 
-        /* [2. 헤더 및 햄버거 버튼 - index 동일] ------------------ */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 30px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 2000;
-        }
-        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
-        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+  <style>
+    :root{
+      --bg:#ffffff;
+      --fg:#000000; /* 봉금 기본 검정 */
+      --muted:#666666;
+      --max:1060px;
+      --pad:20px; /* 봉금 기존 여백 반영 */
+      --shadow: 0 18px 50px rgba(0,0,0,.08);
 
-        /* [3. 네비게이션 오버레이 - index 동일] ----------------- */
-        .nav-overlay {
-            position: fixed;
-            top: -100%; left: 0; width: 100%; height: 100vh;
-            background-color: #fff; z-index: 1500;
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
-        }
-        .nav-overlay.active { top: 0; }
-        .nav-list { text-align: center; }
-        .nav-list li { margin: 25px 0; }
-        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+      --menu-bg: rgba(255,255,255,.98);
+      --menu-dur: 400ms;
+      --menu-ease: cubic-bezier(.77, 0, .175, 1); /* 봉금 기존 애니메이션 curve */
+    }
 
-        /* [4. 모바일 레이아웃 (Gakion 구성 유지)] -------------- */
-        main {
-            padding: 150px 20px 60px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
 
-        .contact-title {
-            font-size: 1.8rem; /* [수정] 30~40% 축소된 크기 */
-            font-weight: 300;
-            margin-bottom: 60px;
-            letter-spacing: -0.01em;
-        }
+    body{
+      margin:0;
+      background:var(--bg);
+      color:var(--fg);
+      /* [중요] 봉금닷컴 기존 폰트 유지 */
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
+      -webkit-font-smoothing: antialiased;
+      font-size:14px;
+      line-height:1.6;
+      letter-spacing:.15px;
 
-        .contact-grid {
-            display: flex;
-            flex-direction: column; /* 모바일/PC 모두 세로 배치 */
-            width: 100%;
-        }
+      display:flex;
+      flex-direction:column;
+      min-height:100vh;
+    }
 
-        .info-group {
-            border-top: 1px solid #eee; /* Gakion 스타일의 얇은 구분선 */
-            padding: 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-        }
+    a{ color:inherit; text-decoration:none; }
+    button{ font: inherit; border:none; background:none; padding:0; cursor:pointer; }
 
-        .label {
-            font-size: 0.65rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: #999;
-        }
+    .wrap{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 var(--pad);
+      width:100%;
+    }
 
-        .value {
-            font-size: 0.95rem;
-            font-weight: 400;
-            text-align: right;
-        }
+    header{
+      background:#ffffff;
+      position: fixed; /* 봉금 기존 고정 방식 */
+      top: 0;
+      width: 100%;
+      z-index: 2000;
+    }
 
-        /* [5. PC 환경 독립 설계 (세로형 리스트 고수)] ----------- */
-        @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:30px 20px; /* 봉금 헤더 여백 */
+    }
 
-            .nav-overlay {
-                top: 0; left: 100%; width: 450px; height: 100vh;
-                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                border-left: 1px solid #eee;
-                display: flex; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
-            }
-            .nav-overlay.active { left: calc(100% - 450px); }
-            .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0; }
-            .nav-list li a { font-size: 1rem; }
+    /* [중요] 봉금 로고 스타일 유지 */
+    .brand{
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-            /* PC 레이아웃: 가로 나열 대신 세로 리스트 유지 */
-            main {
-                padding: 200px 15vw 100px;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
+    .brand-mark{
+      height:1em;
+      width:auto;
+      display:block;
+    }
 
-            .contact-title {
-                font-size: 3.5rem; /* [수정] PC 타이틀 크기도 40% 가량 축소 */
-                margin-bottom: 80px;
-            }
+    nav.desktop{
+      display:none;
+      gap:40px;
+      align-items:center;
+    }
 
-            .contact-grid {
-                max-width: 600px; /* PC에서도 너무 퍼지지 않게 폭 제한 */
-            }
+    nav.desktop a{
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: opacity 0.3s;
+    }
+    nav.desktop a:hover{ opacity: 0.5; }
 
-            .info-group {
-                padding: 30px 0;
-            }
+    /* [중요] 봉금 햄버거 버튼 스타일 (1px line) */
+    .menu-btn{
+      width: 24px;
+      height: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .menu-icon{ width:100%; height:100%; position:relative; display:flex; flex-direction:column; justify-content:space-between; }
+    .menu-icon span{
+      display: block;
+      width: 100%;
+      height: 1px;
+      background-color: #000;
+      transition: 0.3s;
+    }
 
-            .value {
-                font-size: 1.1rem;
-            }
-        }
-    </style>
+    .drawer-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.1);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .3s ease;
+      z-index:1500;
+    }
+
+    .drawer{
+      position:fixed;
+      left:0; right:0;
+      top:-100%; /* 봉금 기존 Top to Bottom 방식 */
+      height:100vh;
+      background:#fff;
+      transition: top var(--menu-dur) var(--menu-ease);
+      z-index:1600;
+
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding-top: 120px; /* 봉금 메뉴 높이 */
+    }
+
+    .drawer-nav{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:25px;
+    }
+
+    .drawer-nav a{
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
+
+    body[data-menu-open="true"] .drawer-overlay{ opacity:1; pointer-events:auto; }
+    body[data-menu-open="true"] .drawer{ top: 0; }
+
+    /* 햄버거 X 애니메이션 */
+    body[data-menu-open="true"] .menu-icon span:nth-child(1){ transform: translateY(8.5px) rotate(45deg); }
+    body[data-menu-open="true"] .menu-icon span:nth-child(2){ opacity: 0; }
+    body[data-menu-open="true"] .menu-icon span:nth-child(3){ transform: translateY(-8.5px) rotate(-45deg); }
+
+    main{
+      padding:150px 0 90px;
+      flex:1;
+    }
+
+    .page-title{
+      font-size: 1.8rem; /* 이전 지시대로 적절히 줄인 크기 */
+      font-weight: 300;
+      text-align:center;
+      margin:20px 0 60px;
+      letter-spacing: -0.01em;
+    }
+
+    /* Contact Area - Gakion Layout */
+    .contact-area{
+      display:flex;
+      justify-content:center;
+      text-align:center;
+    }
+
+    .contact-stack{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:40px;
+    }
+
+    .contact-item{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:12px;
+    }
+
+    .contact-icon{
+      color:#000;
+      opacity: 0.8;
+    }
+
+    .contact-link{
+      font-size:1rem;
+      letter-spacing:.05em;
+      color:#000;
+    }
+    .contact-link:hover{ opacity: 0.5; }
+
+    footer{
+      padding:40px 0;
+      text-align:center;
+      font-size:12px;
+      color:#999;
+      letter-spacing: 0.05em;
+    }
+
+    @media (min-width:1024px){
+      .topbar{ padding: 60px 80px; }
+      .brand{ font-size: 1.3rem; }
+      nav.desktop{ display:flex; }
+      .menu-btn{ display:none; }
+      .drawer, .drawer-overlay{ display:none; }
+      
+      .page-title { font-size: 3.5rem; margin-bottom: 80px; }
+      .contact-stack { gap: 60px; }
+    }
+  </style>
 </head>
-<body>
 
-    <header>
-        <div class="logo"><a href="index.html">Bongeum</a></div>
-        <div class="menu-trigger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </header>
+<body data-menu-open="false">
+  <header>
+    <div class="topbar">
+      <a class="brand" href="index.html">
+        <img class="brand-mark" src="images/home/late_autumn.png" alt="" />
+        <span>Bongeum</span>
+      </a>
 
-    <nav class="nav-overlay" id="navOverlay">
-        <ul class="nav-list">
-            <li><a href="about.html" onclick="toggleMenu()">About</a></li>
-            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
-            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
-            <li><a href="shop.html" onclick="toggleMenu()">Shop</a></li>
-        </ul>
+      <nav class="desktop">
+        <a href="about.html">About</a>
+        <a href="objects.html">Objects</a>
+        <a href="contact.html">Contact</a>
+        <a href="shop.html">Shop</a>
+      </nav>
+
+      <button class="menu-btn" id="menuOpenBtn" aria-label="Menu">
+        <div class="menu-icon"><span></span><span></span><span></span></div>
+      </button>
+    </div>
+  </header>
+
+  <div class="drawer-overlay" id="overlay"></div>
+  <aside class="drawer" id="drawer">
+    <nav class="drawer-nav">
+      <a href="about.html">About</a>
+      <a href="objects.html">Objects</a>
+      <a href="contact.html">Contact</a>
+      <a href="shop.html">Shop</a>
     </nav>
+  </aside>
 
-    <main>
-        <h1 class="contact-title">Contact</h1>
+  <main>
+    <div class="wrap">
+      <div class="page-title">Contact</div>
 
-        <div class="contact-grid">
-            <div class="info-group">
-                <span class="label">Email</span>
-                <a href="#" class="value">Address pending...</a>
+      <section class="contact-area">
+        <div class="contact-stack">
+
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4.5 7.5h15c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1h-15c-.55 0-1-.45-1-1v-8c0-.55.45-1-1-1Z" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M5.5 8.5 12 13.2 18.5 8.5" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
             </div>
+            <a class="contact-link" href="mailto:#">info@bongeum.com</a>
+          </div>
 
-            <div class="info-group">
-                <span class="label">Instagram</span>
-                <a href="#" target="_blank" class="value">Link pending...</a>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3.75h8A4.25 4.25 0 0 1 20.25 8v8A4.25 4.25 0 0 1 16 20.25H8A4.25 4.25 0 0 1 3.75 16V8A4.25 4.25 0 0 1 8 3.75Z" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M12 15.6a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2Z" stroke="currentColor" stroke-width="1.2"/>
+                <path d="M16.9 7.25h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
             </div>
+            <a class="contact-link" href="#" target="_blank" rel="noopener">Instagram</a>
+          </div>
 
-            <div class="info-group">
-                <span class="label">Location</span>
-                <span class="value">Seoul, KR</span>
-            </div>
         </div>
-    </main>
+      </section>
+    </div>
+  </main>
 
-    <script>
-        function toggleMenu() {
-            const nav = document.getElementById('navOverlay');
-            const spans = document.querySelectorAll('.menu-trigger span');
-            nav.classList.toggle('active');
-            
-            if(nav.classList.contains('active')) {
-                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        }
-    </script>
+  <footer>© Bongeum. All rights reserved.</footer>
 
+  <script>
+    const body = document.body;
+    const btn = document.getElementById("menuOpenBtn");
+    const overlay = document.getElementById("overlay");
+
+    function toggleMenu() {
+      const isOpen = body.getAttribute("data-menu-open") === "true";
+      body.setAttribute("data-menu-open", isOpen ? "false" : "true");
+    }
+
+    btn.addEventListener("click", toggleMenu);
+    overlay.addEventListener("click", toggleMenu);
+  </script>
 </body>
 </html>
