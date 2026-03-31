@@ -18,7 +18,7 @@
         a:hover { opacity: 0.5; }
         ul { list-style: none; }
 
-        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        /* [2. 헤더 및 햄버거 버튼 - index 동일] ------------------ */
         header {
             position: fixed;
             top: 0;
@@ -29,126 +29,103 @@
             align-items: center;
             z-index: 2000;
         }
-
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        .menu-trigger {
-            cursor: pointer;
-            width: 24px;
-            height: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .menu-trigger span {
-            display: block;
-            width: 100%;
-            height: 1px;
-            background-color: #000;
-            transition: 0.3s;
-        }
-
-        /* [3. 모바일 메뉴 (Top to Bottom & 상단 배치)] ---------- */
+        /* [3. 네비게이션 오버레이 - index 동일] ----------------- */
         .nav-overlay {
             position: fixed;
-            top: -100%; 
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #fff;
-            z-index: 1500;
+            top: -100%; left: 0; width: 100%; height: 100vh;
+            background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            
-            display: flex;
-            justify-content: center;
-            align-items: flex-start; 
-            padding-top: 120px;
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
         }
         .nav-overlay.active { top: 0; }
-
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 메인 컨텐츠 영역 - Gakion 스타일 반영] ----------- */
+        /* [4. 모바일 레이아웃 (Gakion 구성 유지)] -------------- */
         main {
+            padding: 150px 20px 60px;
             min-height: 100vh;
-            padding: 150px 20px 60px; /* 헤더 여백 확보 */
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
         }
 
         .contact-title {
-            font-size: 3rem; /* 모바일에서의 압도적 타이틀 */
+            font-size: 1.8rem; /* [수정] 30~40% 축소된 크기 */
             font-weight: 300;
-            margin-bottom: 80px;
-            letter-spacing: -0.02em;
+            margin-bottom: 60px;
+            letter-spacing: -0.01em;
         }
 
         .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 40px;
+            display: flex;
+            flex-direction: column; /* 모바일/PC 모두 세로 배치 */
+            width: 100%;
         }
 
         .info-group {
-            border-top: 1px solid #000; /* Gakion의 구조적 선 활용 */
-            padding-top: 15px;
+            border-top: 1px solid #eee; /* Gakion 스타일의 얇은 구분선 */
+            padding: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
         }
 
         .label {
-            display: block;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 20px;
             color: #999;
         }
 
         .value {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 400;
-            display: block;
+            text-align: right;
         }
 
-        /* [5. PC 환경 독립 설계 (Right to Left & 상단 배치)] ---- */
+        /* [5. PC 환경 독립 설계 (세로형 리스트 고수)] ----------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
 
             .nav-overlay {
-                top: 0;
-                left: 100%; 
-                width: 450px; 
-                height: 100vh;
+                top: 0; left: 100%; width: 450px; height: 100vh;
                 transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
                 border-left: 1px solid #eee;
-                
-                display: flex;
-                justify-content: flex-start;
-                align-items: flex-start;
-                padding: 180px 0 0 80px;
+                display: flex; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
             }
             .nav-overlay.active { left: calc(100% - 450px); }
-
             .nav-list { text-align: left; }
             .nav-list li { margin: 35px 0; }
             .nav-list li a { font-size: 1rem; }
 
-            /* PC 전용 레이아웃 조정 */
+            /* PC 레이아웃: 가로 나열 대신 세로 리스트 유지 */
             main {
-                padding: 250px 10vw 100px;
+                padding: 200px 15vw 100px;
+                max-width: 1200px;
+                margin: 0 auto;
             }
 
             .contact-title {
-                font-size: 6rem; /* PC에서의 대담한 폰트 크기 */
-                margin-bottom: 120px;
+                font-size: 3.5rem; /* [수정] PC 타이틀 크기도 40% 가량 축소 */
+                margin-bottom: 80px;
             }
 
             .contact-grid {
-                grid-template-columns: repeat(3, 1fr); /* 3열 배치 */
-                gap: 5vw;
+                max-width: 600px; /* PC에서도 너무 퍼지지 않게 폭 제한 */
+            }
+
+            .info-group {
+                padding: 30px 0;
+            }
+
+            .value {
+                font-size: 1.1rem;
             }
         }
     </style>
