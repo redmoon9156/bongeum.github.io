@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABOUT | Bongeum</title>
     <style>
-        /* [공통 리셋 및 헤더/메뉴 로직은 동일하게 유지] */
+        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
             background-color: #ffffff; 
@@ -18,6 +18,7 @@
         ul { list-style: none; }
         img { max-width: 100%; height: auto; display: block; border-radius: 0; }
 
+        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
         header {
             position: fixed;
             top: 0; width: 100%; padding: 30px 20px;
@@ -27,6 +28,7 @@
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
+        /* [3. 네비게이션 오버레이] ---------------------------- */
         .nav-overlay {
             position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
             background-color: #fff; z-index: 1500; transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
@@ -37,23 +39,24 @@
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [ABOUT 레이아웃 및 타이틀 수정] */
+        /* [4. 모바일 레이아웃 및 타이틀] ---------------------- */
         main { padding: 140px 20px 60px; display: flex; flex-direction: column; align-items: center; }
 
         .page-title {
             width: 100%;
             text-align: center;
-            /* [수정] 모바일 크기 반으로 축소 (1.8rem -> 0.9rem) */
-            font-size: 0.9rem; 
+            /* [수정] 모바일 폰트 크기 1.2rem */
+            font-size: 1.2rem; 
             font-weight: 700;
             margin-bottom: 40px;
-            letter-spacing: 0.15em; /* 자간을 조금 더 넓혀 가독성 확보 */
+            letter-spacing: 0.1em;
             text-transform: uppercase;
         }
 
         .about-image { width: 100%; margin-bottom: 40px; }
         .about-text { width: 100%; text-align: left; font-size: 1rem; line-height: 1.8; letter-spacing: 0.02em; }
 
+        /* [5. PC 환경 독립 설계] ------------------------------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
@@ -66,8 +69,8 @@
             main { padding: 220px 10vw 100px; }
             
             .page-title {
-                /* [수정] PC 크기 반으로 축소 (3rem -> 1.5rem) */
-                font-size: 1.5rem; 
+                /* [수정] PC 폰트 크기 2.0rem */
+                font-size: 2.0rem; 
                 margin-bottom: 60px;
             }
 
