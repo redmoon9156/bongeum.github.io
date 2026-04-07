@@ -5,63 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objects | Bongeum</title>
     <style>
-        html { font-size: 16px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background: #fff;
-            color: #232323;
-            font-family: 'Times New Roman', serif;
-            font-weight: 300;
-            letter-spacing: .02em;
+            background-color: #ffffff;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #000;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
-        a { color: inherit; text-decoration: underline; }
-        ul { list-style: none; padding: 0; margin: 0; }
-        img { display: block; width: 100%; height: auto; object-fit: cover; }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; height: auto; display: block; border-radius: 0; }
 
-        /* Header (index/about/contact.html과 동일) */
+        /* 헤더 및 햄버거 (about.html과 완전 동일!) */
         header {
             position: fixed;
-            top: 0; left: 0; width: 100%;
-            padding: 30px 20px;
-            background: #fff;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 2000;
-            border-bottom: 1px solid #eee;
+            top: 0; width: 100%; padding: 30px 20px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
         }
-        .logo {
-            font-size: 1rem;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            font-weight: 600;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-        }
-        .menu-trigger {
-            cursor: pointer;
-            width: 24px; height: 18px;
-            display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .menu-trigger span {
-            display: block;
-            width: 100%;
-            height: 1px;
-            background-color: #000;
-            transition: 0.3s;
-        }
+        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* 햄버거 오버레이 */
+        /* 네비게이션 오버레이 (about.html과 동일) */
         .nav-overlay {
             position: fixed;
-            top: -100%; left: 0; width: 100%; height: 100vh;
-            background: #fff; z-index: 1500;
-            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
-            box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #fff;
+            z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 120px;
+            box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
-        .nav-list li { margin: 25px 0;}
-        .nav-list li a {
-            font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300;
-        }
+        .nav-list li { margin: 25px 0; }
+        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+
+        /* 모바일: 50dvh 오버레이 + 더 아래 시작! */
         @media (max-width: 1023px) {
             .nav-overlay {
                 height: 50dvh;
@@ -69,37 +56,34 @@
                 padding-top: 90px;
             }
             .nav-overlay.active { top: 0; }
+            .nav-list { text-align: center; }
+            .nav-list li { margin: 25px 0; }
+
+            /* 모바일에서 좌측카테고리 숨기기 */
+            .sidebar { display: none !important; }
         }
+        /* PC: 기존 오버레이 슬라이딩 */
         @media (min-width: 1024px) {
-            header { padding: 60px 80px;}
+            header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
             .nav-overlay {
-                top: 0; left: 100%;
-                width: 450px; height: 100vh;
-                border-left: 1px solid #eee; padding: 180px 0 0 80px;
-                justify-content: flex-start; align-items: flex-start;
+                top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
             }
             .nav-overlay.active { left: calc(100% - 450px);}
             .nav-list { text-align: left; }
             .nav-list li { margin: 35px 0;}
             .nav-list li a { font-size: 1rem;}
+            .sidebar { display: flex;}
         }
 
-        /* 메인 레이아웃 */
+        /* 본문(PC/모바일 공통) */
+        main { padding: 140px 20px 60px; display: flex; flex-direction: column; align-items: center; }
         .container {
-            max-width: 1500px;
-            margin: 0 auto;
-            padding: 0 40px;
-            padding-top: 110px; /* 헤더 공간 확보 */
+            max-width: 1400px; width: 100%; margin: 0 auto;
+            display: flex; gap: 64px; align-items: flex-start;
         }
-        .main-layout {
-            display: flex;
-            gap: 64px;
-            align-items: flex-start;
-            width: 100%;
-        }
-
-        /* PC 전용 사이드 카테고리 메뉴 */
+        /* PC 전용: 좌측 select by category */
         .sidebar {
             min-width: 220px;
             padding-top: 20px;
@@ -115,9 +99,7 @@
             text-transform: lowercase;
         }
         .category-list {
-            display: flex;
-            flex-direction: column;
-            gap: 18px;
+            display: flex; flex-direction: column; gap: 18px;
         }
         .category-link {
             display: block;
@@ -125,16 +107,14 @@
             text-decoration: underline;
             font-size: 1.18rem;
             font-family: 'Times New Roman', serif;
-            letter-spacing: 0.04em; padding-bottom: 2px;
+            letter-spacing: 0.04em;
+            padding-bottom: 2px;
             transition: color 0.16s;
             cursor: pointer;
         }
         .category-link:hover { color: #232323; }
-        @media (max-width: 1023px) {
-            .sidebar { display: none !important; }
-        }
 
-        /* PRODUCTS CONTENT */
+        /* MAIN PRODUCT 목록 */
         .products-sections {
             flex: 1;
             width: 100%;
@@ -180,8 +160,8 @@
         }
         @media (max-width:1200px) {
             .container { padding: 0 10px; }
-            .main-layout { flex-direction: column; gap: 0; }
             .products-sections { gap: 36px;}
+            .container { flex-direction: column; gap: 0; }
         }
         @media (max-width:700px) {
             .product-images-row { flex-direction: column; gap: 11px; }
@@ -190,14 +170,9 @@
     </style>
 </head>
 <body>
-    <!-- 헤더 영역(좌 Bongeum, 우 햄버거) -->
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
-        <div class="menu-trigger" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
+        <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </header>
     <nav class="nav-overlay" id="navOverlay">
         <ul class="nav-list">
@@ -206,8 +181,8 @@
             <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
         </ul>
     </nav>
-    <div class="container">
-        <div class="main-layout">
+    <main>
+        <div class="container">
             <!-- PC ONLY: 카테고리 메뉴 -->
             <aside class="sidebar">
                 <div class="category-title">select by category</div>
@@ -217,13 +192,11 @@
                 </nav>
             </aside>
             <!-- Products Content -->
-            <section class="products-sections" id="productsSections">
-                <!-- javascript에서 자동 생성 -->
-            </section>
+            <section class="products-sections" id="productsSections"></section>
         </div>
-    </div>
+    </main>
     <script>
-        // 앞으로 카테고리/이미지는 여기에만 추가!
+        // 각 카테고리별 최대 3개만 preview용으로 노출
         const PRODUCTS = [
             {
                 name: "Kettle",
@@ -241,14 +214,8 @@
                     "object_images_vase_1.jpeg"
                 ]
             }
-            // 추가 상품 예시: {
-            //   name: "Plate",
-            //   page: "plate.html",
-            //   images: [ "..." ]
-            // }
         ];
 
-        // 본문(product section) 자동 생성, 각 row 3개 제한
         function renderProductSections() {
             const container = document.getElementById('productsSections');
             container.innerHTML = '';
@@ -276,7 +243,7 @@
                 headerRow.appendChild(title);
                 headerRow.appendChild(moreBtn);
 
-                // 이미지 row (최대 3개만 표시)
+                // 이미지 row (최대 3개)
                 const imgRow = document.createElement('div');
                 imgRow.className = 'product-images-row';
                 item.images.slice(0, 3).forEach(src => {
@@ -296,7 +263,6 @@
         }
         renderProductSections();
 
-        // 햄버거 네비 오버레이
         function toggleMenu() {
             const nav = document.getElementById('navOverlay');
             const spans = document.querySelectorAll('.menu-trigger span');
@@ -305,7 +271,8 @@
                 spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
                 spans[1].style.opacity = '0';
                 spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-            } else {
+            }
+            else {
                 spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
                 spans[2].style.transform = 'none';
