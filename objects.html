@@ -13,26 +13,20 @@
             color: #000;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            /* 푸터 하단 고정을 위한 설정 */
             display: flex;
             flex-direction: column;
             min-height: 100vh;
         }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
-        img { max-width: 100%; height: auto; display: block; border-radius: 0; }
+        img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        /* [2. 헤더 - 하얀색 불투명 고정] ----------------------- */
+        /* [2. 헤더 - 공통 고정 스타일] ----------------------- */
         header {
             position: fixed;
-            top: 0; 
-            width: 100%; 
-            padding: 30px 20px;
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            z-index: 2000;
-            background-color: #ffffff; 
+            top: 0; width: 100%; padding: 30px 20px;
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 2000; background-color: #ffffff; 
         }
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -40,9 +34,7 @@
 
         /* [3. 네비게이션 오버레이] ---------------------------- */
         .nav-overlay {
-            position: fixed;
-            top: -100%;
-            left: 0; width: 100%; height: 100vh;
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
             background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77,0,0.175,1);
             display: flex; justify-content: center; align-items: flex-start;
@@ -52,13 +44,34 @@
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0;}
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
-        
+
+        /* [4. 모바일 전용 레이아웃 (1023px 이하)] ------------- */
         @media (max-width: 1023px) {
             .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
-            .nav-overlay.active { top: 0; }
-            .sidebar { display: none !important; }
+            
+            main { padding: 120px 20px 60px; flex: 1; }
+            
+            /* 모바일 카테고리 제목 (로고와 동일 폰트) */
+            .category-section { margin-bottom: 60px; text-align: center; }
+            .category-name { 
+                display: block;
+                font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; 
+                text-transform: uppercase; margin-bottom: 25px;
+            }
+
+            /* 모바일 정방형 이미지 중앙 정렬 */
+            .image-grid { 
+                display: flex; flex-direction: column; align-items: center; gap: 15px; 
+            }
+            .img-box {
+                width: 100%; aspect-ratio: 1 / 1; /* 정방형 강제 */
+                background: #f7f7f7; overflow: hidden;
+            }
+            
+            .pc-only { display: none !important; }
         }
-        
+
+        /* [5. PC 전용 레이아웃 (1024px 이상)] ---------------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
@@ -66,118 +79,52 @@
                 top: 0; left: 100%; width: 450px; height: 100vh;
                 border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77,0,0.175,1);
                 justify-content: flex-start; align-items: flex-start;
-                padding: 180px 0 0 80px;
-                box-shadow: none;
+                padding: 180px 0 0 80px; box-shadow: none;
             }
             .nav-overlay.active { left: calc(100% - 450px);}
             .nav-list { text-align: left; }
             .nav-list li { margin: 35px 0;}
             .nav-list li a { font-size: 1rem;}
-            .sidebar { display: flex;}
+
+            main { padding: 200px 80px 100px; flex: 1; display: flex; justify-content: center; }
+            .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; }
+
+            /* PC 사이드바 */
+            .sidebar { 
+                min-width: 250px; border-right: 1px solid #eee; 
+                display: flex; flex-direction: column; gap: 40px;
+            }
+            .side-title { font-size: 0.8rem; color: #888; letter-spacing: 0.2em; text-transform: lowercase; }
+            .side-nav a { 
+                display: block; font-size: 1.2rem; font-weight: 600; 
+                letter-spacing: 0.15em; text-transform: uppercase; 
+                margin-bottom: 20px; text-decoration: underline;
+            }
+
+            /* PC 콘텐츠 영역 */
+            .content-area { flex: 1; display: flex; flex-direction: column; gap: 100px; }
+            .category-group { width: 100%; }
+            .category-group-name { 
+                display: inline-block;
+                font-size: 1.3rem; font-weight: 600; letter-spacing: 0.15em; 
+                text-transform: uppercase; margin-bottom: 30px;
+            }
+            .pc-image-row { 
+                display: flex; gap: 20px; justify-content: center; /* 중앙 정렬 */
+            }
+            .pc-img-box {
+                flex: 1; max-width: 300px; aspect-ratio: 1 / 1; /* 정방형 강제 */
+                background: #f7f7f7; overflow: hidden;
+            }
+
+            .mobile-only { display: none !important; }
         }
 
-        /* [4. 본문 레이아웃] ---------------------------------- */
-        main { 
-            padding: 140px 20px 60px; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            flex: 1; /* 푸터를 하단으로 밀어내기 위해 가변 영역 설정 */
-        }
-        .container {
-            max-width: 1400px; width: 100%; margin: 0 auto;
-            display: flex; gap: 64px; align-items: flex-start;
-        }
-        .sidebar {
-            min-width: 220px; padding-top: 20px; padding-bottom: 54px;
-            border-right: 1px solid #e2e2e2;
-            display: flex; flex-direction: column; justify-content: flex-start;
-        }
-        .category-title {
-            font-size: 0.83rem;
-            letter-spacing: 0.22em; color: #888;
-            margin-bottom: 38px; text-transform: lowercase;
-        }
-        .category-list { display: flex; flex-direction: column; gap: 18px; }
-        .category-link {
-            display: block;
-            color: #151515;
-            text-decoration: underline;
-            font-size: 1.18rem;
-            font-family: 'Times New Roman', serif;
-            letter-spacing: 0.04em;
-            padding-bottom: 2px; transition: color 0.16s; cursor: pointer;
-        }
-        .category-link:hover { color: #232323; }
-
-        /* PRODUCTS CONTENT */
-        .products-sections { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 64px; }
-        .product-header-row {
-            display: flex; align-items: center; margin-bottom: 24px;
-            justify-content: flex-start;
-            gap: 16px;
-        }
-        .product-title { font-size: 1.5rem; font-family: 'Times New Roman', serif; letter-spacing: 0.08em; font-weight: 600; }
-        .product-more {
-            font-size: 1rem; color: #b2b2b2; font-weight: 400; margin-left: 14px; background: none; border: none; cursor: pointer; text-transform: lowercase; }
-        .product-more:hover { text-decoration: underline; color: #212121; }
-
-        @media (max-width: 1023px) {
-            .product-header-row {
-                justify-content: flex-start;
-                position: relative;
-            }
-            .product-title { font-size: 1.2rem; }
-            .product-more {
-                position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-                margin-left: 0;
-                font-size: 1rem; font-weight: 400;
-                color: #b2b2b2; background: none; border: none; text-transform: lowercase;
-            }
-        }
-        .product-images-row {
-            display: flex; gap: 23px;
-        }
-        .product-img-box {
-            width: 212px; height: 272px;
-            background: #f7f7f7;
-            overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-            border-radius: 0;
-        }
-        .product-img-box img {
-            width: 100%; height: 100%; object-fit: cover; border-radius: 0;
-        }
-        @media (max-width:1200px) {
-            .container { padding: 0 10px; }
-            .products-sections { gap: 36px;}
-            .container { flex-direction: column; gap: 0; }
-            .product-images-row { gap: 15px; }
-        }
-        @media (max-width:1023px) {
-            .product-images-row { gap: 15px; flex-wrap: wrap; }
-            .product-img-box {
-                width: 32vw; max-width: 300px;
-                height: calc(32vw * 1.28); min-width: 95px; min-height: 100px; max-height: 350px;
-            }
-        }
-        @media (max-width:700px) {
-            .product-images-row { flex-direction: column; gap: 11px; }
-            .product-img-box {
-                width: 95vw; max-width:380px; height: auto; aspect-ratio: 1/1.28;
-            }
-        }
-
-        /* [5. 하단 고정 푸터] --------------------------------- */
+        /* [6. 푸터] ----------------------------------------- */
         footer {
-            width: 100%;
-            padding: 30px 20px;
-            text-align: center;
-            background-color: #fff;
-            font-size: 10px;
-            letter-spacing: 0.15em;
-            color: #000;
-            margin-top: auto; /* 페이지 하단 고정 */
+            width: 100%; padding: 30px 20px; text-align: center;
+            font-size: 10px; letter-spacing: 0.15em; color: #000;
+            margin-top: auto; border-top: 1px solid #f0f0f0;
         }
     </style>
 </head>
@@ -186,6 +133,7 @@
         <div class="logo"><a href="index.html">Bongeum</a></div>
         <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </header>
+
     <nav class="nav-overlay" id="navOverlay">
         <ul class="nav-list">
             <li><a href="about.html" onclick="toggleMenu()">About</a></li>
@@ -193,22 +141,23 @@
             <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
         </ul>
     </nav>
+
     <main>
-        <div class="container">
+        <div class="mobile-only" id="mobileContent"></div>
+
+        <div class="pc-only container">
             <aside class="sidebar">
-                <div class="category-title">select by category</div>
-                <nav class="category-list">
-                    <a class="category-link" href="kettle.html">Kettle</a>
-                    <a class="category-link" href="vase.html">Vase</a>
+                <div class="side-title">select by category</div>
+                <nav class="side-nav">
+                    <a href="kettle.html">Kettle</a>
+                    <a href="vase.html">Vase</a>
                 </nav>
             </aside>
-            <section class="products-sections" id="productsSections"></section>
+            <section class="content-area" id="pcContent"></section>
         </div>
     </main>
 
-    <footer>
-        © BONGEUM. All rights reserved.
-    </footer>
+    <footer>© BONGEUM. All rights reserved.</footer>
 
     <script>
     const PRODUCTS = [
@@ -230,48 +179,36 @@
         }
     ];
 
-    function renderProductSections() {
-        const container = document.getElementById('productsSections');
-        container.innerHTML = '';
+    function renderObjects() {
+        const mobileContainer = document.getElementById('mobileContent');
+        const pcContainer = document.getElementById('pcContent');
+
         PRODUCTS.forEach(item => {
-            const section = document.createElement('div');
-            section.className = 'product-section';
+            // 1. 모바일 렌더링
+            const mSection = document.createElement('div');
+            mSection.className = 'category-section';
+            mSection.innerHTML = `
+                <a href="${item.page}" class="category-name">${item.name}</a>
+                <div class="image-grid">
+                    ${item.images.map(src => `<div class="img-box"><img src="${src}" alt=""></div>`).join('')}
+                </div>
+            `;
+            mobileContainer.appendChild(mSection);
 
-            const headerRow = document.createElement('div');
-            headerRow.className = 'product-header-row';
-
-            const title = document.createElement('span');
-            title.className = 'product-title';
-            title.textContent = item.name;
-
-            const moreBtn = document.createElement('button');
-            moreBtn.className = 'product-more';
-            moreBtn.type = 'button';
-            moreBtn.title = '더 보기';
-            moreBtn.innerHTML = "more";
-            moreBtn.onclick = () => { window.location.href = item.page; };
-
-            headerRow.appendChild(title);
-            headerRow.appendChild(moreBtn);
-
-            const imgRow = document.createElement('div');
-            imgRow.className = 'product-images-row';
-            item.images.slice(0, 3).forEach(src => {
-                const imgBox = document.createElement('div');
-                imgBox.className = 'product-img-box';
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = item.name + " 이미지";
-                imgBox.appendChild(img);
-                imgRow.appendChild(imgBox);
-            });
-
-            section.appendChild(headerRow);
-            section.appendChild(imgRow);
-            container.appendChild(section);
+            // 2. PC 렌더링
+            const pGroup = document.createElement('div');
+            pGroup.className = 'category-group';
+            pGroup.innerHTML = `
+                <a href="${item.page}" class="category-group-name">${item.name}</a>
+                <div class="pc-image-row">
+                    ${item.images.map(src => `<div class="pc-img-box"><img src="${src}" alt=""></div>`).join('')}
+                </div>
+            `;
+            pcContainer.appendChild(pGroup);
         });
     }
-    renderProductSections();
+
+    renderObjects();
 
     function toggleMenu() {
         const nav = document.getElementById('navOverlay');
@@ -281,8 +218,7 @@
             spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
             spans[1].style.opacity = '0';
             spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-        }
-        else {
+        } else {
             spans[0].style.transform = 'none';
             spans[1].style.opacity = '1';
             spans[2].style.transform = 'none';
