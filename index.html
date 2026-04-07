@@ -122,33 +122,35 @@
     </main>
 
     <script>
-        function toggleMenu() {
-            const nav = document.getElementById('navOverlay');
-            const spans = document.querySelectorAll('.menu-trigger span');
-            nav.classList.toggle('active');
-            if(nav.classList.contains('active')) {
-                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        }
-
-        // 슬라이더 이미지 목록 (여기만 추가/삭제하면 됨)
-        const sliderImages = [
+        // PC/모바일 별 슬라이드 이미지 배열
+        const sliderImagesPC = [
             "images/index/index_images_PC_1.jpeg",
             "images/index/index_images_PC_2.jpeg",
             "images/index/index_images_PC_3.jpeg"
+            // 추가 이미지 계속 삽입 가능
+        ];
+        const sliderImagesMobile = [
+            "images/index/index_images_mobile_1.jpeg",
+            "images/index/index_images_mobile_2.jpeg",
+            "images/index/index_images_mobile_3.jpeg"
+            // 추가 이미지 계속 삽입 가능
         ];
 
-        // 슬라이더 로직
+        let sliderImages = [];
+        let currentMode = null; // 'pc' or 'mobile'
+        const breakpoint = 1024;
+
         const slider = document.getElementById('slider');
         let currentIdx = 0;
         let slides = [];
+        let timer = null;
 
+        // PC/모바일 구분 기능
+        function getCurrentMode() {
+            return window.innerWidth >= breakpoint ? 'pc' : 'mobile';
+        }
+
+        // 슬라이드 생성 및 슬라이드 기능
         function createSlides() {
             slider.innerHTML = '';
             slides = [];
@@ -161,9 +163,7 @@
                 slides.push(img);
             });
         }
-        createSlides();
 
-        let timer = null;
         function showSlide(nextIdx) {
             slides.forEach((img, idx) => {
                 img.classList.remove('active', 'prev', 'next');
@@ -178,18 +178,44 @@
             showSlide(nextIdx);
             timer = setTimeout(nextSlideAuto, 5000);
         }
-        setTimeout(() => {
-            timer = setTimeout(nextSlideAuto, 5000);
-        }, 350);
 
-        // 리사이즈(이미지 수 바뀌면) 대응 - 비동기로도
-        window.sliderRebuild = function(){
+        function startSlider() {
             clearTimeout(timer);
             createSlides();
             currentIdx = 0;
             setTimeout(() => {
                 timer = setTimeout(nextSlideAuto, 5000);
             }, 350);
+        }
+
+        // 모드 변경 감지 및 슬라이더 전환 처리
+        function checkModeAndUpdate() {
+            const mode = getCurrentMode();
+            if(mode !== currentMode) {
+                currentMode = mode;
+                sliderImages = (mode === 'pc') ? sliderImagesPC : sliderImagesMobile;
+                startSlider();
+            }
+        }
+
+        window.addEventListener('resize', checkModeAndUpdate);
+        // 처음 로딩 시
+        checkModeAndUpdate();
+
+        // 햄버거 메뉴 토글
+        function toggleMenu() {
+            const nav = document.getElementById('navOverlay');
+            const spans = document.querySelectorAll('.menu-trigger span');
+            nav.classList.toggle('active');
+            if(nav.classList.contains('active')) {
+                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
         }
     </script>
 
