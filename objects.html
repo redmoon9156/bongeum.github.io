@@ -17,27 +17,42 @@
         ul { list-style: none; padding:0; margin:0; }
         img { display: block; width:100%; height:auto; object-fit: cover; }
 
+        /* ---------- 네비게이션 헤더 ---------- */
+        header {
+            position: fixed;
+            top: 0; width: 100%; padding: 30px 20px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 2000; background: #fff;
+        }
+        .logo { font-size: 1rem; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+
+        /* --- 메뉴 오버레이 PC/모바일 공통 --- */
+        .nav-overlay {
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
+            background-color: #fff; z-index: 1500;
+            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+            box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
+        }
+        .nav-overlay.active { top: 0; }
+        .nav-list { text-align: center;}
+        .nav-list li { margin: 25px 0; }
+        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300;}
+
+        /* ---------- 본문 컨테이너(기존 유지) ---------- */
         .container {
             max-width: 1500px;
             margin: 0 auto;
             padding: 0 40px;
         }
-
-        header {
-            margin-top: 60px;
-            margin-bottom: 56px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo { font-size: 1.4rem; font-family: 'Times New Roman', serif; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; }
-
         .page-title {
             font-size: 2.55rem;
             letter-spacing: 0.13em;
             font-family: 'Times New Roman', serif;
             font-weight: 300;
             margin-bottom: 10px;
+            margin-top: 90px; /* 헤더 고정으로 본문 겹침 방지 */
         }
         .divider {
             border: 0;
@@ -128,7 +143,6 @@
             transition: color .14s;
         }
         .more-btn:hover { color: #232323; }
-
         .product-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -158,13 +172,39 @@
             letter-spacing: 0.055em;
         }
 
-        /* 반응형 */
+        /* --- 모바일 햄버거: 오버레이 상단에서 50dvh만큼만 내려옴 --- */
+        @media (max-width: 1023px) {
+            header { padding: 30px 20px; }
+            .logo { font-size: 1rem; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+            .nav-overlay {
+                height: 50dvh;
+                top: -50dvh;
+                padding-top: 90px;
+            }
+            .nav-overlay.active { top: 0; }
+            .nav-list { text-align: center; }
+            .nav-list li { margin: 25px 0; }
+            .nav-list li a { font-size: 1.1rem; }
+        }
+        /* [PC - 오버레이 슬라이딩 메뉴] */
+        @media (min-width: 1024px) {
+            header { padding: 60px 80px; }
+            .logo { font-size: 1.3rem; }
+            .nav-overlay {
+                top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
+            }
+            .nav-overlay.active { left: calc(100% - 450px);}
+            .nav-list { text-align: left;}
+            .nav-list li { margin: 35px 0;}
+            .nav-list li a { font-size: 1rem;}
+        }
         @media (max-width: 1200px) {
+            .container { padding: 0 10px; }
             .main-content { flex-direction: column; gap: 0; }
             .sidebar { min-width: unset; border-right: none; border-bottom: 1px solid #e2e2e2; flex-direction: row; padding-bottom: 16px; margin-bottom: 34px; }
         }
         @media (max-width:900px) {
-            .container { padding: 0 10px; }
             .sidebar { gap: 26px; }
             .product-grid { grid-template-columns: 1fr 1fr; }
             .product-card { padding-right: 0;}
@@ -177,10 +217,20 @@
     </style>
 </head>
 <body>
+    <!-- 네비/햄버거 영역 -->
+    <header>
+        <div class="logo"><a href="index.html">Bongeum</a></div>
+        <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    </header>
+    <nav class="nav-overlay" id="navOverlay">
+        <ul class="nav-list">
+            <li><a href="about.html" onclick="toggleMenu()">About</a></li>
+            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
+            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+        </ul>
+    </nav>
+
     <div class="container">
-        <header>
-            <div class="logo"><a href="index.html">Bongeum</a></div>
-        </header>
         <div class="page-title">Objects</div>
         <hr class="divider">
         <div class="breadcrumb" id="breadcrumb">Home &gt; Objects</div>
@@ -257,6 +307,23 @@
                 renderCategory(this.dataset.category);
             };
         });
+
+        // 햄버거 네비 오버레이
+        function toggleMenu() {
+            const nav = document.getElementById('navOverlay');
+            const spans = document.querySelectorAll('.menu-trigger span');
+            nav.classList.toggle('active');
+            if(nav.classList.contains('active')) {
+                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        }
+
         // 최초
         renderCategory(curCat);
     </script>
