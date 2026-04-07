@@ -17,7 +17,7 @@
         ul { list-style: none; padding: 0; margin: 0; }
         img { display: block; width: 100%; height: auto; object-fit: cover; }
 
-        /* Header - index와 동일 */
+        /* Header (index/about/contact.html과 동일) */
         header {
             position: fixed;
             top: 0; left: 0; width: 100%;
@@ -223,35 +223,37 @@
         </div>
     </div>
     <script>
-        // (실제 이미지로 쓰실 땐 images/objects/...로 교체)
+        // 앞으로 카테고리/이미지는 여기에만 추가!
         const PRODUCTS = [
             {
                 name: "Kettle",
                 page: "kettle.html",
                 images: [
-                    "https://picsum.photos/400/520?random=101",
-                    "https://picsum.photos/400/520?random=102",
-                    "https://picsum.photos/400/520?random=103"
+                    "objects_images_kettle_1.jpeg",
+                    "objects_images_kettle_2.jpeg",
+                    "objects_images_kettle_3.jpeg"
                 ]
             },
             {
                 name: "Vase",
                 page: "vase.html",
                 images: [
-                    "https://picsum.photos/400/520?random=201",
-                    "https://picsum.photos/400/520?random=202",
-                    "https://picsum.photos/400/520?random=203"
+                    "object_images_vase_1.jpeg"
                 ]
             }
-            // 카테고리/이미지 추가시 위 패턴대로 계속 추가
+            // 추가 상품 예시: {
+            //   name: "Plate",
+            //   page: "plate.html",
+            //   images: [ "..." ]
+            // }
         ];
 
-        // 본문(product section) 자동 생성
+        // 본문(product section) 자동 생성, 각 row 3개 제한
         function renderProductSections() {
             const container = document.getElementById('productsSections');
             container.innerHTML = '';
             PRODUCTS.forEach(item => {
-                // section div
+                // section
                 const section = document.createElement('div');
                 section.className = 'product-section';
 
@@ -262,6 +264,7 @@
                 const title = document.createElement('span');
                 title.className = 'product-title';
                 title.textContent = item.name;
+
                 // ... 버튼
                 const moreBtn = document.createElement('button');
                 moreBtn.className = 'section-more';
@@ -269,13 +272,14 @@
                 moreBtn.title = '더 보기';
                 moreBtn.innerHTML = "…";
                 moreBtn.onclick = () => { window.location.href = item.page; };
+
                 headerRow.appendChild(title);
                 headerRow.appendChild(moreBtn);
 
-                // 이미지 row
+                // 이미지 row (최대 3개만 표시)
                 const imgRow = document.createElement('div');
                 imgRow.className = 'product-images-row';
-                item.images.forEach(src => {
+                item.images.slice(0, 3).forEach(src => {
                     const imgBox = document.createElement('div');
                     imgBox.className = 'product-img-box';
                     const img = document.createElement('img');
@@ -285,7 +289,6 @@
                     imgRow.appendChild(imgBox);
                 });
 
-                // 조립
                 section.appendChild(headerRow);
                 section.appendChild(imgRow);
                 container.appendChild(section);
