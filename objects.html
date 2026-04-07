@@ -17,7 +17,7 @@
             flex-direction: column;
             min-height: 100vh;
         }
-        a { text-decoration: none; color: inherit; }
+        a { text-decoration: none; color: inherit; display: inline-block; }
         ul { list-style: none; }
 
         /* [2. 헤더 - 고정] ----------------------- */
@@ -54,7 +54,7 @@
         .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
         .category-name-link { 
             display: inline-block; font-weight: 600; letter-spacing: 0.15em; 
-            text-transform: uppercase; margin-bottom: 30px; text-decoration: underline;
+            text-transform: uppercase; margin-bottom: 30px; 
             font-size: 1rem;
         }
         .slider-container {
@@ -66,7 +66,8 @@
             background: #f7f7f7;
             overflow: hidden;
             cursor: pointer;
-            touch-action: pan-y; /* 수평 스와이프 방해 금지 */
+            touch-action: pan-y;
+            user-select: none; /* 텍스트 선택 방지 */
         }
         .slider-wrapper {
             display: flex;
@@ -75,7 +76,7 @@
         }
         .slider-wrapper img {
             width: 100%; height: 100%; object-fit: cover; flex-shrink: 0;
-            -webkit-user-drag: none; /* 이미지 드래그 방지 */
+            -webkit-user-drag: none;
         }
         .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
         .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
@@ -98,7 +99,7 @@
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; }
             .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
             .side-title { font-size: 0.8rem; color: #888; letter-spacing: 0.2em; text-transform: lowercase; }
-            .side-nav a { display: block; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-decoration: underline; }
+            .side-nav a { display: block; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; }
             .content-area { flex: 1; display: flex; flex-direction: column; gap: 100px; }
             .category-name-link { font-size: 1.2rem; }
             .mobile-only { display: none !important; }
@@ -197,7 +198,8 @@
 
         let idx = 0;
         let startX = 0;
-        let isMoving = false;
+        let startTime = 0;
+        let isMoved = false;
 
         function updateSlider() {
             wrapper.style.transform = `translateX(-${idx * 100}%)`;
@@ -205,46 +207,47 @@
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         }
 
-        // [1. 클릭 이벤트 - 1/4 지점]
-        sliderBox.addEventListener('click', (e) => {
-            if (isMoving) return; // 드래그 직후 클릭 방지
-            const rect = sliderBox.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const w = rect.width;
+        // [이벤트 처리] 터치 동작 제어 (확실한 클릭 감도 조절)
+        sliderBox.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startTime = Date.now();
+            isMoved = false;
+        });
 
-            if (x < w * 0.25) {
-                idx = (idx - 1 + item.images.length) % item.images.length;
+        sliderBox.addEventListener('touchmove', (e) => {
+            const currentX = e.touches[0].clientX;
+            // 미세한 움직임(10px 이하)은 이동으로 간주하지 않음
+            if (Math.abs(startX - currentX) > 10) {
+                isMoved = true;
+            }
+        });
+
+        sliderBox.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+            const deltaTime = Date.now() - startTime;
+
+            // 1. 스와이프 판단: 50px 이상 움직였을 때
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    idx = (idx + 1) % item.images.length;
+                } else {
+                    idx = (idx - 1 + item.images.length) % item.images.length;
+                }
                 updateSlider();
-            } else if (x > w * 0.75) {
-                idx = (idx + 1) % item.images.length;
-                updateSlider();
-            } else {
+            } 
+            // 2. 확실한 클릭 판단: 
+            // 움직임이 거의 없고(isMoved=false), 누른 시간이 너무 짧지 않을 때(최소 감도)
+            else if (!isMoved && deltaTime > 50) {
                 window.location.href = item.page;
             }
         });
 
-        // [2. 터치 스와이프 이벤트]
-        sliderBox.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            isMoving = false;
-        });
-
-        sliderBox.addEventListener('touchmove', (e) => {
-            isMoving = true;
-        });
-
-        sliderBox.addEventListener('touchend', (e) => {
-            if (!isMoving) return;
-            const endX = e.changedTouches[0].clientX;
-            const diff = startX - endX;
-
-            if (Math.abs(diff) > 50) { // 50px 이상 움직였을 때만 반응
-                if (diff > 0) { // 왼쪽으로 밀기 -> 다음
-                    idx = (idx + 1) % item.images.length;
-                } else { // 오른쪽으로 밀기 -> 이전
-                    idx = (idx - 1 + item.images.length) % item.images.length;
-                }
-                updateSlider();
+        // PC 환경을 위한 마우스 클릭 지원
+        sliderBox.addEventListener('click', (e) => {
+            // 터치 이벤트가 없는 PC 브라우저용 (모바일은 touchend에서 처리됨)
+            if (e.pointerType === 'mouse' || !('ontouchstart' in window)) {
+                window.location.href = item.page;
             }
         });
 
