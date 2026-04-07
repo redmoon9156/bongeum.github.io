@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ABOUT | Bongeum</title>
     <style>
-        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #ffffff;
@@ -18,7 +17,7 @@
         ul { list-style: none; }
         img { max-width: 100%; height: auto; display: block; border-radius: 0; }
 
-        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        /* 헤더/메뉴트리거 (index.html/contact.html 표준) */
         header {
             position: fixed;
             top: 0; width: 100%; padding: 30px 20px;
@@ -28,54 +27,54 @@
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* [3. 네비게이션 오버레이] ---------------------------- */
+        /* 네비게이션 오버레이 (index.html/contact.html 표준) */
         .nav-overlay {
             position: fixed;
+            top: -100%;
             left: 0;
             width: 100%;
+            height: 100vh;
             background-color: #fff;
             z-index: 1500;
-            display: flex; justify-content: center; align-items: flex-start;
+            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
             padding-top: 120px;
             box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1), height 0.5s cubic-bezier(0.77,0,0.175,1);
         }
-        /* 모바일: 높이 50dvh, 메뉴 열릴 때만 top 0 */
-        @media (max-width: 1023px) {
-            .nav-overlay {
-                height: 50dvh;
-                top: -50dvh;
-            }
-            .nav-overlay.active { top: 0; }
-        }
-        /* PC: 기존 100vh + 슬라이딩 */
-        @media (min-width: 1024px) {
-            .nav-overlay {
-                height: 100vh;
-                top: 0;
-                left: 100%;
-                width: 450px;
-                border-left: 1px solid #eee;
-                justify-content: flex-start;
-                align-items: flex-start;
-                padding: 180px 0 0 80px;
-                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1), height 0.5s cubic-bezier(0.77,0,0.175,1);
-            }
-            .nav-overlay.active {
-                left: calc(100% - 450px);
-                top: 0;
-            }
-            .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0;}
-            .nav-list li a { font-size: 1rem;}
-        }
+        .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 모바일 레이아웃 및 타이틀] ---------------------- */
-        main { padding: 140px 20px 60px; display: flex; flex-direction: column; align-items: center; }
+        /* 모바일: 50dvh 오버레이 + 더 아래 시작! */
+        @media (max-width: 1023px) {
+            .nav-overlay {
+                height: 50dvh;
+                top: -50dvh;
+                padding-top: 90px;
+            }
+            .nav-overlay.active { top: 0; }
+            .nav-list { text-align: center; }
+            .nav-list li { margin: 25px 0; }
+        }
+        /* PC: 기존 100vh + contact.html과 동일하게 */
+        @media (min-width: 1024px) {
+            header { padding: 60px 80px; }
+            .logo { font-size: 1.3rem; }
+            .nav-overlay {
+                top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
+            }
+            .nav-overlay.active { left: calc(100% - 450px);}
+            .nav-list { text-align: left; }
+            .nav-list li { margin: 35px 0;}
+            .nav-list li a { font-size: 1rem;}
+        }
 
+        /* 본문은 기존 동일하게 */
+        main { padding: 140px 20px 60px; display: flex; flex-direction: column; align-items: center; }
         .page-title {
             width: 100%;
             text-align: center;
@@ -85,20 +84,11 @@
             letter-spacing: 0.1em;
             text-transform: uppercase;
         }
-
         .about-image { width: 100%; margin-bottom: 40px; }
         .about-text { width: 100%; text-align: left; font-size: 1rem; line-height: 1.8; letter-spacing: 0.02em; }
-
-        /* [5. PC 환경 독립 설계] ------------------------------- */
         @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
             main { padding: 220px 10vw 100px; }
-
-            .page-title {
-                font-size: 2.0rem;
-                margin-bottom: 60px;
-            }
+            .page-title { font-size: 2.0rem; margin-bottom: 60px;}
             .content-container { display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; }
             .about-image { width: 45%; margin-bottom: 0; }
             .about-text { width: 45%; font-size: 1.2rem; }
@@ -129,9 +119,18 @@
             const nav = document.getElementById('navOverlay');
             const spans = document.querySelectorAll('.menu-trigger span');
             nav.classList.toggle('active');
-            if(nav.classList.contains('active')) { spans[0].style.transform = 'translateY(8.5px) rotate(45deg)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)'; }
-            else { spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none'; }
+            if(nav.classList.contains('active')) {
+                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+            }
+            else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
         }
     </script>
 </body>
 </html>
+
