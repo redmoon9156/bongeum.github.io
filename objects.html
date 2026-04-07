@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OBJECTS | Bongeum</title>
     <style>
-        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
+        /* [1. 공통 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #fff;
@@ -13,17 +13,14 @@
             color: #000;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            display: flex; flex-direction: column; min-height: 100vh;
         }
         a { text-decoration: none; color: inherit; display: inline-block; }
         ul { list-style: none; }
 
-        /* [2. 헤더 - 고정] ----------------------- */
+        /* [2. 헤더] ----------------------------- */
         header {
-            position: fixed;
-            top: 0; width: 100%; padding: 30px 20px;
+            position: fixed; top: 0; width: 100%; padding: 30px 20px;
             display: flex; justify-content: space-between; align-items: center; 
             z-index: 2000; background-color: #ffffff; 
         }
@@ -31,73 +28,44 @@
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* [3. 네비게이션 오버레이] ---------------------------- */
+        /* [3. 네비게이션] ----------------------- */
         .nav-overlay {
             position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
             background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77,0,0.175,1);
-            display: flex; justify-content: center; align-items: flex-start;
-            padding-top: 120px;
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
         }
         .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 타이틀] ---------------------------------- */
-        .page-title {
-            width: 100%; text-align: center; font-weight: 700;
-            letter-spacing: 0.1em; text-transform: uppercase;
-        }
-
-        /* [5. 슬라이더 스타일] --------------------------- */
-        .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
+        /* [4. 슬라이더 스타일] ------------------- */
+        main { padding: 140px 20px 60px; flex: 1; }
+        .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 1.2rem; }
         
-        /* [수정] 텍스트와 이미지 간격 축소 (margin-bottom: 30px -> 12px) */
-        .category-name-link { 
-            display: inline-block; font-weight: 600; letter-spacing: 0.15em; 
-            text-transform: uppercase; margin-bottom: 12px; 
-            font-size: 1rem;
-        }
+        .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
+        .category-name-link { display: inline-block; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-size: 1rem; }
 
         .slider-container {
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-            aspect-ratio: 1 / 1;
-            margin: 0 auto;
-            background: #f7f7f7;
-            overflow: hidden;
-            cursor: pointer;
-            touch-action: pan-y;
-            user-select: none;
+            position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1;
+            margin: 0 auto; background: #f7f7f7; overflow: hidden;
+            cursor: pointer; touch-action: pan-y;
         }
-        .slider-wrapper {
-            display: flex;
-            width: 100%; height: 100%;
-            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .slider-wrapper img {
-            width: 100%; height: 100%; object-fit: cover; flex-shrink: 0;
-            -webkit-user-drag: none;
-        }
+        .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
+        
         .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
         .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
         .dot.active { background: #000; }
 
-        /* [6. 레이아웃 분리] ------------------ */
-        @media (max-width: 1023px) {
-            .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
-            main { padding: 140px 20px 60px; flex: 1; }
-            .page-title { font-size: 1.2rem; margin-bottom: 40px; }
-            .pc-only { display: none !important; }
-        }
+        /* PC 설정 */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
             .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77,0,0.175,1); justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px; }
             .nav-overlay.active { left: calc(100% - 450px); }
-            main { padding: 220px 80px 100px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+            main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; }
             .page-title { font-size: 2.0rem; margin-bottom: 80px; }
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; }
             .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
@@ -107,13 +75,9 @@
             .category-name-link { font-size: 1.2rem; }
             .mobile-only { display: none !important; }
         }
+        @media (max-width: 1023px) { .pc-only { display: none !important; } }
 
-        /* [7. 푸터] ----------------------------------------- */
-        footer {
-            width: 100%; padding: 40px 20px; text-align: center;
-            font-size: 10px; letter-spacing: 0.15em; color: #000;
-            margin-top: auto; border-top: 1px solid #f0f0f0; background-color: #fff;
-        }
+        footer { width: 100%; padding: 40px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: 1px solid #f0f0f0; }
     </style>
 </head>
 <body>
@@ -121,7 +85,6 @@
         <div class="logo"><a href="index.html">Bongeum</a></div>
         <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </header>
-
     <nav class="nav-overlay" id="navOverlay">
         <ul class="nav-list">
             <li><a href="about.html" onclick="toggleMenu()">About</a></li>
@@ -149,56 +112,26 @@
 
     <script>
     const PRODUCTS = [
-        {
-            name: "Kettle",
-            page: "kettle.html",
-            images: [
-                "images/objects/kettle/objects_images_kettle_1.jpeg",
-                "images/objects/kettle/objects_images_kettle_2.jpeg",
-                "images/objects/kettle/objects_images_kettle_3.jpeg"
-            ]
-        },
-        {
-            name: "Vase",
-            page: "vase.html",
-            images: ["images/objects/vase/object_images_vase_1.jpeg"]
-        }
+        { name: "Kettle", page: "kettle.html", images: ["images/objects/kettle/objects_images_kettle_1.jpeg", "images/objects/kettle/objects_images_kettle_2.jpeg", "images/objects/kettle/objects_images_kettle_3.jpeg"] },
+        { name: "Vase", page: "vase.html", images: ["images/objects/vase/object_images_vase_1.jpeg"] }
     ];
 
     function initSlider(item, containerId) {
         const container = document.getElementById(containerId);
         const section = document.createElement('div');
         section.className = 'category-wrapper';
+        section.innerHTML = `
+            <a href="${item.page}" class="category-name-link">${item.name}</a>
+            <div class="slider-container">
+                <div class="slider-wrapper">${item.images.map(src => `<img src="${src}">`).join('')}</div>
+            </div>
+            <div class="dots">${item.images.length > 1 ? item.images.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}"></div>`).join('') : ''}</div>
+        `;
+        container.appendChild(section);
 
-        const link = document.createElement('a');
-        link.href = item.page;
-        link.className = 'category-name-link';
-        link.textContent = item.name;
-        section.appendChild(link);
-
-        const sliderBox = document.createElement('div');
-        sliderBox.className = 'slider-container';
-        const wrapper = document.createElement('div');
-        wrapper.className = 'slider-wrapper';
-        item.images.forEach(src => {
-            const img = document.createElement('img');
-            img.src = src;
-            wrapper.appendChild(img);
-        });
-        sliderBox.appendChild(wrapper);
-        section.appendChild(sliderBox);
-
-        const dotsBox = document.createElement('div');
-        dotsBox.className = 'dots';
-        if (item.images.length > 1) {
-            item.images.forEach((_, i) => {
-                const dot = document.createElement('div');
-                dot.className = `dot ${i === 0 ? 'active' : ''}`;
-                dotsBox.appendChild(dot);
-            });
-        }
-        section.appendChild(dotsBox);
-
+        const sliderBox = section.querySelector('.slider-container');
+        const wrapper = section.querySelector('.slider-wrapper');
+        const dots = section.querySelectorAll('.dot');
         let idx = 0;
         let startX = 0;
         let startY = 0;
@@ -206,11 +139,10 @@
 
         function updateSlider() {
             wrapper.style.transform = `translateX(-${idx * 100}%)`;
-            const dots = dotsBox.querySelectorAll('.dot');
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         }
 
-        // [이벤트 처리 로직]
+        // [스와이프 로직 복구 및 유지]
         sliderBox.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
@@ -218,84 +150,61 @@
         });
 
         sliderBox.addEventListener('touchmove', (e) => {
-            const currentX = e.touches[0].clientX;
-            const currentY = e.touches[0].clientY;
-            // 감도 조절: 상하좌우 20px 이상 움직이면 '스크롤/스와이프'로 간주
-            if (Math.abs(startX - currentX) > 20 || Math.abs(startY - currentY) > 20) {
+            if (Math.abs(startX - e.touches[0].clientX) > 10 || Math.abs(startY - e.touches[0].clientY) > 10) {
                 isMoving = true;
             }
         });
 
         sliderBox.addEventListener('touchend', (e) => {
-            // 스와이프 로직 (50px 이상 가로 이동 시)
-            const endX = e.changedTouches[0].clientX;
-            const diffX = startX - endX;
-
-            if (Math.abs(diffX) > 50) {
+            const diffX = startX - e.changedTouches[0].clientX;
+            // 확실하게 50px 이상 밀었을 때만 스와이프로 인식
+            if (isMoving && Math.abs(diffX) > 50) {
                 if (diffX > 0) idx = (idx + 1) % item.images.length;
                 else idx = (idx - 1 + item.images.length) % item.images.length;
                 updateSlider();
-                return; // 스와이프 후 클릭 동작 방지
+                return;
             }
 
-            // 확실한 클릭 로직 (거의 안 움직였을 때만)
+            // [클릭 로직 정교화] 스와이프가 아닐 때만 실행
             if (!isMoving) {
                 const rect = sliderBox.getBoundingClientRect();
-                const xInSlider = endX - rect.left;
-                const width = rect.width;
+                const x = e.changedTouches[0].clientX - rect.left;
+                const w = rect.width;
 
-                // [지시 반영] 1/5 양끝 지점(20%)은 이미지 넘기기
-                if (xInSlider < width * 0.20) {
+                if (x < w * 0.20) { // 좌측 1/5
                     idx = (idx - 1 + item.images.length) % item.images.length;
                     updateSlider();
-                } else if (xInSlider > width * 0.80) {
+                } else if (x > w * 0.80) { // 우측 1/5
                     idx = (idx + 1) % item.images.length;
                     updateSlider();
-                } else {
-                    // [지시 반영] 중앙부(60%) 클릭 시에만 링크 이동
+                } else { // 중앙 60%
                     window.location.href = item.page;
                 }
             }
         });
 
-        // PC 환경 지원
-        sliderBox.addEventListener('mousedown', (e) => {
-            startX = e.clientX;
-            isMoving = false;
-        });
+        // PC 마우스 대응
+        sliderBox.addEventListener('mousedown', (e) => { startX = e.clientX; isMoving = false; });
         sliderBox.addEventListener('mouseup', (e) => {
             if (Math.abs(startX - e.clientX) > 5) isMoving = true;
-            if (isMoving) {
-                const diffX = startX - e.clientX;
-                if (Math.abs(diffX) > 50) {
-                    if (diffX > 0) idx = (idx + 1) % item.images.length;
-                    else idx = (idx - 1 + item.images.length) % item.images.length;
-                    updateSlider();
-                }
-                return;
-            }
-            const rect = sliderBox.getBoundingClientRect();
-            const xInSlider = e.clientX - rect.left;
-            const width = rect.width;
-
-            if (xInSlider < width * 0.20) {
-                idx = (idx - 1 + item.images.length) % item.images.length;
+            if (!isMoving) {
+                const rect = sliderBox.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const w = rect.width;
+                if (x < w * 0.20) idx = (idx - 1 + item.images.length) % item.images.length;
+                else if (x > w * 0.80) idx = (idx + 1) % item.images.length;
+                else window.location.href = item.page;
                 updateSlider();
-            } else if (xInSlider > width * 0.80) {
-                idx = (idx + 1) % item.images.length;
-                updateSlider();
-            } else {
-                window.location.href = item.page;
             }
         });
-
-        container.appendChild(section);
     }
 
     function renderAll() {
         PRODUCTS.forEach(p => {
-            initSlider(p, 'mobileContent');
-            initSlider(p, 'pcContent');
+            const mobile = document.getElementById('mobileContent');
+            const pc = document.getElementById('pcContent');
+            if(mobile) initSlider(p, 'mobileContent');
+            if(pc) initSlider(p, 'pcContent');
         });
     }
     renderAll();
