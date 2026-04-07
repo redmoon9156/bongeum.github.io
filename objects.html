@@ -28,67 +28,45 @@
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* [3. 네비게이션 오버레이 - 모바일 표준: 50dvh] --------- */
+        /* [3. 네비게이션 오버레이 - 모바일 50dvh] --------- */
         .nav-overlay {
-            position: fixed;
-            left: 0;
-            width: 100%;
-            background-color: #fff;
-            z-index: 1500;
+            position: fixed; left: 0; width: 100%; background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            display: flex; justify-content: center; align-items: flex-start;
             box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* 모바일: 화면 절반만 내려오게 설정 */
         @media (max-width: 1023px) {
-            .nav-overlay {
-                height: 50dvh;
-                top: -50dvh;
-                padding-top: 90px;
-            }
+            .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             .nav-overlay.active { top: 0; }
             .pc-only { display: none !important; }
         }
 
-        /* [4. PC 환경 - 100vh 사이드 슬라이드] ---------------- */
+        /* [4. PC 환경] ---------------------------------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
             .nav-overlay {
-                top: 0; 
-                left: 100%; 
-                width: 450px; 
-                height: 100vh;
-                border-left: 1px solid #eee;
-                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                justify-content: flex-start;
-                align-items: flex-start;
-                padding: 180px 0 0 80px;
+                top: 0; left: 100%; width: 450px; height: 100vh;
+                border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
                 box-shadow: none;
             }
             .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0; }
-            .nav-list li a { font-size: 1rem; }
-
             main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; }
             .page-title { font-size: 2.0rem; margin-bottom: 80px; }
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; }
             .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
-            .side-title { font-size: 0.8rem; color: #888; letter-spacing: 0.2em; text-transform: lowercase; }
             .side-nav a { display: block; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; }
             .content-area { flex: 1; display: flex; flex-direction: column; gap: 100px; }
-            .category-name-link { font-size: 1.2rem; }
             .mobile-only { display: none !important; }
         }
 
-        /* [5. 본문 및 슬라이더 스타일] ------------------- */
+        /* [5. 본문 및 슬라이더] --------------------------- */
         main { padding: 140px 20px 60px; flex: 1; }
         .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 1.2rem; }
         .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
@@ -166,56 +144,45 @@
         const dots = section.querySelectorAll('.dot');
         let idx = 0;
         let startX = 0;
-        let startY = 0;
-        let isMoving = false;
+        let isMoved = false;
 
         function updateSlider() {
             wrapper.style.transform = `translateX(-${idx * 100}%)`;
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         }
 
+        // [핵심 로직 수정] 스와이프 기능만 남기고 양끝 클릭 삭제
         sliderBox.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            isMoving = false;
+            isMoved = false;
         });
 
         sliderBox.addEventListener('touchmove', (e) => {
-            if (Math.abs(startX - e.touches[0].clientX) > 15 || Math.abs(startY - e.touches[0].clientY) > 15) {
-                isMoving = true;
+            if (Math.abs(startX - e.touches[0].clientX) > 10) {
+                isMoved = true;
             }
         });
 
         sliderBox.addEventListener('touchend', (e) => {
-            const diffX = startX - e.changedTouches[0].clientX;
-            if (isMoving && Math.abs(diffX) > 50) {
+            const endX = e.changedTouches[0].clientX;
+            const diffX = startX - endX;
+
+            // 1. 스와이프 로직: 50px 이상 이동 시 이미지 전환
+            if (isMoved && Math.abs(diffX) > 50) {
                 if (diffX > 0) idx = (idx + 1) % item.images.length;
                 else idx = (idx - 1 + item.images.length) % item.images.length;
                 updateSlider();
-                return;
-            }
-
-            if (!isMoving) {
-                const rect = sliderBox.getBoundingClientRect();
-                const x = e.changedTouches[0].clientX - rect.left;
-                const w = rect.width;
-                if (x < w * 0.20) { idx = (idx - 1 + item.images.length) % item.images.length; updateSlider(); } 
-                else if (x > w * 0.80) { idx = (idx + 1) % item.images.length; updateSlider(); } 
-                else { window.location.href = item.page; }
+            } 
+            // 2. 클릭 로직: 움직임이 거의 없는 확실한 클릭 시에만 페이지 이동
+            else if (!isMoved) {
+                window.location.href = item.page;
             }
         });
 
-        sliderBox.addEventListener('mousedown', (e) => { startX = e.clientX; startY = e.clientY; isMoving = false; });
-        sliderBox.addEventListener('mouseup', (e) => {
-            if (Math.abs(startX - e.clientX) > 5 || Math.abs(startY - e.clientY) > 5) isMoving = true;
-            if (!isMoving) {
-                const rect = sliderBox.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const w = rect.width;
-                if (x < w * 0.20) idx = (idx - 1 + item.images.length) % item.images.length;
-                else if (x > w * 0.80) idx = (idx + 1) % item.images.length;
-                else window.location.href = item.page;
-                updateSlider();
+        // PC 마우스 클릭 대응
+        sliderBox.addEventListener('click', (e) => {
+            if (e.pointerType === 'mouse' || !('ontouchstart' in window)) {
+                window.location.href = item.page;
             }
         });
     }
