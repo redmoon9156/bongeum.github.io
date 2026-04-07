@@ -137,34 +137,11 @@
             .nav-list li { margin: 35px 0; }
             .nav-list li a { font-size: 1rem; }
         }
-        /* PC는 전체화면 크롭 (object-fit: cover) */
-        @media (min-width: 1024px) {
-            .slider, .slide-img {
-                width: 100vw;
-                height: 100vh;
-                border-radius: 0;
-            }
-        }
-        /* 모바일은 사진 높이 60vh, 위쪽정렬, 양옆 패딩 */
-        @media (max-width: 1023px) {
-            .slider {
-                width: 100vw;
-                height: 60vh;
-                align-items: flex-start;
-                display: flex;
-                justify-content: center;
-            }
-            .slide-img {
-                width: 92vw;
-                margin: 0 auto;
-                height: 60vh;
-                top: 0;
-                left: 4vw;
-                border-radius: 18px;
-                box-shadow: 0 6px 30px 0 rgba(0,0,0,0.09);
-                object-fit: cover;
-                background: #eee;
-            }
+        /* PC/모바일 공통: 전체화면 크롭 (object-fit: cover, 100vw 100vh) */
+        .slider, .slide-img {
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
         }
     </style>
 </head>
@@ -271,12 +248,8 @@
                 timer = setTimeout(nextSlideAuto, 5000);
             }, 350);
         }
-
-        // PC/모바일에서 화면변경시에도 맞춤 적용
-        window.addEventListener('resize', ()=> {
-            // 레이아웃에 맞게 css 반응형 처리라 JS 별도 필요 X (필요할 경우 추가)
-        });
     </script>
 
 </body>
 </html>
+
