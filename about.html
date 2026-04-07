@@ -7,9 +7,9 @@
     <style>
         /* [1. 공통 리셋 및 기본 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background-color: #ffffff; 
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
+        body {
+            background-color: #ffffff;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             color: #000;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
@@ -46,7 +46,7 @@
             width: 100%;
             text-align: center;
             /* [수정] 모바일 폰트 크기 1.2rem */
-            font-size: 1.2rem; 
+            font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 40px;
             letter-spacing: 0.1em;
@@ -67,10 +67,10 @@
             .nav-list li a { font-size: 1rem; }
 
             main { padding: 220px 10vw 100px; }
-            
+
             .page-title {
                 /* [수정] PC 폰트 크기 2.0rem */
-                font-size: 2.0rem; 
+                font-size: 2.0rem;
                 margin-bottom: 60px;
             }
 
@@ -90,7 +90,6 @@
             <li><a href="about.html" onclick="toggleMenu()">About</a></li>
             <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
             <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
-            <li><a href="shop.html" onclick="toggleMenu()">Shop</a></li>
         </ul>
     </nav>
     <main>
@@ -105,9 +104,10 @@
             const nav = document.getElementById('navOverlay');
             const spans = document.querySelectorAll('.menu-trigger span');
             nav.classList.toggle('active');
-            if(nav.classList.contains('active')) { spans[0].style.transform = 'translateY(8.5px) rotate(45deg)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)'; } 
+            if(nav.classList.contains('active')) { spans[0].style.transform = 'translateY(8.5px) rotate(45deg)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)'; }
             else { spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none'; }
         }
     </script>
 </body>
 </html>
+
