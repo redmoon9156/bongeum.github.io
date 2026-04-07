@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Objects | Bongeum</title>
+    <title>OBJECTS | Bongeum</title>
     <style>
         /* [1. 공통 리셋 및 기본 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,7 +21,7 @@
         ul { list-style: none; }
         img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        /* [2. 헤더 - 공통 고정 스타일] ----------------------- */
+        /* [2. 헤더 - 하얀색 불투명 고정] ----------------------- */
         header {
             position: fixed;
             top: 0; width: 100%; padding: 30px 20px;
@@ -42,36 +42,44 @@
         }
         .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
-        .nav-list li { margin: 25px 0;}
+        .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 모바일 전용 레이아웃 (1023px 이하)] ------------- */
+        /* [4. 페이지 공통 타이틀 스타일] ---------------------- */
+        .page-title {
+            width: 100%;
+            text-align: center;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* [5. 모바일 전용 레이아웃 (1023px 이하)] ------------- */
         @media (max-width: 1023px) {
             .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             
-            main { padding: 120px 20px 60px; flex: 1; }
+            main { padding: 140px 20px 60px; flex: 1; } /* 다른 페이지와 동일한 상단 여백 */
             
-            /* 모바일 카테고리 제목 (로고와 동일 폰트) */
+            .page-title { font-size: 1.2rem; margin-bottom: 40px; }
+
             .category-section { margin-bottom: 60px; text-align: center; }
             .category-name { 
                 display: block;
                 font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; 
                 text-transform: uppercase; margin-bottom: 25px;
+                text-decoration: underline;
             }
 
-            /* 모바일 정방형 이미지 중앙 정렬 */
-            .image-grid { 
-                display: flex; flex-direction: column; align-items: center; gap: 15px; 
-            }
+            .image-grid { display: flex; flex-direction: column; align-items: center; gap: 20px; }
             .img-box {
-                width: 100%; aspect-ratio: 1 / 1; /* 정방형 강제 */
+                width: 100%; aspect-ratio: 1 / 1; 
                 background: #f7f7f7; overflow: hidden;
             }
             
             .pc-only { display: none !important; }
         }
 
-        /* [5. PC 전용 레이아웃 (1024px 이상)] ---------------- */
+        /* [6. PC 전용 레이아웃 (1024px 이상)] ---------------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
@@ -81,15 +89,17 @@
                 justify-content: flex-start; align-items: flex-start;
                 padding: 180px 0 0 80px; box-shadow: none;
             }
-            .nav-overlay.active { left: calc(100% - 450px);}
+            .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0;}
-            .nav-list li a { font-size: 1rem;}
+            .nav-list li { margin: 35px 0; }
+            .nav-list li a { font-size: 1rem; }
 
-            main { padding: 200px 80px 100px; flex: 1; display: flex; justify-content: center; }
+            main { padding: 220px 80px 100px; flex: 1; display: flex; flex-direction: column; align-items: center; }
+            
+            .page-title { font-size: 2.0rem; margin-bottom: 80px; }
+
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; }
 
-            /* PC 사이드바 */
             .sidebar { 
                 min-width: 250px; border-right: 1px solid #eee; 
                 display: flex; flex-direction: column; gap: 40px;
@@ -101,30 +111,29 @@
                 margin-bottom: 20px; text-decoration: underline;
             }
 
-            /* PC 콘텐츠 영역 */
             .content-area { flex: 1; display: flex; flex-direction: column; gap: 100px; }
             .category-group { width: 100%; }
             .category-group-name { 
                 display: inline-block;
                 font-size: 1.3rem; font-weight: 600; letter-spacing: 0.15em; 
                 text-transform: uppercase; margin-bottom: 30px;
+                text-decoration: underline;
             }
-            .pc-image-row { 
-                display: flex; gap: 20px; justify-content: center; /* 중앙 정렬 */
-            }
+            .pc-image-row { display: flex; gap: 20px; justify-content: center; }
             .pc-img-box {
-                flex: 1; max-width: 300px; aspect-ratio: 1 / 1; /* 정방형 강제 */
+                flex: 1; max-width: 350px; aspect-ratio: 1 / 1; 
                 background: #f7f7f7; overflow: hidden;
             }
 
             .mobile-only { display: none !important; }
         }
 
-        /* [6. 푸터] ----------------------------------------- */
+        /* [7. 하단 고정 푸터] --------------------------------- */
         footer {
             width: 100%; padding: 30px 20px; text-align: center;
             font-size: 10px; letter-spacing: 0.15em; color: #000;
             margin-top: auto; border-top: 1px solid #f0f0f0;
+            background-color: #fff;
         }
     </style>
 </head>
@@ -143,7 +152,9 @@
     </nav>
 
     <main>
-        <div class="mobile-only" id="mobileContent"></div>
+        <h1 class="page-title">OBJECTS</h1>
+
+        <div class="mobile-only" id="mobileContent" style="width: 100%;"></div>
 
         <div class="pc-only container">
             <aside class="sidebar">
