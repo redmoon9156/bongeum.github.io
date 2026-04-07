@@ -5,275 +5,260 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objects | Bongeum</title>
     <style>
-        :root{
-            --main-font: "Helvetica Neue", Helvetica, Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-            --border-color: #e5e5e5;
-            --gray-txt: #b3b3b3;
-            --cat-active: #222;
-            --cat-inactive: #a1a1a1;
-            --highlight: #111;
-        }
         html { font-size: 16px; }
         body {
             background: #fff;
-            color: #111;
-            font-family: var(--main-font);
-            font-weight: 400;
-            letter-spacing: 0.01em;
+            color: #232323;
+            font-family: 'Times New Roman', serif;
+            font-weight: 300;
+            letter-spacing: .02em;
         }
-        a { color: inherit; text-decoration: none; }
+        a { color: inherit; text-decoration: underline; }
         ul { list-style: none; padding:0; margin:0; }
-        img { display: block; max-width:100%; height:auto;}
-
-        header {
-            width: 100%;
-            padding: 30px 32px 0 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .logo {
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
-        .dummy-space { height: 78px; }
+        img { display: block; width:100%; height:auto; object-fit: cover; }
 
         .container {
-            max-width: 1220px;
+            max-width: 1500px;
             margin: 0 auto;
-            padding: 0 32px;
-        }
-        .page-title {
-            font-size: 1.1rem;
-            letter-spacing: 0.18em;
-            font-weight: 600;
-            margin-top: 18px;
-            margin-bottom: 4px;
-            text-transform: uppercase;
-            font-family: var(--main-font);
-        }
-        .divider {
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: .7em;
-            width: 100%;
-        }
-        .breadcrumb {
-            color: #b3b3b3;
-            font-size: 0.98rem;
-            letter-spacing: 0.04em;
-            margin: 18px 0 36px 0;
+            padding: 0 40px;
         }
 
-        /* FLEX MAIN LAYOUT */
-        .main-flex {
-            display: flex;
-            gap: 54px;
-        }
-
-        /* SIDEBAR (PC만) */
-        .sidebar {
-            width: 210px;
-            min-width: 150px;
-            border-right: 1px solid var(--border-color);
-            padding-top: 6px;
-            flex-shrink: 0;
-        }
-        .category-title {
-            font-size: 1.01rem;
-            font-weight: 600;
-            color: var(--gray-txt);
-            margin-bottom: 12px;
-            letter-spacing: 0.08em;
-            padding-left: 3px;
-        }
-        .category-list {
-            display: flex;
-            flex-direction: column;
-        }
-        .category-link {
-            display: block;
-            font-size: 1.08rem;
-            font-weight: 600;
-            color: var(--cat-inactive);
-            padding: 11.5px 0 10.5px 8px;
-            border-bottom: 1px solid var(--border-color);
-            transition: color .14s;
-        }
-        .category-link.active, .category-link:focus, .category-link:hover {
-            color: var(--highlight);
-            background: #f6f6f6;
-        }
-
-        /* 오른쪽 OBJECTS 영역 */
-        .object-pane {
-            flex:1 1 0%;
-            display:flex;
-            flex-direction:column;
-            min-width:0;
-        }
-        .object-pane-top {
-            display:flex;
-            align-items:flex-start;
-            justify-content: space-between;
-            margin-bottom: 13px;
-        }
-        .object-category-name {
-            font-size: 0.98rem;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            margin-top: 2px;
-            text-transform: capitalize;
-            line-height: 1.2em;
-        }
-        .object-more {
-            background: none;
-            border: none;
-            font-size: 1.60rem;
-            line-height: 1;
-            cursor: pointer;
-            color: #acacac;
-            padding: 0 2px 0 15px;
-            margin: -2px 0 0 0;
-            transition: color .13s;
-        }
-        .object-more:hover { color: #111;}
-        .object-images {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 28px 28px;
-        }
-        .object-img-wrap {
-            width: 212px;
-            aspect-ratio: 1 / 1.25;
-            background: #f8f8f8;
-            border-radius: 13px;
-            box-shadow: 0 3px 10px 0 rgba(0,0,0,0.07);
-            overflow: hidden;
+        header {
+            margin-top: 60px;
+            margin-bottom: 56px;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
         }
-        .object-img-wrap img {
+        .logo { font-size: 1.4rem; font-family: 'Times New Roman', serif; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; }
+
+        .page-title {
+            font-size: 2.55rem;
+            letter-spacing: 0.13em;
+            font-family: 'Times New Roman', serif;
+            font-weight: 300;
+            margin-bottom: 10px;
+        }
+        .divider {
+            border: 0;
+            border-top: 1px solid #e2e2e2;
+            margin: 0 0 38px 0;
+        }
+        .breadcrumb {
+            color: #aaa;
+            font-size: 1.08rem;
+            letter-spacing: 0.08em;
+            margin: 0 0 53px 0;
+            font-family: 'Times New Roman', serif;
+        }
+        .main-content {
+            display: flex;
+            gap: 64px;
+            align-items: flex-start;
+        }
+        /* 카테고리 사이드바 */
+        .sidebar {
+            min-width: 220px;
+            padding-top: 20px;
+            padding-bottom: 54px;
+            border-right: 1px solid #e2e2e2;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .category-title {
+            font-size: 0.83rem;
+            letter-spacing: 0.22em;
+            color: #888;
+            margin-bottom: 38px;
+            text-transform: lowercase;
+        }
+        .category-list a {
+            display: block;
+            color: #151515;
+            text-decoration: underline;
+            font-size: 1.18rem;
+            margin-bottom: 22px;
+            font-family: 'Times New Roman', serif;
+            letter-spacing: 0.04em;
+            padding-bottom: 2px;
+            transition: color 0.16s;
+        }
+        .category-list a.active,
+        .category-list a:hover,
+        .category-list a:focus {
+            color: #232323;
+            text-decoration-thickness: 2px;
+        }
+        /* 상품 그리드 */
+        .product-grid-box {
+            position: relative;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+        }
+        .section-title-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin-bottom: 35px;
+            gap: 0.5em;
+        }
+        .section-title {
+            font-size: 1.75rem;
+            font-family: 'Times New Roman', serif;
+            font-weight: 400;
+            letter-spacing: 0.11em;
+            text-transform: capitalize;
+        }
+        .more-btn {
+            width: 40px;
+            height: 40px;
+            background: #fff;
+            border-radius: 50%;
+            border: none;
+            color: #bbb;
+            font-size: 29px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: none;
+            margin-left: auto;
+            margin-right: -32px;
+            position: static;
+            cursor: pointer;
+            transition: color .14s;
+        }
+        .more-btn:hover { color: #232323; }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+        .product-card {
+            margin-bottom: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            padding-right: 14px;
+        }
+        .product-img-box {
+            width: 100%;
+            aspect-ratio: 1/1.28;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f7f7f7;
+        }
+        .product-caption {
+            font-size: 1.12rem;
+            font-family: 'Times New Roman', serif;
+            color: #232323;
+            margin: 7px 0 0 0;
+            line-height: 1.5;
+            font-weight: 400;
+            letter-spacing: 0.055em;
         }
 
-        /* MOBILE STYLE */
-        @media (max-width: 900px) {
-            header, .container { padding-left: 8px; padding-right: 8px; }
-            .container { max-width: 100vw; }
-            .main-flex { flex-direction: column; gap: 0; }
-            .sidebar { display: none; }
-            .object-images { gap: 13px; justify-content: center; }
-            .object-img-wrap { width: 46vw; min-width: 120px; aspect-ratio: 1 / 1.23; }
-            .object-pane-top { margin-bottom: 7px; }
+        /* 반응형 */
+        @media (max-width: 1200px) {
+            .main-content { flex-direction: column; gap: 0; }
+            .sidebar { min-width: unset; border-right: none; border-bottom: 1px solid #e2e2e2; flex-direction: row; padding-bottom: 16px; margin-bottom: 34px; }
+        }
+        @media (max-width:900px) {
+            .container { padding: 0 10px; }
+            .sidebar { gap: 26px; }
+            .product-grid { grid-template-columns: 1fr 1fr; }
+            .product-card { padding-right: 0;}
+        }
+        @media (max-width:600px) {
+            .page-title { font-size: 1.49rem; }
+            .product-grid { grid-template-columns: 1fr; }
+            .section-title-row { margin-bottom: 18px; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo"><a href="index.html">Bongeum</a></div>
-    </header>
-    <div class="dummy-space"></div>
-
     <div class="container">
+        <header>
+            <div class="logo"><a href="index.html">Bongeum</a></div>
+        </header>
         <div class="page-title">Objects</div>
-        <div class="divider"></div>
-        <nav class="breadcrumb" id="breadcrumb">Objects &gt; Kettle</nav>
-        <div class="main-flex">
-            <!-- 좌측 카테고리 (PC) -->
-            <aside class="sidebar" id="sidebar">
-                <div class="category-title">Select by Category</div>
-                <ul class="category-list">
-                    <li><a href="#" class="category-link active" data-category="Kettle" id="category-kettle">Kettle</a></li>
-                    <li><a href="#" class="category-link" data-category="Vase" id="category-vase">Vase</a></li>
-                </ul>
+        <hr class="divider">
+        <div class="breadcrumb" id="breadcrumb">Home &gt; Objects</div>
+        <div class="main-content">
+            <!-- 카테고리 메뉴 (사이드) -->
+            <aside class="sidebar">
+                <div class="category-title">search by category</div>
+                <nav class="category-list">
+                    <a href="#" class="active" data-category="Kettle">Kettle</a>
+                    <a href="#" data-category="Vase">Vase</a>
+                </nav>
             </aside>
-            <!-- 우측 오브젝트 영역 (이미지/카테고리/...) -->
-            <section class="object-pane" id="objectPane">
-                <div class="object-pane-top">
-                    <span class="object-category-name" id="categoryTitle">Kettle</span>
-                    <button class="object-more" id="objectMore" title="더 보기">…</button>
+            <!-- 오른쪽 상품 그리드 -->
+            <div class="product-grid-box">
+                <div class="section-title-row">
+                    <span class="section-title" id="sectionTitle">Kettle</span>
+                    <button class="more-btn" id="moreBtn" title="더 보기">…</button>
                 </div>
-                <div class="object-images" id="objectImages">
-                    <!-- JS로 이미지가 들어옴 -->
+                <div class="product-grid" id="productGrid">
+                    <!-- JS로 상품 카드 생성 -->
                 </div>
-            </section>
+            </div>
         </div>
     </div>
     <script>
-        // 카테고리/이미지 데이터 정의
+        // 실제 사용시 상품 정보만 바꿔주면 됩니다!
         const PRODUCTS = {
-            Kettle: {
-                moreHref: "objects_kettle.html",
-                images: [
-                    "images/objects/objects_image_kettle_1.jpg",
-                    "images/objects/objects_image_kettle_2.jpg",
-                    "images/objects/objects_image_kettle_3.jpg"
-                ]
-            },
-            Vase: {
-                moreHref: "objects_vase.html",
-                images: [
-                    "images/objects/objects_image_vase_1.jpg",
-                    "images/objects/objects_image_vase_2.jpg",
-                    "images/objects/objects_image_vase_3.jpg"
-                ]
-            }
+            Kettle: [
+                { img: "images/objects/objects_image_kettle_1.jpg", name: "Kettle 1" },
+                { img: "images/objects/objects_image_kettle_2.jpg", name: "Kettle 2" },
+                { img: "images/objects/objects_image_kettle_3.jpg", name: "Kettle 3" }
+            ],
+            Vase: [
+                { img: "images/objects/objects_image_vase_1.jpg", name: "Vase 1" },
+                { img: "images/objects/objects_image_vase_2.jpg", name: "Vase 2" },
+                { img: "images/objects/objects_image_vase_3.jpg", name: "Vase 3" }
+            ]
         };
-
-        // 선택 state
-        let curCategory = "Kettle";
-        const breadcrumbs = document.getElementById('breadcrumb');
-        const objPane = document.getElementById('objectPane');
-        const objCategory = document.getElementById('categoryTitle');
-        const objImages = document.getElementById('objectImages');
-        const objMore = document.getElementById('objectMore');
-        const links = document.querySelectorAll('.category-link');
-
-        // 카테고리 전환 함수
-        function setCategory(cat) {
-            if(!PRODUCTS[cat]) return;
-            curCategory = cat;
-
-            // 좌측 카테고리 활성화
-            links.forEach(l=>{
-                l.classList.toggle('active', l.dataset.category === cat);
+        const morePage = {
+            Kettle: "objects_kettle.html",
+            Vase: "objects_vase.html"
+        };
+        // 상태
+        let curCat = "Kettle";
+        function renderCategory(cat){
+            curCat = cat;
+            // 카테고리 활성화
+            document.querySelectorAll('.category-list a').forEach(a=>{
+                a.classList.toggle('active', a.getAttribute('data-category')===cat);
             });
-
-            // 브레드크럼/타이틀
-            breadcrumbs.textContent = "Objects > " + cat;
-            objCategory.textContent = cat;
-
-            // ... 버튼 href
-            objMore.onclick = ()=>location.href=PRODUCTS[cat].moreHref;
-
-            // 이미지 생성
-            objImages.innerHTML = '';
-            PRODUCTS[cat].images.forEach(src=>{
-                const imgWrap = document.createElement('div');
-                imgWrap.className = 'object-img-wrap';
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = cat + " 이미지";
-                imgWrap.appendChild(img);
-                objImages.appendChild(imgWrap);
+            // 타이틀/breadcrumb
+            document.getElementById('sectionTitle').textContent = cat;
+            document.getElementById('breadcrumb').textContent = `Home > Objects > ${cat}`;
+            // grid
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+            PRODUCTS[cat].forEach(pr=>{
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <div class="product-img-box"><img src="${pr.img}" alt="${pr.name}"></div>
+                    <div class="product-caption">${pr.name}</div>
+                `;
+                grid.appendChild(card);
             });
+            // ...버튼
+            const moreBtn = document.getElementById('moreBtn');
+            moreBtn.onclick = ()=>{ location.href=morePage[cat]; }
         }
-
-        // 카테고리 클릭 이벤트 연결
-        links.forEach(l=>{
-            l.onclick = function(e){
+        // 카테고리 전환
+        document.querySelectorAll('.category-list a').forEach(a=>{
+            a.onclick = function(e){
                 e.preventDefault();
-                setCategory(this.dataset.category);
-            }
+                renderCategory(this.dataset.category);
+            };
         });
-
-        // 초기 로딩
-        setCategory(curCategory);
+        // 최초
+        renderCategory(curCat);
     </script>
 </body>
 </html>
