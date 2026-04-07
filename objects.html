@@ -13,6 +13,10 @@
             color: #000;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            /* 푸터 하단 고정을 위한 설정 */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
@@ -28,7 +32,6 @@
             justify-content: space-between; 
             align-items: center; 
             z-index: 2000;
-            /* 스크롤 시 뒤에 내용이 안 보이게 하얀색 불투명 배경 적용 */
             background-color: #ffffff; 
         }
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
@@ -74,7 +77,13 @@
         }
 
         /* [4. 본문 레이아웃] ---------------------------------- */
-        main { padding: 140px 20px 60px; display: flex; flex-direction: column; align-items: center; }
+        main { 
+            padding: 140px 20px 60px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            flex: 1; /* 푸터를 하단으로 밀어내기 위해 가변 영역 설정 */
+        }
         .container {
             max-width: 1400px; width: 100%; margin: 0 auto;
             display: flex; gap: 64px; align-items: flex-start;
@@ -158,6 +167,18 @@
                 width: 95vw; max-width:380px; height: auto; aspect-ratio: 1/1.28;
             }
         }
+
+        /* [5. 하단 고정 푸터] --------------------------------- */
+        footer {
+            width: 100%;
+            padding: 30px 20px;
+            text-align: center;
+            background-color: #fff;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: #000;
+            margin-top: auto; /* 페이지 하단 고정 */
+        }
     </style>
 </head>
 <body>
@@ -184,6 +205,11 @@
             <section class="products-sections" id="productsSections"></section>
         </div>
     </main>
+
+    <footer>
+        © BONGEUM. All rights reserved.
+    </footer>
+
     <script>
     const PRODUCTS = [
         {
@@ -265,4 +291,3 @@
     </script>
 </body>
 </html>
-
