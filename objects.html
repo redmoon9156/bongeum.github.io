@@ -3,114 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OBJECTS | Bongeum</title>
+    <title>Objects | Bongeum</title>
     <style>
-        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: #ffffff;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: #fff;
             color: #000;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
         }
-        a { text-decoration: none; color: inherit; }
+        a { color: inherit; text-decoration: none; }
         ul { list-style: none; }
+        img { display: block; max-width: 100%; height: auto; }
 
-        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
         header {
-            position: fixed;
-            top: 0; width: 100%; padding: 30px 20px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
+            width: 100%;
+            padding: 30px 20px 0 20px;
+            display: flex; align-items: center; justify-content: space-between;
         }
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
-        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+        .dummy-space { height: 70px; } /* 헤더 공간 확보 */
 
-        /* [3. 네비게이션 오버레이] ---------------------------- */
-        .nav-overlay {
-            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
-            background-color: #fff; z-index: 1500; transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+        .container {
+            display: flex;
+            flex-direction: column;
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
-        .nav-overlay.active { top: 0; }
-        .nav-list { text-align: center; }
-        .nav-list li { margin: 25px 0; }
-        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
-
-        /* [4. 메인 컨텐츠 영역 - 모바일 위치 및 크기] --------- */
-        main {
-            min-height: 100vh;
-            display: flex; justify-content: center; align-items: flex-start;
-            padding: 140px 20px 0;
-        }
-        .objects-wrap { text-align: center; width: 100%; }
-
         .page-title {
-            font-size: 1.2rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 40px;
             letter-spacing: 0.1em;
+            margin-bottom: 16px;
+            margin-top: 10px;
             text-transform: uppercase;
         }
-
-        .objects-stack { display: flex; flex-direction: column; align-items: center; gap: 30px; }
-        .objects-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
-        .objects-info { font-size: 15px; letter-spacing: .02em; color: rgba(0,0,0,.72); }
-
-        /* [5. PC 환경 독립 설계] ------------------------------- */
-        @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
-            .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px; }
-            .nav-overlay.active { left: calc(100% - 450px); }
-            .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0; }
-            .nav-list li a { font-size: 1rem; }
-
-            main { align-items: flex-start; padding: 220px 80px 0; }
-
-            .page-title {
-                font-size: 2.0rem;
-                margin-bottom: 60px;
-            }
-
-            .objects-stack { gap: 40px; }
-            .objects-info { font-size: 1.2rem; letter-spacing: 0.05em; }
+        .breadcrumb {
+            color: #b3b3b3;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+        }
+        /* LEFT CATEGORY / PC ONLY */
+        .sidebar {
+            width: 210px;
+            min-width: 170px;
+        }
+        .category-title {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+            margin-bottom: 20px;
+        }
+        .category-list { display: flex; flex-direction: column; gap: 14px; }
+        .category-link {
+            padding: 4px 0; cursor: pointer; color: #555;
+            font-size: 1rem;
+            transition: color 0.2s;
+        }
+        .category-link.active, .category-link:hover {
+            color: #000;
+            font-weight: bold;
+        }
+        /* MAIN PRODUCT LIST */
+        .object-pane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .object-pane-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .object-category-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            text-transform: capitalize;
+            letter-spacing: 0.03em;
+        }
+        .object-more {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            line-height: 1;
+            cursor: pointer;
+            color: #adadad;
+            padding: 0 4px 0 10px;
+            transition: color 0.15s;
+        }
+        .object-more:hover { color: #000; }
+        /* 이미지를 가로로 나란히 */
+        .object-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 28px;
+        }
+        .object-img-wrap {
+            width: 210px;
+            aspect-ratio: 1 / 1.15;
+            background: #f8f8f8;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px 0 rgba(0,0,0,0.08);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        /* 모바일 레이아웃 */
+        @media (max-width: 1023px) {
+            header { padding: 20px 14px 0 14px; }
+            .logo { font-size: 1.1rem; }
+            .container { padding: 0 8px; }
+            .main-content { flex-direction: column; gap: 0; }
+            .sidebar { display: none; }
+            .object-pane-top { margin-bottom: 16px; }
+            .object-category-name { font-size: 1.08rem; }
+            .object-images { gap: 15px; justify-content: center; }
+            .object-img-wrap { width: 41vw; min-width: 135px; aspect-ratio: 1 / 1.15; }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
-        <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+        <!-- 나중에 메뉴트리거 필요시 여기에 추가 -->
     </header>
-    <nav class="nav-overlay" id="navOverlay">
-        <ul class="nav-list">
-            <li><a href="about.html" onclick="toggleMenu()">About</a></li>
-            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
-            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
-        </ul>
-    </nav>
-    <main>
-        <div class="objects-wrap">
-            <h1 class="page-title">OBJECTS</h1>
-            <section class="objects-stack">
-                <div class="objects-item">
-                    <div class="objects-info">Objects will be opened later.</div>
+    <div class="dummy-space"></div>
+    <div class="container">
+        <div class="page-title">Objects</div>
+        <nav class="breadcrumb">Objects &gt; Kettle</nav>
+        <div class="main-content">
+
+            <!-- PC 좌측 카테고리 SIDEBAR (모바일에서 hidden) -->
+            <aside class="sidebar">
+                <div class="category-title">Select by Category</div>
+                <ul class="category-list">
+                    <li><a class="category-link active" href="objects.html">Kettle</a></li>
+                    <li><a class="category-link" href="#">Vase</a></li>
+                </ul>
+            </aside>
+
+            <!-- 우측 Product Image List -->
+            <section class="object-pane">
+                <div class="object-pane-top">
+                    <div class="object-category-name">Kettle</div>
+                    <button class="object-more" title="More" onclick="location.href='objects_kettle.html'">…</button>
+                </div>
+                <div class="object-images">
+                    <div class="object-img-wrap">
+                        <img src="images/objects/objects_image_kettle_1.jpg" alt="kettle 1">
+                    </div>
+                    <div class="object-img-wrap">
+                        <img src="images/objects/objects_image_kettle_2.jpg" alt="kettle 2">
+                    </div>
+                    <div class="object-img-wrap">
+                        <img src="images/objects/objects_image_kettle_3.jpg" alt="kettle 3">
+                    </div>
                 </div>
             </section>
         </div>
-    </main>
-    <script>
-        function toggleMenu() {
-            const nav = document.getElementById('navOverlay');
-            const spans = document.querySelectorAll('.menu-trigger span');
-            nav.classList.toggle('active');
-            if(nav.classList.contains('active')) { spans[0].style.transform = 'translateY(8.5px) rotate(45deg)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)'; }
-            else { spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none'; }
-        }
-    </script>
+    </div>
 </body>
 </html>
-
