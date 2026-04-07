@@ -14,17 +14,17 @@
             letter-spacing: .02em;
         }
         a { color: inherit; text-decoration: underline; }
-        ul { list-style: none; padding:0; margin:0; }
+        ul { list-style: none; padding: 0; margin: 0; }
         img { display: block; width: 100%; height: auto; object-fit: cover; }
-        /*-------------------------*/
-        /* 헤더(index.html 구조 동일) */
+
+        /* Header - index와 동일 */
         header {
             position: fixed;
             top: 0; left: 0; width: 100%;
             padding: 30px 20px;
+            background: #fff;
             display: flex; justify-content: space-between; align-items: center;
             z-index: 2000;
-            background: #fff;
             border-bottom: 1px solid #eee;
         }
         .logo {
@@ -36,11 +36,8 @@
         }
         .menu-trigger {
             cursor: pointer;
-            width: 24px;
-            height: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            width: 24px; height: 18px;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
         .menu-trigger span {
             display: block;
@@ -49,26 +46,22 @@
             background-color: #000;
             transition: 0.3s;
         }
-        /* 메뉴 오버레이 (index.html 구조) */
+
+        /* 햄버거 오버레이 */
         .nav-overlay {
             position: fixed;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #fff;
-            z-index: 1500;
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 120px;
+            top: -100%; left: 0; width: 100%; height: 100vh;
+            background: #fff; z-index: 1500;
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
             box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
+            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
         }
         .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0;}
-        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300;}
+        .nav-list li a {
+            font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300;
+        }
         @media (max-width: 1023px) {
             .nav-overlay {
                 height: 50dvh;
@@ -83,10 +76,8 @@
             .nav-overlay {
                 top: 0; left: 100%;
                 width: 450px; height: 100vh;
-                border-left: 1px solid #eee;
-                justify-content: flex-start;
-                align-items: flex-start;
-                padding: 180px 0 0 80px;
+                border-left: 1px solid #eee; padding: 180px 0 0 80px;
+                justify-content: flex-start; align-items: flex-start;
             }
             .nav-overlay.active { left: calc(100% - 450px);}
             .nav-list { text-align: left; }
@@ -94,10 +85,7 @@
             .nav-list li a { font-size: 1rem;}
         }
 
-
-
-        /*-------------------------*/
-        /* 컨테이너/레이아웃 */
+        /* 메인 레이아웃 */
         .container {
             max-width: 1500px;
             margin: 0 auto;
@@ -111,16 +99,13 @@
             width: 100%;
         }
 
-        /*-------------------------*/
-        /* PC용 사이드 카테고리 메뉴 */
+        /* PC 전용 사이드 카테고리 메뉴 */
         .sidebar {
             min-width: 220px;
             padding-top: 20px;
             padding-bottom: 54px;
             border-right: 1px solid #e2e2e2;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
+            display: flex; flex-direction: column; justify-content: flex-start;
         }
         .category-title {
             font-size: 0.83rem;
@@ -140,20 +125,15 @@
             text-decoration: underline;
             font-size: 1.18rem;
             font-family: 'Times New Roman', serif;
-            letter-spacing: 0.04em;
-            padding-bottom: 2px;
+            letter-spacing: 0.04em; padding-bottom: 2px;
             transition: color 0.16s;
             cursor: pointer;
         }
         .category-link:hover { color: #232323; }
         @media (max-width: 1023px) {
-            .sidebar { display: none !important; } /* 완전히 감춤 */
-        }
-        @media (min-width: 1024px) {
-            .sidebar { display: flex;}
+            .sidebar { display: none !important; }
         }
 
-        /*-------------------------*/
         /* PRODUCTS CONTENT */
         .products-sections {
             flex: 1;
@@ -162,9 +142,7 @@
             flex-direction: column;
             gap: 64px;
         }
-        .product-section {
-            margin-bottom: 0;
-        }
+        .product-section {}
         .product-header-row {
             display: flex;
             justify-content: space-between;
@@ -179,23 +157,14 @@
         }
         .section-more {
             width: 34px; height: 34px;
-            background: #fff;
-            border-radius: 50%;
-            border: none;
-            color: #bbb;
+            background: #fff; border-radius: 50%; border: none; color: #bbb;
             font-size: 28px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: none;
-            margin-left: 12px;
-            cursor: pointer;
-            transition: color .14s;
+            display: flex; justify-content: center; align-items: center;
+            box-shadow: none; margin-left: 12px; cursor: pointer; transition: color .14s;
         }
         .section-more:hover { color: #232323; }
         .product-images-row {
-            display: flex;
-            gap: 23px;
+            display: flex; gap: 23px;
         }
         .product-img-box {
             width: 212px; height: 272px;
@@ -215,15 +184,13 @@
             .products-sections { gap: 36px;}
         }
         @media (max-width:700px) {
-            .product-images-row {
-                flex-direction: column;
-                gap: 11px;
-            }
+            .product-images-row { flex-direction: column; gap: 11px; }
             .product-img-box { width: 95vw; max-width:380px; height: auto; aspect-ratio: 1/1.28; }
         }
     </style>
 </head>
 <body>
+    <!-- 헤더 영역(좌 Bongeum, 우 햄버거) -->
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
         <div class="menu-trigger" onclick="toggleMenu()">
@@ -247,37 +214,36 @@
                 <nav class="category-list">
                     <a class="category-link" href="kettle.html">Kettle</a>
                     <a class="category-link" href="vase.html">Vase</a>
-                    <!-- 카테고리 추가시 여기에 <a> 추가 -->
                 </nav>
             </aside>
             <!-- Products Content -->
             <section class="products-sections" id="productsSections">
-                <!-- 아래 javascript에서 자동 생성 -->
+                <!-- javascript에서 자동 생성 -->
             </section>
         </div>
     </div>
     <script>
-        // 앞으로 계속 확장될 구조 - 섹션/이미지 등 전부 배열에 추가만 하면됨
+        // (실제 이미지로 쓰실 땐 images/objects/...로 교체)
         const PRODUCTS = [
             {
                 name: "Kettle",
                 page: "kettle.html",
                 images: [
-                    "images/objects/objects_image_kettle_1.jpg",
-                    "images/objects/objects_image_kettle_2.jpg",
-                    "images/objects/objects_image_kettle_3.jpg"
+                    "https://picsum.photos/400/520?random=101",
+                    "https://picsum.photos/400/520?random=102",
+                    "https://picsum.photos/400/520?random=103"
                 ]
             },
             {
                 name: "Vase",
                 page: "vase.html",
                 images: [
-                    "images/objects/objects_image_vase_1.jpg",
-                    "images/objects/objects_image_vase_2.jpg",
-                    "images/objects/objects_image_vase_3.jpg"
+                    "https://picsum.photos/400/520?random=201",
+                    "https://picsum.photos/400/520?random=202",
+                    "https://picsum.photos/400/520?random=203"
                 ]
             }
-            // 추가 상품: name, page, images(배열)만 계속 추가하세요!
+            // 카테고리/이미지 추가시 위 패턴대로 계속 추가
         ];
 
         // 본문(product section) 자동 생성
