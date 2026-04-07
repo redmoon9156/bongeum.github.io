@@ -1,1 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OBJECTS | Bongeum</title>
+    <style>
+        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: #ffffff;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #000;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        header {
+            position: fixed;
+            top: 0; width: 100%; padding: 30px 20px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
+        }
+        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+
+        /* [3. 네비게이션 오버레이] ---------------------------- */
+        .nav-overlay {
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
+            background-color: #fff; z-index: 1500; transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+        }
+        .nav-overlay.active { top: 0; }
+        .nav-list { text-align: center; }
+        .nav-list li { margin: 25px 0; }
+        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+
+        /* [4. 메인 컨텐츠 영역 - 모바일 위치 및 크기] --------- */
+        main {
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: flex-start;
+            padding: 140px 20px 0;
+        }
+        .objects-wrap { text-align: center; width: 100%; }
+
+        .page-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .objects-stack { display: flex; flex-direction: column; align-items: center; gap: 30px; }
+        .objects-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .objects-info { font-size: 15px; letter-spacing: .02em; color: rgba(0,0,0,.72); }
+
+        /* [5. PC 환경 독립 설계] ------------------------------- */
+        @media (min-width: 1024px) {
+            header { padding: 60px 80px; }
+            .logo { font-size: 1.3rem; }
+            .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px; }
+            .nav-overlay.active { left: calc(100% - 450px); }
+            .nav-list { text-align: left; }
+            .nav-list li { margin: 35px 0; }
+            .nav-list li a { font-size: 1rem; }
+
+            main { align-items: flex-start; padding: 220px 80px 0; }
+
+            .page-title {
+                font-size: 2.0rem;
+                margin-bottom: 60px;
+            }
+
+            .objects-stack { gap: 40px; }
+            .objects-info { font-size: 1.2rem; letter-spacing: 0.05em; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">Bongeum</a></div>
+        <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    </header>
+    <nav class="nav-overlay" id="navOverlay">
+        <ul class="nav-list">
+            <li><a href="about.html" onclick="toggleMenu()">About</a></li>
+            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
+            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div class="objects-wrap">
+            <h1 class="page-title">OBJECTS</h1>
+            <section class="objects-stack">
+                <div class="objects-item">
+                    <div class="objects-info">Objects will be opened later.</div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('navOverlay');
+            const spans = document.querySelectorAll('.menu-trigger span');
+            nav.classList.toggle('active');
+            if(nav.classList.contains('active')) { spans[0].style.transform = 'translateY(8.5px) rotate(45deg)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)'; }
+            else { spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none'; }
+        }
+    </script>
+</body>
+</html>
 
