@@ -18,7 +18,7 @@
         a { text-decoration: none; color: inherit; display: inline-block; }
         ul { list-style: none; }
 
-        /* [2. 헤더] ----------------------------- */
+        /* [2. 헤더] */
         header {
             position: fixed; top: 0; width: 100%; padding: 30px 20px;
             display: flex; justify-content: space-between; align-items: center; 
@@ -28,7 +28,7 @@
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* [3. 네비게이션 오버레이 - 모바일 50dvh] --------- */
+        /* [3. 네비게이션 오버레이 - 모바일 50dvh] */
         .nav-overlay {
             position: fixed; left: 0; width: 100%; background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
@@ -45,7 +45,7 @@
             .pc-only { display: none !important; }
         }
 
-        /* [4. PC 환경] ---------------------------------- */
+        /* [4. PC 환경] */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
@@ -66,7 +66,7 @@
             .mobile-only { display: none !important; }
         }
 
-        /* [5. 본문 및 슬라이더] --------------------------- */
+        /* [5. 본문 및 슬라이더] */
         main { padding: 140px 20px 60px; flex: 1; }
         .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 1.2rem; }
         .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
@@ -76,6 +76,8 @@
             position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1;
             margin: 0 auto; background: #f7f7f7; overflow: hidden;
             cursor: pointer; touch-action: pan-y;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
         }
         .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
@@ -144,6 +146,8 @@
         const dots = section.querySelectorAll('.dot');
         let idx = 0;
         let startX = 0;
+        let startY = 0;
+        let startTime = 0;
         let isMoved = false;
 
         function updateSlider() {
@@ -151,14 +155,19 @@
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         }
 
-        // [핵심 로직 수정] 스와이프 기능만 남기고 양끝 클릭 삭제
+        // [이벤트 로직 업데이트] 스와이프 기능 유지 및 중앙 클릭 엄격화
         sliderBox.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            startTime = Date.now(); // 터치 시작 시간 기록
             isMoved = false;
         });
 
         sliderBox.addEventListener('touchmove', (e) => {
-            if (Math.abs(startX - e.touches[0].clientX) > 10) {
+            const moveX = Math.abs(startX - e.touches[0].clientX);
+            const moveY = Math.abs(startY - e.touches[0].clientY);
+            // 가로나 세로로 15px 이상 움직이면 '이동'으로 간주
+            if (moveX > 15 || moveY > 15) {
                 isMoved = true;
             }
         });
@@ -166,23 +175,38 @@
         sliderBox.addEventListener('touchend', (e) => {
             const endX = e.changedTouches[0].clientX;
             const diffX = startX - endX;
+            const duration = Date.now() - startTime; // 터치 지속 시간
 
-            // 1. 스와이프 로직: 50px 이상 이동 시 이미지 전환
-            if (isMoved && Math.abs(diffX) > 50) {
+            // 1. 스와이프 로직 (이미지 전환)
+            if (isMoved && Math.abs(diffX) > 60) {
                 if (diffX > 0) idx = (idx + 1) % item.images.length;
                 else idx = (idx - 1 + item.images.length) % item.images.length;
                 updateSlider();
             } 
-            // 2. 클릭 로직: 움직임이 거의 없는 확실한 클릭 시에만 페이지 이동
-            else if (!isMoved) {
-                window.location.href = item.page;
+            // 2. 중앙 클릭 로직 (상세 페이지 이동)
+            // - 움직임이 없어야 함 (isMoved: false)
+            // - 너무 짧은 스침은 무시 (duration: 80ms 이상 권장)
+            else if (!isMoved && duration > 80) {
+                const rect = sliderBox.getBoundingClientRect();
+                const clickX = endX - rect.left;
+                const width = rect.width;
+
+                // [중앙 1/3 지점 검사] 좌측 33% ~ 우측 66% 사이일 때만 이동
+                if (clickX > width * 0.33 && clickX < width * 0.66) {
+                    window.location.href = item.page;
+                }
             }
         });
 
-        // PC 마우스 클릭 대응
+        // PC 마우스 대응
         sliderBox.addEventListener('click', (e) => {
             if (e.pointerType === 'mouse' || !('ontouchstart' in window)) {
-                window.location.href = item.page;
+                const rect = sliderBox.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const width = rect.width;
+                if (clickX > width * 0.33 && clickX < width * 0.66) {
+                    window.location.href = item.page;
+                }
             }
         });
     }
