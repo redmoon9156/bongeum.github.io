@@ -52,22 +52,21 @@
 
         /* [5. 슬라이더 스타일] --------------------------- */
         .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
-        
         .category-name-link { 
             display: inline-block; font-weight: 600; letter-spacing: 0.15em; 
             text-transform: uppercase; margin-bottom: 30px; text-decoration: underline;
             font-size: 1rem;
         }
-
         .slider-container {
             position: relative;
             width: 100%;
-            max-width: 500px; /* PC 최적화 사이즈 */
+            max-width: 500px;
             aspect-ratio: 1 / 1;
             margin: 0 auto;
             background: #f7f7f7;
             overflow: hidden;
             cursor: pointer;
+            touch-action: pan-y; /* 수평 스와이프 방해 금지 */
         }
         .slider-wrapper {
             display: flex;
@@ -76,55 +75,36 @@
         }
         .slider-wrapper img {
             width: 100%; height: 100%; object-fit: cover; flex-shrink: 0;
+            -webkit-user-drag: none; /* 이미지 드래그 방지 */
         }
-
-        .dots {
-            display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px;
-        }
-        .dot {
-            width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s;
-        }
+        .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
+        .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
         .dot.active { background: #000; }
 
-        /* [6. 모바일 레이아웃 (1023px 이하)] ------------------ */
+        /* [6. 레이아웃 분리] ------------------ */
         @media (max-width: 1023px) {
             .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             main { padding: 140px 20px 60px; flex: 1; }
             .page-title { font-size: 1.2rem; margin-bottom: 40px; }
             .pc-only { display: none !important; }
         }
-
-        /* [7. PC 레이아웃 (1024px 이상)] --------------------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
-            .nav-overlay {
-                top: 0; left: 100%; width: 450px; height: 100vh;
-                border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77,0,0.175,1);
-                justify-content: flex-start; align-items: flex-start;
-                padding: 180px 0 0 80px;
-            }
+            .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77,0,0.175,1); justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px; }
             .nav-overlay.active { left: calc(100% - 450px); }
             main { padding: 220px 80px 100px; flex: 1; display: flex; flex-direction: column; align-items: center; }
             .page-title { font-size: 2.0rem; margin-bottom: 80px; }
-            
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; }
-            .sidebar { 
-                min-width: 220px; border-right: 1px solid #eee; 
-                display: flex; flex-direction: column; gap: 40px; text-align: left;
-            }
+            .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
             .side-title { font-size: 0.8rem; color: #888; letter-spacing: 0.2em; text-transform: lowercase; }
-            .side-nav a { 
-                display: block; font-size: 1.1rem; font-weight: 600; 
-                letter-spacing: 0.15em; text-transform: uppercase; 
-                margin-bottom: 20px; text-decoration: underline;
-            }
+            .side-nav a { display: block; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-decoration: underline; }
             .content-area { flex: 1; display: flex; flex-direction: column; gap: 100px; }
             .category-name-link { font-size: 1.2rem; }
             .mobile-only { display: none !important; }
         }
 
-        /* [8. 푸터] ----------------------------------------- */
+        /* [7. 푸터] ----------------------------------------- */
         footer {
             width: 100%; padding: 40px 20px; text-align: center;
             font-size: 10px; letter-spacing: 0.15em; color: #000;
@@ -148,9 +128,7 @@
 
     <main>
         <h1 class="page-title">OBJECTS</h1>
-
         <div class="mobile-only" id="mobileContent" style="width: 100%;"></div>
-
         <div class="pc-only container">
             <aside class="sidebar">
                 <div class="side-title">select by category</div>
@@ -166,7 +144,6 @@
     <footer>© BONGEUM. All rights reserved.</footer>
 
     <script>
-    // [데이터 업데이트 영역] 이미지 파일만 여기 추가하면 슬라이더가 자동 생성됩니다.
     const PRODUCTS = [
         {
             name: "Kettle",
@@ -180,33 +157,25 @@
         {
             name: "Vase",
             page: "vase.html",
-            images: [
-                "images/objects/vase/object_images_vase_1.jpeg"
-                // 사진이 더 생기면 여기에 추가하세요.
-            ]
+            images: ["images/objects/vase/object_images_vase_1.jpeg"]
         }
     ];
 
     function initSlider(item, containerId) {
         const container = document.getElementById(containerId);
-        
         const section = document.createElement('div');
         section.className = 'category-wrapper';
 
-        // 1. 카테고리 타이틀
         const link = document.createElement('a');
         link.href = item.page;
         link.className = 'category-name-link';
         link.textContent = item.name;
         section.appendChild(link);
 
-        // 2. 슬라이더 본체
         const sliderBox = document.createElement('div');
         sliderBox.className = 'slider-container';
-        
         const wrapper = document.createElement('div');
         wrapper.className = 'slider-wrapper';
-        
         item.images.forEach(src => {
             const img = document.createElement('img');
             img.src = src;
@@ -215,7 +184,6 @@
         sliderBox.appendChild(wrapper);
         section.appendChild(sliderBox);
 
-        // 3. 인디케이터 (이미지가 2장 이상일 때만 생성)
         const dotsBox = document.createElement('div');
         dotsBox.className = 'dots';
         if (item.images.length > 1) {
@@ -227,32 +195,62 @@
         }
         section.appendChild(dotsBox);
 
-        // 4. 클릭 이벤트 (좌우 1/4 판단)
         let idx = 0;
+        let startX = 0;
+        let isMoving = false;
+
+        function updateSlider() {
+            wrapper.style.transform = `translateX(-${idx * 100}%)`;
+            const dots = dotsBox.querySelectorAll('.dot');
+            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        }
+
+        // [1. 클릭 이벤트 - 1/4 지점]
         sliderBox.addEventListener('click', (e) => {
+            if (isMoving) return; // 드래그 직후 클릭 방지
             const rect = sliderBox.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const w = rect.width;
 
-            if (x < w * 0.25) { // 이전
+            if (x < w * 0.25) {
                 idx = (idx - 1 + item.images.length) % item.images.length;
-            } else if (x > w * 0.75) { // 다음
+                updateSlider();
+            } else if (x > w * 0.75) {
                 idx = (idx + 1) % item.images.length;
-            } else { // 중앙 클릭 시 페이지 이동
+                updateSlider();
+            } else {
                 window.location.href = item.page;
-                return;
             }
+        });
 
-            // 슬라이드 이동 및 점 표시 업데이트
-            wrapper.style.transform = `translateX(-${idx * 100}%)`;
-            const dots = dotsBox.querySelectorAll('.dot');
-            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        // [2. 터치 스와이프 이벤트]
+        sliderBox.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            isMoving = false;
+        });
+
+        sliderBox.addEventListener('touchmove', (e) => {
+            isMoving = true;
+        });
+
+        sliderBox.addEventListener('touchend', (e) => {
+            if (!isMoving) return;
+            const endX = e.changedTouches[0].clientX;
+            const diff = startX - endX;
+
+            if (Math.abs(diff) > 50) { // 50px 이상 움직였을 때만 반응
+                if (diff > 0) { // 왼쪽으로 밀기 -> 다음
+                    idx = (idx + 1) % item.images.length;
+                } else { // 오른쪽으로 밀기 -> 이전
+                    idx = (idx - 1 + item.images.length) % item.images.length;
+                }
+                updateSlider();
+            }
         });
 
         container.appendChild(section);
     }
 
-    // 초기 실행
     function renderAll() {
         PRODUCTS.forEach(p => {
             initSlider(p, 'mobileContent');
@@ -270,9 +268,7 @@
             spans[1].style.opacity = '0';
             spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
         } else {
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
+            spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
         }
     }
     </script>
