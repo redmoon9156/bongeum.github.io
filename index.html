@@ -5,22 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bongeum</title>
     <style>
+        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #fff; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
+        body { 
+            background: #fff; 
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            color: #000;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        /* [2. 헤더 및 햄버거 버튼 - 불투명 화이트 고정] ---------- */
         header {
             position: fixed;
             top: 0; width: 100%; padding: 30px 20px;
             display: flex; justify-content: space-between; align-items: center; z-index: 2000;
+            background: #fff; 
         }
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* [3. 햄버거/네비 오버레이 - PC/모바일 공통] ----------- */
+        /* [3. 네비 오버레이] ---------------------------------- */
         .nav-overlay {
             position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
             background-color: #fff; z-index: 1500;
@@ -32,15 +42,15 @@
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 슬라이더 전체화면] */
+        /* [4. 슬라이더 - 부드러운 페이드 효과] ----------------- */
         main {
             width: 100vw;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 0;
             position: relative;
+            background: #fff;
         }
         .slider {
             position: relative;
@@ -52,49 +62,47 @@
             position: absolute;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            object-fit: cover;
+            object-fit: contain; /* 이미지 비율 유지 */
             opacity: 0;
-            transition: opacity 1.1s cubic-bezier(.4,0,0,1), transform 1.1s cubic-bezier(.4,0,0,1);
-            will-change: opacity, transform;
+            /* 부드러운 페이드 전환 효과 */
+            transition: opacity 1.5s ease-in-out; 
+            will-change: opacity;
             z-index: 1;
-            pointer-events: none;
         }
-        .slide-img.active { opacity: 1; z-index: 2; transform: none; }
-        .slide-img.next { opacity: 0; z-index: 1; transform: translateY(20px) scale(0.98);}
-        .slide-img.prev { opacity: 0; z-index: 1; transform: translateY(-20px) scale(0.98); }
+        .slide-img.active { opacity: 1; z-index: 2; }
 
-        /* --- 모바일 햄버거: 오버레이 상단에서 50dvh만큼만 내려옴 --- */
+        /* [5. 하단 고정 푸터] --------------------------------- */
+        footer {
+            width: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #fff;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: #aaa;
+            z-index: 100;
+            /* 페이지의 맨 아래에 고정 */
+            margin-top: auto; 
+        }
+
+        /* 반응형 설정 */
         @media (max-width: 1023px) {
-            .nav-overlay {
-                height: 50dvh;
-                top: -50dvh;
-                padding-top: 90px; /* 메뉴가 너무 위에 붙지 않도록 여백 */
-            }
+            .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             .nav-overlay.active { top: 0; }
-            .nav-list { text-align: center; }
-            .nav-list li { margin: 25px 0; }
-            .nav-list li a { font-size: 1.1rem; }
         }
 
-        /* [5. PC 환경 그대로 - contact.html 기반] ----------- */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
             .nav-overlay {
-                top: 0;
-                left: 100%;
-                width: 450px;
-                height: 100vh;
+                top: 0; left: 100%; width: 450px; height: 100vh;
                 border-left: 1px solid #eee;
-                justify-content: flex-start;
-                align-items: flex-start;
+                justify-content: flex-start; align-items: flex-start;
                 padding: 180px 0 0 80px;
                 transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
             }
             .nav-overlay.active { left: calc(100% - 450px);}
             .nav-list { text-align: left;}
-            .nav-list li { margin: 35px 0;}
-            .nav-list li a { font-size: 1rem;}
         }
     </style>
 </head>
@@ -121,36 +129,34 @@
         <div class="slider" id="slider"></div>
     </main>
 
+    <footer>
+        © BONGEUM. All rights reserved.
+    </footer>
+
     <script>
-        // PC/모바일 별 슬라이드 이미지 배열
         const sliderImagesPC = [
             "images/index/index_images_PC_1.jpeg",
             "images/index/index_images_PC_2.jpeg",
             "images/index/index_images_PC_3.jpeg"
-            // 추가 이미지 계속 삽입 가능
         ];
         const sliderImagesMobile = [
             "images/index/index_images_mobile_1.jpeg",
             "images/index/index_images_mobile_2.jpeg",
             "images/index/index_images_mobile_3.jpeg"
-            // 추가 이미지 계속 삽입 가능
         ];
 
         let sliderImages = [];
-        let currentMode = null; // 'pc' or 'mobile'
+        let currentMode = null;
         const breakpoint = 1024;
-
         const slider = document.getElementById('slider');
         let currentIdx = 0;
         let slides = [];
         let timer = null;
 
-        // PC/모바일 구분 기능
         function getCurrentMode() {
             return window.innerWidth >= breakpoint ? 'pc' : 'mobile';
         }
 
-        // 슬라이드 생성 및 슬라이드 기능
         function createSlides() {
             slider.innerHTML = '';
             slides = [];
@@ -166,29 +172,27 @@
 
         function showSlide(nextIdx) {
             slides.forEach((img, idx) => {
-                img.classList.remove('active', 'prev', 'next');
-                if(idx === currentIdx) img.classList.add('prev');
+                img.classList.remove('active');
                 if(idx === nextIdx) img.classList.add('active');
             });
             currentIdx = nextIdx;
         }
 
         function nextSlideAuto() {
-            let nextIdx = (currentIdx+1) % slides.length;
+            let nextIdx = (currentIdx + 1) % slides.length;
             showSlide(nextIdx);
-            timer = setTimeout(nextSlideAuto, 5000);
+            timer = setTimeout(nextSlideAuto, 5000); 
         }
 
         function startSlider() {
             clearTimeout(timer);
             createSlides();
             currentIdx = 0;
-            setTimeout(() => {
+            if (slides.length > 1) {
                 timer = setTimeout(nextSlideAuto, 5000);
-            }, 350);
+            }
         }
 
-        // 모드 변경 감지 및 슬라이더 전환 처리
         function checkModeAndUpdate() {
             const mode = getCurrentMode();
             if(mode !== currentMode) {
@@ -199,10 +203,8 @@
         }
 
         window.addEventListener('resize', checkModeAndUpdate);
-        // 처음 로딩 시
         checkModeAndUpdate();
 
-        // 햄버거 메뉴 토글
         function toggleMenu() {
             const nav = document.getElementById('navOverlay');
             const spans = document.querySelectorAll('.menu-trigger span');
