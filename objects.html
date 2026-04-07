@@ -5,170 +5,276 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objects | Bongeum</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root{
+            --main-font: "Helvetica Neue", Helvetica, Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+            --border-color: #e5e5e5;
+            --gray-txt: #b3b3b3;
+            --cat-active: #222;
+            --cat-inactive: #a1a1a1;
+            --highlight: #111;
+        }
+        html { font-size: 16px; }
         body {
             background: #fff;
-            color: #000;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            -webkit-font-smoothing: antialiased;
+            color: #111;
+            font-family: var(--main-font);
+            font-weight: 400;
+            letter-spacing: 0.01em;
         }
         a { color: inherit; text-decoration: none; }
-        ul { list-style: none; }
-        img { display: block; max-width: 100%; height: auto; }
+        ul { list-style: none; padding:0; margin:0; }
+        img { display: block; max-width:100%; height:auto;}
 
         header {
             width: 100%;
-            padding: 30px 20px 0 20px;
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-        .dummy-space { height: 70px; } /* 헤더 공간 확보 */
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            max-width: 1160px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        .page-title {
-            font-size: 1.6rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            margin-bottom: 16px;
-            margin-top: 10px;
-            text-transform: uppercase;
-        }
-        .breadcrumb {
-            color: #b3b3b3;
-            font-size: 0.9rem;
-            margin-bottom: 30px;
-        }
-        .main-content {
-            display: flex;
-            flex-direction: row;
-            gap: 40px;
-        }
-        /* LEFT CATEGORY / PC ONLY */
-        .sidebar {
-            width: 210px;
-            min-width: 170px;
-        }
-        .category-title {
-            font-size: 1rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            margin-bottom: 20px;
-        }
-        .category-list { display: flex; flex-direction: column; gap: 14px; }
-        .category-link {
-            padding: 4px 0; cursor: pointer; color: #555;
-            font-size: 1rem;
-            transition: color 0.2s;
-        }
-        .category-link.active, .category-link:hover {
-            color: #000;
-            font-weight: bold;
-        }
-        /* MAIN PRODUCT LIST */
-        .object-pane {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-        .object-pane-top {
+            padding: 30px 32px 0 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+        .dummy-space { height: 78px; }
+
+        .container {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+        .page-title {
+            font-size: 1.1rem;
+            letter-spacing: 0.18em;
+            font-weight: 600;
+            margin-top: 18px;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            font-family: var(--main-font);
+        }
+        .divider {
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: .7em;
+            width: 100%;
+        }
+        .breadcrumb {
+            color: #b3b3b3;
+            font-size: 0.98rem;
+            letter-spacing: 0.04em;
+            margin: 18px 0 36px 0;
+        }
+
+        /* FLEX MAIN LAYOUT */
+        .main-flex {
+            display: flex;
+            gap: 54px;
+        }
+
+        /* SIDEBAR (PC만) */
+        .sidebar {
+            width: 210px;
+            min-width: 150px;
+            border-right: 1px solid var(--border-color);
+            padding-top: 6px;
+            flex-shrink: 0;
+        }
+        .category-title {
+            font-size: 1.01rem;
+            font-weight: 600;
+            color: var(--gray-txt);
+            margin-bottom: 12px;
+            letter-spacing: 0.08em;
+            padding-left: 3px;
+        }
+        .category-list {
+            display: flex;
+            flex-direction: column;
+        }
+        .category-link {
+            display: block;
+            font-size: 1.08rem;
+            font-weight: 600;
+            color: var(--cat-inactive);
+            padding: 11.5px 0 10.5px 8px;
+            border-bottom: 1px solid var(--border-color);
+            transition: color .14s;
+        }
+        .category-link.active, .category-link:focus, .category-link:hover {
+            color: var(--highlight);
+            background: #f6f6f6;
+        }
+
+        /* 오른쪽 OBJECTS 영역 */
+        .object-pane {
+            flex:1 1 0%;
+            display:flex;
+            flex-direction:column;
+            min-width:0;
+        }
+        .object-pane-top {
+            display:flex;
+            align-items:flex-start;
+            justify-content: space-between;
+            margin-bottom: 13px;
         }
         .object-category-name {
-            font-size: 1.15rem;
+            font-size: 0.98rem;
             font-weight: 600;
+            letter-spacing: 0.14em;
+            margin-top: 2px;
             text-transform: capitalize;
-            letter-spacing: 0.03em;
+            line-height: 1.2em;
         }
         .object-more {
             background: none;
             border: none;
-            font-size: 2rem;
+            font-size: 1.60rem;
             line-height: 1;
             cursor: pointer;
-            color: #adadad;
-            padding: 0 4px 0 10px;
-            transition: color 0.15s;
+            color: #acacac;
+            padding: 0 2px 0 15px;
+            margin: -2px 0 0 0;
+            transition: color .13s;
         }
-        .object-more:hover { color: #000; }
-        /* 이미지를 가로로 나란히 */
+        .object-more:hover { color: #111;}
         .object-images {
             display: flex;
             flex-wrap: wrap;
-            gap: 28px;
+            gap: 28px 28px;
         }
         .object-img-wrap {
-            width: 210px;
-            aspect-ratio: 1 / 1.15;
+            width: 212px;
+            aspect-ratio: 1 / 1.25;
             background: #f8f8f8;
-            border-radius: 12px;
-            box-shadow: 0 3px 10px 0 rgba(0,0,0,0.08);
+            border-radius: 13px;
+            box-shadow: 0 3px 10px 0 rgba(0,0,0,0.07);
             overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        /* 모바일 레이아웃 */
-        @media (max-width: 1023px) {
-            header { padding: 20px 14px 0 14px; }
-            .logo { font-size: 1.1rem; }
-            .container { padding: 0 8px; }
-            .main-content { flex-direction: column; gap: 0; }
+        .object-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* MOBILE STYLE */
+        @media (max-width: 900px) {
+            header, .container { padding-left: 8px; padding-right: 8px; }
+            .container { max-width: 100vw; }
+            .main-flex { flex-direction: column; gap: 0; }
             .sidebar { display: none; }
-            .object-pane-top { margin-bottom: 16px; }
-            .object-category-name { font-size: 1.08rem; }
-            .object-images { gap: 15px; justify-content: center; }
-            .object-img-wrap { width: 41vw; min-width: 135px; aspect-ratio: 1 / 1.15; }
+            .object-images { gap: 13px; justify-content: center; }
+            .object-img-wrap { width: 46vw; min-width: 120px; aspect-ratio: 1 / 1.23; }
+            .object-pane-top { margin-bottom: 7px; }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
-        <!-- 나중에 메뉴트리거 필요시 여기에 추가 -->
     </header>
     <div class="dummy-space"></div>
+
     <div class="container">
         <div class="page-title">Objects</div>
-        <nav class="breadcrumb">Objects &gt; Kettle</nav>
-        <div class="main-content">
-
-            <!-- PC 좌측 카테고리 SIDEBAR (모바일에서 hidden) -->
-            <aside class="sidebar">
+        <div class="divider"></div>
+        <nav class="breadcrumb" id="breadcrumb">Objects &gt; Kettle</nav>
+        <div class="main-flex">
+            <!-- 좌측 카테고리 (PC) -->
+            <aside class="sidebar" id="sidebar">
                 <div class="category-title">Select by Category</div>
                 <ul class="category-list">
-                    <li><a class="category-link active" href="objects.html">Kettle</a></li>
-                    <li><a class="category-link" href="#">Vase</a></li>
+                    <li><a href="#" class="category-link active" data-category="Kettle" id="category-kettle">Kettle</a></li>
+                    <li><a href="#" class="category-link" data-category="Vase" id="category-vase">Vase</a></li>
                 </ul>
             </aside>
-
-            <!-- 우측 Product Image List -->
-            <section class="object-pane">
+            <!-- 우측 오브젝트 영역 (이미지/카테고리/...) -->
+            <section class="object-pane" id="objectPane">
                 <div class="object-pane-top">
-                    <div class="object-category-name">Kettle</div>
-                    <button class="object-more" title="More" onclick="location.href='objects_kettle.html'">…</button>
+                    <span class="object-category-name" id="categoryTitle">Kettle</span>
+                    <button class="object-more" id="objectMore" title="더 보기">…</button>
                 </div>
-                <div class="object-images">
-                    <div class="object-img-wrap">
-                        <img src="images/objects/objects_image_kettle_1.jpg" alt="kettle 1">
-                    </div>
-                    <div class="object-img-wrap">
-                        <img src="images/objects/objects_image_kettle_2.jpg" alt="kettle 2">
-                    </div>
-                    <div class="object-img-wrap">
-                        <img src="images/objects/objects_image_kettle_3.jpg" alt="kettle 3">
-                    </div>
+                <div class="object-images" id="objectImages">
+                    <!-- JS로 이미지가 들어옴 -->
                 </div>
             </section>
         </div>
     </div>
+    <script>
+        // 카테고리/이미지 데이터 정의
+        const PRODUCTS = {
+            Kettle: {
+                moreHref: "objects_kettle.html",
+                images: [
+                    "images/objects/objects_image_kettle_1.jpg",
+                    "images/objects/objects_image_kettle_2.jpg",
+                    "images/objects/objects_image_kettle_3.jpg"
+                ]
+            },
+            Vase: {
+                moreHref: "objects_vase.html",
+                images: [
+                    "images/objects/objects_image_vase_1.jpg",
+                    "images/objects/objects_image_vase_2.jpg",
+                    "images/objects/objects_image_vase_3.jpg"
+                ]
+            }
+        };
+
+        // 선택 state
+        let curCategory = "Kettle";
+        const breadcrumbs = document.getElementById('breadcrumb');
+        const objPane = document.getElementById('objectPane');
+        const objCategory = document.getElementById('categoryTitle');
+        const objImages = document.getElementById('objectImages');
+        const objMore = document.getElementById('objectMore');
+        const links = document.querySelectorAll('.category-link');
+
+        // 카테고리 전환 함수
+        function setCategory(cat) {
+            if(!PRODUCTS[cat]) return;
+            curCategory = cat;
+
+            // 좌측 카테고리 활성화
+            links.forEach(l=>{
+                l.classList.toggle('active', l.dataset.category === cat);
+            });
+
+            // 브레드크럼/타이틀
+            breadcrumbs.textContent = "Objects > " + cat;
+            objCategory.textContent = cat;
+
+            // ... 버튼 href
+            objMore.onclick = ()=>location.href=PRODUCTS[cat].moreHref;
+
+            // 이미지 생성
+            objImages.innerHTML = '';
+            PRODUCTS[cat].images.forEach(src=>{
+                const imgWrap = document.createElement('div');
+                imgWrap.className = 'object-img-wrap';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = cat + " 이미지";
+                imgWrap.appendChild(img);
+                objImages.appendChild(imgWrap);
+            });
+        }
+
+        // 카테고리 클릭 이벤트 연결
+        links.forEach(l=>{
+            l.onclick = function(e){
+                e.preventDefault();
+                setCategory(this.dataset.category);
+            }
+        });
+
+        // 초기 로딩
+        setCategory(curCategory);
+    </script>
 </body>
 </html>
+
