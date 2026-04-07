@@ -7,7 +7,7 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            background-color: #ffffff;
+            background-color: #fff;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
             color: #000;
             -webkit-font-smoothing: antialiased;
@@ -17,7 +17,7 @@
         ul { list-style: none; }
         img { max-width: 100%; height: auto; display: block; border-radius: 0; }
 
-        /* 헤더 및 햄버거 (about.html과 완전 동일!) */
+        /* 헤더 및 햄버거 (about.html 구조) */
         header {
             position: fixed;
             top: 0; width: 100%; padding: 30px 20px;
@@ -27,48 +27,33 @@
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* 네비게이션 오버레이 (about.html과 동일) */
+        /* 네비게이션 오버레이 */
         .nav-overlay {
             position: fixed;
             top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #fff;
-            z-index: 1500;
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 120px;
-            box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
+            left: 0; width: 100%; height: 100vh;
+            background-color: #fff; z-index: 1500;
+            transition: top 0.5s cubic-bezier(0.77,0,0.175,1);
+            display: flex; justify-content: center; align-items: flex-start;
+            padding-top: 120px; box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
-        .nav-list li { margin: 25px 0; }
+        .nav-list li { margin: 25px 0;}
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
-
-        /* 모바일: 50dvh 오버레이 + 더 아래 시작! */
         @media (max-width: 1023px) {
-            .nav-overlay {
-                height: 50dvh;
-                top: -50dvh;
-                padding-top: 90px;
-            }
+            .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             .nav-overlay.active { top: 0; }
-            .nav-list { text-align: center; }
-            .nav-list li { margin: 25px 0; }
-
-            /* 모바일에서 좌측카테고리 숨기기 */
             .sidebar { display: none !important; }
         }
-        /* PC: 기존 오버레이 슬라이딩 */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
             .nav-overlay {
-                top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
+                top: 0; left: 100%; width: 450px; height: 100vh;
+                border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77,0,0.175,1);
+                justify-content: flex-start; align-items: flex-start;
+                padding: 180px 0 0 80px;
             }
             .nav-overlay.active { left: calc(100% - 450px);}
             .nav-list { text-align: left; }
@@ -85,22 +70,16 @@
         }
         /* PC 전용: 좌측 select by category */
         .sidebar {
-            min-width: 220px;
-            padding-top: 20px;
-            padding-bottom: 54px;
+            min-width: 220px; padding-top: 20px; padding-bottom: 54px;
             border-right: 1px solid #e2e2e2;
             display: flex; flex-direction: column; justify-content: flex-start;
         }
         .category-title {
             font-size: 0.83rem;
-            letter-spacing: 0.22em;
-            color: #888;
-            margin-bottom: 38px;
-            text-transform: lowercase;
+            letter-spacing: 0.22em; color: #888;
+            margin-bottom: 38px; text-transform: lowercase;
         }
-        .category-list {
-            display: flex; flex-direction: column; gap: 18px;
-        }
+        .category-list { display: flex; flex-direction: column; gap: 18px; }
         .category-link {
             display: block;
             color: #151515;
@@ -108,64 +87,68 @@
             font-size: 1.18rem;
             font-family: 'Times New Roman', serif;
             letter-spacing: 0.04em;
-            padding-bottom: 2px;
-            transition: color 0.16s;
-            cursor: pointer;
+            padding-bottom: 2px; transition: color 0.16s; cursor: pointer;
         }
         .category-link:hover { color: #232323; }
 
-        /* MAIN PRODUCT 목록 */
-        .products-sections {
-            flex: 1;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 64px;
-        }
+        /* PRODUCTS CONTENT */
+        .products-sections { flex: 1; width: 100%; display: flex; flex-direction: column; gap: 64px; }
         .product-section {}
         .product-header-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
+            display: flex; align-items: center; margin-bottom: 24px;
+            justify-content: flex-start;
+            gap: 16px;
         }
-        .product-title {
-            font-size: 1.5rem;
-            font-family: 'Times New Roman', serif;
-            letter-spacing: 0.08em;
-            font-weight: 600;
+        /* more 스타일 */
+        .product-title { font-size: 1.5rem; font-family: 'Times New Roman', serif; letter-spacing: 0.08em; font-weight: 600; }
+        .product-more {
+            font-size: 1rem; color: #b2b2b2; font-weight: 400; margin-left: 14px; background: none; border: none; cursor: pointer; text-transform: lowercase; }
+        .product-more:hover { text-decoration: underline; color: #212121; }
+        /* MOBILE more 오른쪽 정렬(absolute), PC 타이틀 옆 */
+        @media (max-width: 1023px) {
+            .product-header-row {
+                justify-content: flex-start;
+                position: relative;
+            }
+            .product-title { font-size: 1.2rem; }
+            .product-more {
+                position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+                margin-left: 0;
+                font-size: 1rem; font-weight: 400;
+                color: #b2b2b2; background: none; border: none; text-transform: lowercase;
+            }
         }
-        .section-more {
-            width: 34px; height: 34px;
-            background: #fff; border-radius: 50%; border: none; color: #bbb;
-            font-size: 28px;
-            display: flex; justify-content: center; align-items: center;
-            box-shadow: none; margin-left: 12px; cursor: pointer; transition: color .14s;
-        }
-        .section-more:hover { color: #232323; }
         .product-images-row {
             display: flex; gap: 23px;
         }
         .product-img-box {
-            width: 212px; height: 272px;
-            border-radius: 13px;
-            overflow: hidden;
+            width: 212px; height: 272px; /* 사각형, border-radius 없음 */
             background: #f7f7f7;
+            overflow: hidden;
             display: flex; align-items: center; justify-content: center;
+            border-radius: 0;
         }
         .product-img-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+            width: 100%; height: 100%; object-fit: cover; border-radius: 0;
         }
         @media (max-width:1200px) {
             .container { padding: 0 10px; }
             .products-sections { gap: 36px;}
             .container { flex-direction: column; gap: 0; }
+            .product-images-row { gap: 15px; }
+        }
+        @media (max-width:1023px) {
+            .product-images-row { gap: 15px; flex-wrap: wrap; }
+            .product-img-box {
+                width: 32vw; max-width: 300px;
+                height: calc(32vw * 1.28); min-width: 95px; min-height: 100px; max-height: 350px;
+            }
         }
         @media (max-width:700px) {
             .product-images-row { flex-direction: column; gap: 11px; }
-            .product-img-box { width: 95vw; max-width:380px; height: auto; aspect-ratio: 1/1.28; }
+            .product-img-box {
+                width: 95vw; max-width:380px; height: auto; aspect-ratio: 1/1.28;
+            }
         }
     </style>
 </head>
@@ -196,88 +179,88 @@
         </div>
     </main>
     <script>
-        // 각 카테고리별 최대 3개만 preview용으로 노출
-const PRODUCTS = [
-    {
-        name: "Kettle",
-        page: "kettle.html",
-        images: [
-            "images/objects/kettle/objects_images_kettle_1.jpeg",
-            "images/objects/kettle/objects_images_kettle_2.jpeg",
-            "images/objects/kettle/objects_images_kettle_3.jpeg"
-        ]
-    },
-    {
-        name: "Vase",
-        page: "vase.html",
-        images: [
-            "images/objects/vase/object_images_vase_1.jpeg"
-        ]
-    }
-];
+    const PRODUCTS = [
+        {
+            name: "Kettle",
+            page: "kettle.html",
+            images: [
+                "images/objects/kettle/objects_images_kettle_1.jpeg",
+                "images/objects/kettle/objects_images_kettle_2.jpeg",
+                "images/objects/kettle/objects_images_kettle_3.jpeg"
+            ]
+        },
+        {
+            name: "Vase",
+            page: "vase.html",
+            images: [
+                "images/objects/vase/object_images_vase_1.jpeg"
+            ]
+        }
+    ];
 
-        function renderProductSections() {
-            const container = document.getElementById('productsSections');
-            container.innerHTML = '';
-            PRODUCTS.forEach(item => {
-                // section
-                const section = document.createElement('div');
-                section.className = 'product-section';
+    function renderProductSections() {
+        const container = document.getElementById('productsSections');
+        container.innerHTML = '';
+        PRODUCTS.forEach(item => {
+            // section
+            const section = document.createElement('div');
+            section.className = 'product-section';
 
-                // header
-                const headerRow = document.createElement('div');
-                headerRow.className = 'product-header-row';
-                // Title
-                const title = document.createElement('span');
-                title.className = 'product-title';
-                title.textContent = item.name;
+            // header
+            const headerRow = document.createElement('div');
+            headerRow.className = 'product-header-row';
 
-                // ... 버튼
-                const moreBtn = document.createElement('button');
-                moreBtn.className = 'section-more';
-                moreBtn.type = 'button';
-                moreBtn.title = '더 보기';
-                moreBtn.innerHTML = "…";
-                moreBtn.onclick = () => { window.location.href = item.page; };
+            // Title
+            const title = document.createElement('span');
+            title.className = 'product-title';
+            title.textContent = item.name;
 
-                headerRow.appendChild(title);
-                headerRow.appendChild(moreBtn);
+            // more (PC는 인접/모바일은 우측 끝)
+            const moreBtn = document.createElement('button');
+            moreBtn.className = 'product-more';
+            moreBtn.type = 'button';
+            moreBtn.title = '더 보기';
+            moreBtn.innerHTML = "more";
+            moreBtn.onclick = () => { window.location.href = item.page; };
 
-                // 이미지 row (최대 3개)
-                const imgRow = document.createElement('div');
-                imgRow.className = 'product-images-row';
-                item.images.slice(0, 3).forEach(src => {
-                    const imgBox = document.createElement('div');
-                    imgBox.className = 'product-img-box';
-                    const img = document.createElement('img');
-                    img.src = src;
-                    img.alt = item.name + " 이미지";
-                    imgBox.appendChild(img);
-                    imgRow.appendChild(imgBox);
-                });
+            headerRow.appendChild(title);
+            headerRow.appendChild(moreBtn);
 
-                section.appendChild(headerRow);
-                section.appendChild(imgRow);
-                container.appendChild(section);
+            // 이미지 row (최대 3개)
+            const imgRow = document.createElement('div');
+            imgRow.className = 'product-images-row';
+            item.images.slice(0, 3).forEach(src => {
+                const imgBox = document.createElement('div');
+                imgBox.className = 'product-img-box';
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = item.name + " 이미지";
+                imgBox.appendChild(img);
+                imgRow.appendChild(imgBox);
             });
-        }
-        renderProductSections();
 
-        function toggleMenu() {
-            const nav = document.getElementById('navOverlay');
-            const spans = document.querySelectorAll('.menu-trigger span');
-            nav.classList.toggle('active');
-            if(nav.classList.contains('active')) {
-                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-            }
-            else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
+            section.appendChild(headerRow);
+            section.appendChild(imgRow);
+            container.appendChild(section);
+        });
+    }
+    renderProductSections();
+
+    function toggleMenu() {
+        const nav = document.getElementById('navOverlay');
+        const spans = document.querySelectorAll('.menu-trigger span');
+        nav.classList.toggle('active');
+        if(nav.classList.contains('active')) {
+            spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
         }
+        else {
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        }
+    }
     </script>
 </body>
 </html>
