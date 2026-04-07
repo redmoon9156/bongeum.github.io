@@ -1,210 +1,197 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bongeum</title>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #fff; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
-a { text-decoration: none; color: inherit; }
-ul { list-style: none; }
-header {
-position: fixed;
-top: 0;
-width: 100vw;
-padding: 30px 20px;
-display: flex;
-justify-content: space-between;
-align-items: center;
-z-index: 2000;
-background: transparent !important;
-}
-.logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;}
-.menu-trigger {
-cursor: pointer;
-width: 24px; height: 18px;
-display: flex; flex-direction: column; justify-content: space-between;
-}
-.menu-trigger span {
-display: block;
-width: 100%; height: 1px; background-color: #000; transition: 0.3s;
-}
-.nav-overlay {
-position: fixed;
-left: 0;
-width: 100%;
-background-color: #fff;
-z-index: 1500;
-display: flex;
-justify-content: center;
-align-items: flex-start;
-/* padding-top은 반응형에서 조절 */
-box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
-transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1), height 0.5s cubic-bezier(0.77,0,0.175,1);
-}
-/* 모바일: 높이 50dvh, 메뉴 열릴 때만 top 0 */
-@media (max-width: 1023px) {
-.nav-overlay {
-height: 50dvh;
-top: -50dvh;
-padding-top: 0; /* nav-list 패딩에서 제어 */
-}
-.nav-overlay.active { top: 0; }
-.nav-list {
-text-align: center;
-width: 100%;
-padding-top: 8vh; /* << 여기서 메뉴를 더 아래로! 값 조정 가능 */
-}
-.nav-list li { margin: 25px 0; }
-.nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
-}
-/* PC 버전은 기존대로 전체 */
-@media (min-width: 1024px) {
-.nav-overlay {
-height: 100vh;
-top: 0;
-left: 100%;
-width: 450px;
-border-left: 1px solid #eee;
-justify-content: flex-start;
-align-items: flex-start;
-padding: 180px 0 0 80px;
-transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1), height 0.5s cubic-bezier(0.77,0,0.175,1);
-}
-.nav-overlay.active {
-left: calc(100% - 450px);
-top: 0;
-}
-.nav-list { text-align: left; padding-top: 0; }
-.nav-list li { margin: 35px 0;}
-.nav-list li a { font-size: 1rem;}
-}
-.nav-list { width: 100%; }
-.nav-list li { margin: 25px 0; }
-.nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
-main, .slider, .slide-img {
-width: 100vw;
-height: 100dvh;
-min-height: 100vh;
-position: fixed;
-top: 0;
-left: 0;
-z-index: 0;
-padding: 0;
-margin: 0;
-}
-.slider, .slide-img { overflow: hidden; }
-.slide-img {
-object-fit: cover;
-opacity: 0;
-transition: opacity 1.1s cubic-bezier(.4,0,0,1), transform 1.1s cubic-bezier(.4,0,0,1);
-will-change: opacity, transform;
-z-index: 1;
-pointer-events: none;
-}
-.slide-img.active {opacity: 1; z-index: 2; transform: none;}
-.slide-img.next {opacity: 0; z-index: 1; transform: translateY(20px) scale(0.98);}
-.slide-img.prev {opacity: 0; z-index: 1; transform: translateY(-8.5px) scale(0.98);}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bongeum</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #fff; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        header {
+            position: fixed;
+            top: 0; width: 100%; padding: 30px 20px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
+        }
+        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+
+        /* [3. 햄버거/네비 오버레이 - PC/모바일 공통] ----------- */
+        .nav-overlay {
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
+            background-color: #fff; z-index: 1500;
+            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+        }
+        .nav-overlay.active { top: 0; }
+        .nav-list { text-align: center; }
+        .nav-list li { margin: 25px 0; }
+        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+
+        /* [4. 슬라이더 전체화면] */
+        main {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            position: relative;
+        }
+        .slider {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .slide-img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1.1s cubic-bezier(.4,0,0,1), transform 1.1s cubic-bezier(.4,0,0,1);
+            will-change: opacity, transform;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .slide-img.active { opacity: 1; z-index: 2; transform: none; }
+        .slide-img.next { opacity: 0; z-index: 1; transform: translateY(20px) scale(0.98);}
+        .slide-img.prev { opacity: 0; z-index: 1; transform: translateY(-20px) scale(0.98); }
+
+        /* --- 모바일 햄버거: 오버레이 상단에서 50dvh만큼만 내려옴 --- */
+        @media (max-width: 1023px) {
+            .nav-overlay {
+                height: 50dvh;
+                top: -50dvh;
+                padding-top: 90px; /* 메뉴가 너무 위에 붙지 않도록 여백 */
+            }
+            .nav-overlay.active { top: 0; }
+            .nav-list { text-align: center; }
+            .nav-list li { margin: 25px 0; }
+            .nav-list li a { font-size: 1.1rem; }
+        }
+
+        /* [5. PC 환경 그대로 - contact.html 기반] ----------- */
+        @media (min-width: 1024px) {
+            header { padding: 60px 80px; }
+            .logo { font-size: 1.3rem; }
+            .nav-overlay {
+                top: 0;
+                left: 100%;
+                width: 450px;
+                height: 100vh;
+                border-left: 1px solid #eee;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 180px 0 0 80px;
+                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            }
+            .nav-overlay.active { left: calc(100% - 450px);}
+            .nav-list { text-align: left;}
+            .nav-list li { margin: 35px 0;}
+            .nav-list li a { font-size: 1rem;}
+        }
+    </style>
 </head>
 <body>
 
-<header>
-<div class="logo"><a href="index.html">Bongeum</a></div>
-<div class="menu-trigger" id="menuBtn" onclick="toggleMenu()">
-<span></span>
-<span></span>
-<span></span>
-</div>
-</header>
+    <header>
+        <div class="logo"><a href="index.html">Bongeum</a></div>
+        <div class="menu-trigger" id="menuBtn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
 
-<nav class="nav-overlay" id="navOverlay">
-<ul class="nav-list">
-<li><a href="about.html" onclick="toggleMenu()">About</a></li>
-<li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
-<li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
-</ul>
-</nav>
+    <nav class="nav-overlay" id="navOverlay">
+        <ul class="nav-list">
+            <li><a href="about.html" onclick="toggleMenu()">About</a></li>
+            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
+            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+        </ul>
+    </nav>
 
-<main>
-<div class="slider" id="slider">
-<!-- JS에서 이미지가 생성됨 -->
-</div>
-</main>
+    <main>
+        <div class="slider" id="slider"></div>
+    </main>
 
-<script>
-// 햄버거 메뉴 토글
-function toggleMenu() {
-const nav = document.getElementById('navOverlay');
-const spans = document.querySelectorAll('.menu-trigger span');
-nav.classList.toggle('active');
+    <script>
+        function toggleMenu() {
+            const nav = document.getElementById('navOverlay');
+            const spans = document.querySelectorAll('.menu-trigger span');
+            nav.classList.toggle('active');
+            if(nav.classList.contains('active')) {
+                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        }
 
-if(nav.classList.contains('active')) {
-spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
-spans[1].style.opacity = '0';
-spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-} else {
-spans[0].style.transform = 'none';
-spans[1].style.opacity = '1';
-spans[2].style.transform = 'none';
-}
-}
-// 슬라이더 이미지 목록 (여기만 추가/삭제하면 됨)
-const sliderImages = [
-"images/index/index_image_1.jpeg",
-"images/index/index_image_2.jpeg",
-"images/index/index_image_3.jpeg"
-];
+        // 슬라이더 이미지 목록 (여기만 추가/삭제하면 됨)
+        const sliderImages = [
+            "images/index/index_image_1.jpeg",
+            "images/index/index_image_2.jpeg",
+            "images/index/index_image_3.jpeg"
+        ];
 
-// 슬라이더 로직
-const slider = document.getElementById('slider');
-let currentIdx = 0;
-let slides = [];
+        // 슬라이더 로직
+        const slider = document.getElementById('slider');
+        let currentIdx = 0;
+        let slides = [];
 
-function createSlides() {
-slider.innerHTML = '';
-slides = [];
-sliderImages.forEach((src, idx) => {
-const img = document.createElement('img');
-img.src = src;
-img.alt = '슬라이드 이미지 ' + (idx + 1);
-img.className = 'slide-img' + (idx === 0 ? ' active' : '');
-slider.appendChild(img);
-slides.push(img);
-});
-}
-createSlides();
+        function createSlides() {
+            slider.innerHTML = '';
+            slides = [];
+            sliderImages.forEach((src, idx) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = '슬라이드 이미지 ' + (idx + 1);
+                img.className = 'slide-img' + (idx === 0 ? ' active' : '');
+                slider.appendChild(img);
+                slides.push(img);
+            });
+        }
+        createSlides();
 
-let timer = null;
-function showSlide(nextIdx) {
-slides.forEach((img, idx) => {
-img.classList.remove('active', 'prev', 'next');
-if(idx === currentIdx) img.classList.add('prev');
-if(idx === nextIdx) img.classList.add('active');
-});
-currentIdx = nextIdx;
-}
+        let timer = null;
+        function showSlide(nextIdx) {
+            slides.forEach((img, idx) => {
+                img.classList.remove('active', 'prev', 'next');
+                if(idx === currentIdx) img.classList.add('prev');
+                if(idx === nextIdx) img.classList.add('active');
+            });
+            currentIdx = nextIdx;
+        }
 
-function nextSlideAuto() {
-let nextIdx = (currentIdx+1) % slides.length;
-showSlide(nextIdx);
-timer = setTimeout(nextSlideAuto, 5000);
-}
-setTimeout(() => {
-timer = setTimeout(nextSlideAuto, 5000);
-}, 350);
+        function nextSlideAuto() {
+            let nextIdx = (currentIdx+1) % slides.length;
+            showSlide(nextIdx);
+            timer = setTimeout(nextSlideAuto, 5000);
+        }
+        setTimeout(() => {
+            timer = setTimeout(nextSlideAuto, 5000);
+        }, 350);
 
-// 리사이즈(이미지 수 바뀌면) 대응 - 비동기로도
-window.sliderRebuild = function(){
-clearTimeout(timer);
-createSlides();
-currentIdx = 0;
-setTimeout(() => {
-timer = setTimeout(nextSlideAuto, 5000);
-}, 350);
-}
-</script>
+        // 리사이즈(이미지 수 바뀌면) 대응 - 비동기로도
+        window.sliderRebuild = function(){
+            clearTimeout(timer);
+            createSlides();
+            currentIdx = 0;
+            setTimeout(() => {
+                timer = setTimeout(nextSlideAuto, 5000);
+            }, 350);
+        }
+    </script>
 
 </body>
 </html>
