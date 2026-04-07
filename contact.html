@@ -1,85 +1,95 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF8">
+    <meta name="viewport" content="width=device-width, initial-scale=10">
     <title>CONTACT | Bongeum</title>
     <style>
-        /* [1. 공통 리셋 및 기본 설정] ------------------------- */
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
+ body {
             background-color: #ffffff;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-family: "Helvetica Neue", Helvetica,, sans-serif;
             color: #000;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
-        a { text-decoration: none; color: inherit; }
+        a { text-decoration: none color: inherit; }
         ul { list-style: none; }
 
-        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        /* [2. 헤 및 햄버거 버튼] contact & index.html 동일하게 */
         header {
             position: fixed;
-            top: 0; width: 100%; padding: 30px 20px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
+            top: 0; width: 100%; padding: 30px 20;
+            display: flex; justify-content: space-between; align-items: center; z-index 2000;
         }
-        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
-        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text: uppercase; }
+        .menu-trigger { cursor: pointer; width: 24px;: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition 0.3s; }
 
-        /* [3. 네비게이션 오버레이] ---------------------------- */
+        /* [3. 네비게이션 오버레이] 구조도 통일 */
         .nav-overlay {
-            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
-            background-color: #fff; z-index: 1500; transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #fff;
+            z-index: 1500;
+            transition: top 0.5s cubic-bezier(0.77, , 0.175, 1);
+            display: flex; justify-content: center;-items: flex-start; padding-top: 120px;
+            box-shadow: 0 8px 28px 0 rgba(0,0,,0.07);
         }
         .nav-overlay.active { top: 0; }
-        .nav-list { text-align: center; }
+ .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
-        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+        .nav-list li a { font-size:1.1rem; letter-spacing: 0.1em; text-transform: uppercase;-weight: 300; }
 
-        /* [4. 메인 컨텐츠 영역 - 모바일 위치 및 크기] --------- */
+        /* 모바일: 50dvh 오버레이 + 더 아래 시작 */
+        @media (max-width: 1023px) {
+ .nav-overlay {
+                height: 50dvh;
+                top: -50dvh                padding-top: 90px;
+            }
+            .nav-overlay.active { top: 0; }
+            .nav-list { text-align: center; }
+            .nav li { margin: 25px 0; }
+        }
+        /* PC: 기존 vh + contact.html 기준 */
+        @media (min-width: 1024px) {
+            header { padding: 60px px; }
+            .logo { font-size: 1.3rem; }
+            .-overlay {
+                top: 0; left: 100%; width: 450px; height: 100vh; transition: left 05s cubic-bezier(0.77, 0, 0.175, );
+                border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80;
+            }
+            .nav-overlay.active { left: calc(100% - 450px            .nav-list { text-align: left;}
+            .nav-list li { margin: 35px 0;}
+            .nav-list li a { font-size: rem;}
+        }
+
+        /* [4. 메인 컨텐츠 영역 - 모바일 위치 및 크] --------- */
         main {
             min-height: 100vh;
-            display: flex; justify-content: center; align-items: flex-start;
+            display: flex; justify-content: center; align-items:-start;
             padding: 140px 20px 0;
         }
         .contact-wrap { text-align: center; width: 100%; }
-
         .page-title {
-            /* [수정] 모바일 폰트 크기 1.2rem */
             font-size: 1.2rem;
             font-weight: 700;
-            margin-bottom: 40px;
+            margin: 40px;
             letter-spacing: 0.1em;
-            text-transform: uppercase;
+            text-transform:;
         }
-
         .contact-stack { display: flex; flex-direction: column; align-items: center; gap: 30px; }
-        .contact-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .contact-item { display:; flex-direction: column; align-items: center; gap: 12px; }
         .contact-icon { color: rgba(0,0,0,.72); }
-        .contact-link { font-size: 15px; letter-spacing: .02em; color: rgba(0,0,0,.72); }
-
-        /* [5. PC 환경 독립 설계] ------------------------------- */
+        .contact-link { font-size: 15px; letter-spacing: .02em; color: rgba(0,,0,.72); }
         @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
-            .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px; }
-            .nav-overlay.active { left: calc(100% - 450px); }
-            .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0; }
-            .nav-list li a { font-size: 1rem; }
-
-            main { align-items: flex-start; padding: 220px 80px 0; }
-
-            .page-title {
-                /* [수정] PC 폰트 크기 2.0rem */
-                font-size: 2.0rem;
-                margin-bottom: 60px;
-            }
-
+ main { align-items: flex-start; padding: 220px 80px 0; }
+            .page-title { font-size: 2.0rem; margin: 60px; }
             .contact-stack { gap: 40px; }
-            .contact-link { font-size: 1.2rem; letter-spacing: 0.05em; }
+           contact-link { font-size: 1.2rem; letter-spacing: 0.05; }
         }
     </style>
 </head>
@@ -91,45 +101,50 @@
     <nav class="nav-overlay" id="navOverlay">
         <ul class="nav-list">
             <li><a href="about.html" onclick="toggleMenu()">About</a></li>
-            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
-            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+            <li><a href="objects" onclick="toggleMenu()">Objects</a></li>
+            <li><a href="contact.html"="toggleMenu()">Contact</a></li>
         </ul>
     </nav>
-    <main>
+   main>
         <div class="contact-wrap">
             <h1 class="page-title">CONTACT</h1>
             <section class="contact-stack">
-                <div class="contact-item">
+                <div class="contact">
                     <div class="contact-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M4.5 7.5h15c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1h-15c-.55 0-1-.45-1-1v-8c0-.55.45-1-1-1Z" stroke="currentColor" stroke-width="1.2"/>
-                            <path d="M5.5 8.5 12 13.2 18.5 8.5" stroke="currentColor" stroke-width="1.2"/>
+                        <svg viewBox="0 0  24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4.5 7.5h15c.55 0 1 .45 1 1v80 .55-.45 1-1 1h-15c-.55 0-1-.45-1-1v-8c0-.55.451-1-1Z" stroke="currentColor" stroke-width="1.2"/>
+ <path d="M5.5 8.5 12 13.2 18.5 8.5" stroke="currentColor" stroke-width1.2"/>
                         </svg>
                     </div>
-                    <a class="contact-link" href="mailto:#">info@bongeum.com</a>
+                    <a class="contact" href="mailto:#">info@bongeum.com</a>
                 </div>
                 <div class="contact-item">
-                    <div class="contact-icon">
-                        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M8 3.75h8A4.25 4.25 0 0 1 20.25 8v8A4.25 4.25 0 0 1 16 20.25H8A4.25 4.25 0 0 1 3.75 16V8A4.25 4.25 0 0 1 8 3.75Z" stroke="currentColor" stroke-width="1.2"/>
-                            <path d="M12 15.6a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2Z" stroke="currentColor" stroke-width="1.2"/>
-                            <path d="M16.9 7.25h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <div class="contact-icon                        <svg viewBox="0 0 24 24" width="24" height24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8 3.75h84.25 4.25 0 0 1 20.25 88A4.25 4.25 0 0 1 16 20.25H8A4.25 4. 0 0 1 3.75 16V8A4.25 .25 0 0 1 8 3.75Z" stroke="current" stroke-width="1.2"/>
+                            <path d="M12 15.63.6 3.6 0 1 0 0-7.2 .6 3.6 0 0 0 0 7.2Z stroke="currentColor" stroke-width="1.2"/>
+                            <path d="M16.9 7.25h.01" stroke="currentColor" stroke-width="1.5"-linecap="round"/>
                         </svg>
                     </div>
-                    <a class="contact-link" href="#" target="_blank">Instagram</a>
+                    <a class="-link" href="#" target="_blank">Instagram</a>
                 </div>
-            </section>
-        </div>
+            </section        </div>
     </main>
     <script>
         function toggleMenu() {
-            const nav = document.getElementById('navOverlay');
+            nav = document.getElementById('navOverlay');
             const spans = document.querySelectorAll('.menu-trigger span');
             nav.classList.toggle('active');
-            if(nav.classList.contains('active')) { spans[0].style.transform = 'translateY(8.5px) rotate(45deg)'; spans[1].style.opacity = '0'; spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)'; }
-            else { spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none'; }
+            if(navList.contains('active')) {
+                spans[0].style.transform = 'translateY(85px) rotate(45deg)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'translateY(-.5px) rotate(-45deg)';
+            }
+            else {
+                spans[0]..transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
         }
-    </script>
-</body>
+    </script</body>
 </html>
 
