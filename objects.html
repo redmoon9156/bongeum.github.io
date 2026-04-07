@@ -197,24 +197,24 @@
     </main>
     <script>
         // 각 카테고리별 최대 3개만 preview용으로 노출
-        const PRODUCTS = [
-            {
-                name: "Kettle",
-                page: "kettle.html",
-                images: [
-                    "objects_images_kettle_1.jpeg",
-                    "objects_images_kettle_2.jpeg",
-                    "objects_images_kettle_3.jpeg"
-                ]
-            },
-            {
-                name: "Vase",
-                page: "vase.html",
-                images: [
-                    "object_images_vase_1.jpeg"
-                ]
-            }
-        ];
+const PRODUCTS = [
+    {
+        name: "Kettle",
+        page: "kettle.html",
+        images: [
+            "images/objects/kettle/objects_images_kettle_1.jpeg",
+            "images/objects/kettle/objects_images_kettle_2.jpeg",
+            "images/objects/kettle/objects_images_kettle_3.jpeg"
+        ]
+    },
+    {
+        name: "Vase",
+        page: "vase.html",
+        images: [
+            "images/objects/vase/object_images_vase_1.jpeg"
+        ]
+    }
+];
 
         function renderProductSections() {
             const container = document.getElementById('productsSections');
