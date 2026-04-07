@@ -52,11 +52,14 @@
 
         /* [5. 슬라이더 스타일] --------------------------- */
         .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
+        
+        /* [수정] 텍스트와 이미지 간격 축소 (margin-bottom: 30px -> 12px) */
         .category-name-link { 
             display: inline-block; font-weight: 600; letter-spacing: 0.15em; 
-            text-transform: uppercase; margin-bottom: 30px; 
+            text-transform: uppercase; margin-bottom: 12px; 
             font-size: 1rem;
         }
+
         .slider-container {
             position: relative;
             width: 100%;
@@ -207,6 +210,7 @@
             dots.forEach((d, i) => d.classList.toggle('active', i === idx));
         }
 
+        // [이벤트 처리 로직]
         sliderBox.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
@@ -216,50 +220,60 @@
         sliderBox.addEventListener('touchmove', (e) => {
             const currentX = e.touches[0].clientX;
             const currentY = e.touches[0].clientY;
-            
-            // 수평 혹은 수직으로 15px 이상 움직이면 '이동 중'으로 판단하여 클릭 무시
-            if (Math.abs(startX - currentX) > 15 || Math.abs(startY - currentY) > 15) {
+            // 감도 조절: 상하좌우 20px 이상 움직이면 '스크롤/스와이프'로 간주
+            if (Math.abs(startX - currentX) > 20 || Math.abs(startY - currentY) > 20) {
                 isMoving = true;
             }
         });
 
         sliderBox.addEventListener('touchend', (e) => {
-            // 스크롤이나 스와이프 중이었다면 아무 동작 안 함
-            if (isMoving) return;
-
-            const rect = sliderBox.getBoundingClientRect();
+            // 스와이프 로직 (50px 이상 가로 이동 시)
             const endX = e.changedTouches[0].clientX;
-            const xInSlider = endX - rect.left;
-            const width = rect.width;
+            const diffX = startX - endX;
 
-            // [로직 수정] 좌우 1/5 (20%) 지점 클릭 시 슬라이드 이동
-            if (xInSlider < width * 0.20) {
-                // 왼쪽 20% 클릭 -> 이전 사진
-                idx = (idx - 1 + item.images.length) % item.images.length;
+            if (Math.abs(diffX) > 50) {
+                if (diffX > 0) idx = (idx + 1) % item.images.length;
+                else idx = (idx - 1 + item.images.length) % item.images.length;
                 updateSlider();
-            } else if (xInSlider > width * 0.80) {
-                // 오른쪽 20% 클릭 -> 다음 사진
-                idx = (idx + 1) % item.images.length;
-                updateSlider();
-            } else {
-                // 중앙 60% 클릭 -> 상세 페이지 이동
-                window.location.href = item.page;
+                return; // 스와이프 후 클릭 동작 방지
+            }
+
+            // 확실한 클릭 로직 (거의 안 움직였을 때만)
+            if (!isMoving) {
+                const rect = sliderBox.getBoundingClientRect();
+                const xInSlider = endX - rect.left;
+                const width = rect.width;
+
+                // [지시 반영] 1/5 양끝 지점(20%)은 이미지 넘기기
+                if (xInSlider < width * 0.20) {
+                    idx = (idx - 1 + item.images.length) % item.images.length;
+                    updateSlider();
+                } else if (xInSlider > width * 0.80) {
+                    idx = (idx + 1) % item.images.length;
+                    updateSlider();
+                } else {
+                    // [지시 반영] 중앙부(60%) 클릭 시에만 링크 이동
+                    window.location.href = item.page;
+                }
             }
         });
 
-        // PC 브라우저 클릭 대응
+        // PC 환경 지원
         sliderBox.addEventListener('mousedown', (e) => {
             startX = e.clientX;
-            startY = e.clientY;
             isMoving = false;
         });
-
         sliderBox.addEventListener('mouseup', (e) => {
-            if (Math.abs(startX - e.clientX) > 5 || Math.abs(startY - e.clientY) > 5) {
-                isMoving = true;
+            if (Math.abs(startX - e.clientX) > 5) isMoving = true;
+            if (isMoving) {
+                const diffX = startX - e.clientX;
+                if (Math.abs(diffX) > 50) {
+                    if (diffX > 0) idx = (idx + 1) % item.images.length;
+                    else idx = (idx - 1 + item.images.length) % item.images.length;
+                    updateSlider();
+                }
+                return;
             }
-            if (isMoving) return;
-
             const rect = sliderBox.getBoundingClientRect();
             const xInSlider = e.clientX - rect.left;
             const width = rect.width;
