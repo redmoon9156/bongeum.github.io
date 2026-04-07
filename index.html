@@ -6,61 +6,41 @@
     <title>Bongeum</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: #ffffff;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #000;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
+        body { background: #fff; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
-        img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
 
-        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        /* --- 핵심: 헤더를 투명하게, Blur 추가 --- */
         header {
             position: fixed;
             top: 0;
-            width: 100%;
+            width: 100vw;
             padding: 30px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 2000;
+            background: rgba(255,255,255, 0.15);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
         }
 
-        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;}
 
         .menu-trigger {
             cursor: pointer;
-            width: 24px;
-            height: 18px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
+            width: 24px; height: 18px;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
         .menu-trigger span {
             display: block;
-            width: 100%;
-            height: 1px;
-            background-color: #000;
-            transition: 0.3s;
+            width: 100%; height: 1px; background-color: #000; transition: 0.3s;
         }
 
-        /* [3. 모바일 메뉴 (Top to Bottom & 상단 배치)] ---------- */
         .nav-overlay {
-            position: fixed;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #fff;
-            z-index: 1500;
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 120px;
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100dvh;
+            background-color: #fff; z-index: 1500; transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
         }
         .nav-overlay.active { top: 0; }
 
@@ -68,28 +48,22 @@
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 메인 슬라이드 영역] ------------------------------- */
-        main {
+        /* --- 핵심: main, .slider, .slide-img에 position:fixed/top:0; 전체화면 커버 --- */
+        main, .slider, .slide-img {
             width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            height: 100dvh;
+            min-height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 0;
             padding: 0;
-            position: relative;
+            margin: 0;
         }
-        .slider {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
+        .slider, .slide-img {
             overflow: hidden;
         }
         .slide-img {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
             object-fit: cover;
             opacity: 0;
             transition: opacity 1.1s cubic-bezier(.4,0,0,1), transform 1.1s cubic-bezier(.4,0,0,1);
@@ -97,51 +71,23 @@
             z-index: 1;
             pointer-events: none;
         }
-        .slide-img.active {
-            opacity: 1;
-            z-index: 2;
-            transform: none;
-        }
-        /* 아래에서 -> 위로 흐르는 효과 (sss-s.jp형식) */
-        .slide-img.next {
-            opacity: 0;
-            z-index: 1;
-            transform: translateY(20px) scale(0.98);
-        }
-        .slide-img.prev {
-            opacity: 0;
-            z-index: 1;
-            transform: translateY(-20px) scale(0.98);
-        }
+        .slide-img.active {opacity: 1; z-index: 2; transform: none;}
+        .slide-img.next {opacity: 0; z-index: 1; transform: translateY(20px) scale(0.98);}
+        .slide-img.prev {opacity: 0; z-index: 1; transform: translateY(-20px) scale(0.98);}
 
-        /* [5. PC 환경 독립 설계 (Right to Left & 상단 배치)] ---- */
         @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
-
+            header { padding: 60px 80px;}
+            .logo { font-size: 1.3rem;}
             .nav-overlay {
-                top: 0;
-                left: 100%;
-                width: 450px;
-                height: 100vh;
-                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                top: 0; left: 100%; width: 450px; height: 100vh;
                 border-left: 1px solid #eee;
-                display: flex;
-                justify-content: flex-start;
-                align-items: flex-start;
-                padding: 180px 0 0 80px;
+                justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
+                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
             }
-            .nav-overlay.active { left: calc(100% - 450px); }
-
+            .nav-overlay.active { left: calc(100% - 450px);}
             .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0; }
-            .nav-list li a { font-size: 1rem; }
-        }
-        /* PC/모바일 공통: 전체화면 크롭 (object-fit: cover, 100vw 100vh) */
-        .slider, .slide-img {
-            width: 100vw;
-            height: 100vh;
-            border-radius: 0;
+            .nav-list li { margin: 35px 0;}
+            .nav-list li a { font-size: 1rem;}
         }
     </style>
 </head>
@@ -195,14 +141,11 @@
             "images/index/index_image_3.jpeg"
         ];
 
-        // 추후 이미지를 추가하려면 위 배열에 경로만 추가하면 됩니다.
-
         // 슬라이더 로직
         const slider = document.getElementById('slider');
         let currentIdx = 0;
         let slides = [];
 
-        // 슬라이드 생성
         function createSlides() {
             slider.innerHTML = '';
             slides = [];
@@ -217,7 +160,6 @@
         }
         createSlides();
 
-        // sss-s.jp와 비슷한 느긋한 페이드+슬라이드(약 5초 유지, 1.1초 애니메이션)
         let timer = null;
         function showSlide(nextIdx) {
             slides.forEach((img, idx) => {
@@ -231,13 +173,11 @@
         function nextSlideAuto() {
             let nextIdx = (currentIdx+1) % slides.length;
             showSlide(nextIdx);
-            timer = setTimeout(nextSlideAuto, 5000); // 5초마다
+            timer = setTimeout(nextSlideAuto, 5000);
         }
-
-        // 첫 애니메이션 셋업 (Active 1개만)
         setTimeout(() => {
             timer = setTimeout(nextSlideAuto, 5000);
-        }, 350); // 페이지로드 여유
+        }, 350);
 
         // 리사이즈(이미지 수 바뀌면) 대응 - 비동기로도
         window.sliderRebuild = function(){
