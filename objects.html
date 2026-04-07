@@ -17,30 +17,102 @@
         ul { list-style: none; padding:0; margin:0; }
         img { display: block; width:100%; height:auto; object-fit: cover; }
 
-        /* ---------- 네비게이션 헤더 ---------- */
+        /* --- 헤더 구조 통일 (about.html과 동일) --- */
         header {
             position: fixed;
-            top: 0; width: 100%; padding: 30px 20px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 2000; background: #fff;
+            top: 0;
+            width: 100%;
+            padding: 30px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 2000;
+            background: #fff;
         }
-        .logo { font-size: 1rem; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
-        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+        .logo {
+            font-size: 1rem;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        .menu-trigger {
+            cursor: pointer;
+            width: 24px;
+            height: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .menu-trigger span {
+            display: block;
+            width: 100%;
+            height: 1px;
+            background-color: #000;
+            transition: 0.3s;
+        }
 
-        /* --- 메뉴 오버레이 PC/모바일 공통 --- */
+        /* --- 네비게이션 오버레이 (about.html 방식) --- */
         .nav-overlay {
-            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
-            background-color: #fff; z-index: 1500;
+            position: fixed;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #fff;
+            z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding-top: 120px;
             box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-overlay.active { top: 0; }
-        .nav-list { text-align: center;}
+        .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
-        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300;}
+        .nav-list li a {
+            font-size: 1.1rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
 
-        /* ---------- 본문 컨테이너(기존 유지) ---------- */
+        @media (max-width: 1023px) {
+            header { padding: 30px 20px; }
+            .logo { font-size: 1rem; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+            .nav-overlay {
+                height: 50dvh;
+                top: -50dvh;
+                padding-top: 90px;
+            }
+            .nav-overlay.active { top: 0; }
+            .nav-list { text-align: center; }
+            .nav-list li { margin: 25px 0; }
+            .nav-list li a { font-size: 1.1rem;}
+            .page-title { margin-top: 90px; }
+        }
+        @media (min-width: 1024px) {
+            header { padding: 60px 80px;}
+            .logo { font-size: 1.3rem; }
+            .nav-overlay {
+                top: 0;
+                left: 100%;
+                width: 450px;
+                height: 100vh;
+                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                border-left: 1px solid #eee;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 180px 0 0 80px;
+            }
+            .nav-overlay.active { left: calc(100% - 450px);}
+            .nav-list { text-align: left; }
+            .nav-list li { margin: 35px 0;}
+            .nav-list li a { font-size: 1rem;}
+        }
+
+        /* ---------- 본문 컨테이너 ---------- */
         .container {
             max-width: 1500px;
             margin: 0 auto;
@@ -172,33 +244,6 @@
             letter-spacing: 0.055em;
         }
 
-        /* --- 모바일 햄버거: 오버레이 상단에서 50dvh만큼만 내려옴 --- */
-        @media (max-width: 1023px) {
-            header { padding: 30px 20px; }
-            .logo { font-size: 1rem; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
-            .nav-overlay {
-                height: 50dvh;
-                top: -50dvh;
-                padding-top: 90px;
-            }
-            .nav-overlay.active { top: 0; }
-            .nav-list { text-align: center; }
-            .nav-list li { margin: 25px 0; }
-            .nav-list li a { font-size: 1.1rem; }
-        }
-        /* [PC - 오버레이 슬라이딩 메뉴] */
-        @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
-            .nav-overlay {
-                top: 0; left: 100%; width: 450px; height: 100vh; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
-            }
-            .nav-overlay.active { left: calc(100% - 450px);}
-            .nav-list { text-align: left;}
-            .nav-list li { margin: 35px 0;}
-            .nav-list li a { font-size: 1rem;}
-        }
         @media (max-width: 1200px) {
             .container { padding: 0 10px; }
             .main-content { flex-direction: column; gap: 0; }
@@ -217,7 +262,6 @@
     </style>
 </head>
 <body>
-    <!-- 네비/햄버거 영역 -->
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
         <div class="menu-trigger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
@@ -229,7 +273,6 @@
             <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
         </ul>
     </nav>
-
     <div class="container">
         <div class="page-title">Objects</div>
         <hr class="divider">
@@ -329,4 +372,3 @@
     </script>
 </body>
 </html>
-
