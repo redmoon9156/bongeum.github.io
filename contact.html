@@ -17,7 +17,7 @@
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        /* [2. 헤더 및 햄버거 버튼] ----------------------------- */
+        /* [2. 헤더 - 하얀색 불투명 고정] ----------------------- */
         header {
             position: fixed;
             top: 0;
@@ -27,6 +27,8 @@
             justify-content: space-between;
             align-items: center;
             z-index: 2000;
+            /* 스크롤 시 뒤의 내용이 보이지 않도록 불투명 배경 적용 */
+            background-color: #ffffff;
         }
         .logo {
             font-size: 1rem;
@@ -64,6 +66,7 @@
             justify-content: center;
             align-items: flex-start;
             padding-top: 120px;
+            box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-overlay.active {
             top: 0;
@@ -111,6 +114,7 @@
                 justify-content: flex-start;
                 align-items: flex-start;
                 padding: 180px 0 0 80px;
+                box-shadow: none;
             }
             .nav-overlay.active {
                 left: calc(100% - 450px);
@@ -142,7 +146,7 @@
             }
         }
 
-        /* [4. 메인 컨텐츠 영역 - 모바일 위치 및 크기] --------- */
+        /* [4. 메인 컨텐츠 영역] ------------------------------- */
         main {
             min-height: 100vh;
             display: flex;
@@ -180,6 +184,10 @@
             font-size: 15px;
             letter-spacing: .02em;
             color: rgba(0,0,0,.72);
+            transition: color 0.3s;
+        }
+        .contact-link:hover {
+            color: #000;
         }
     </style>
 </head>
@@ -210,7 +218,7 @@
                             <path d="M5.5 8.5 12 13.2 18.5 8.5" stroke="currentColor" stroke-width="1.2"/>
                         </svg>
                     </div>
-                    <a class="contact-link" href="mailto:#">info@bongeum.com</a>
+                    <a class="contact-link" href="mailto:lebongon@gmail.com">lebongon@gmail.com</a>
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon">
@@ -220,7 +228,7 @@
                             <path d="M16.9 7.25h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
                         </svg>
                     </div>
-                    <a class="contact-link" href="#" target="_blank">Instagram</a>
+                    <a class="contact-link" href="https://instagram.com/bongon_craft" target="_blank">bongon_craft</a>
                 </div>
             </section>
         </div>
