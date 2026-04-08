@@ -1,254 +1,235 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bongeum</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: #fff;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            overflow: hidden;
-        }
-        a { text-decoration: none; color: inherit; }
-        ul { list-style: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bongeum</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+background: #fff;
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+overflow: hidden;
+}
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
 
-        /* [2. 헤더 및 햄버거 버튼] */
-        header {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 70px;
-            padding: 30px 20px 30px 20px;
-            display: flex; justify-content: space-between; align-items: center; z-index: 2000;
-            background-color: transparent;
-            pointer-events: auto;
-        }
-        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
-        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+/* [2. 헤더 및 햄버거 버튼] */
+header {
+position: fixed;
+top: 0; width: 100%; padding: 30px 20px;
+display: flex; justify-content: space-between; align-items: center; z-index: 2000;
+}
+.logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+.menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+.menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* [3. 햄버거/네비 오버레이] */
-        .nav-overlay {
-            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
-            background-color: #fff; z-index: 3000;
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
-        }
-        .nav-overlay.active { top: 0; }
-        .nav-list { text-align: center; }
-        .nav-list li { margin: 25px 0; }
-        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+/* [3. 햄버거/네비 오버레이] */
+.nav-overlay {
+position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
+background-color: #fff; z-index: 1500;
+transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+}
+.nav-overlay.active { top: 0; }
+.nav-list { text-align: center; }
+.nav-list li { margin: 25px 0; }
+.nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 슬라이더 전체화면(헤더 아래부터)] */
-        main {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 0;
-            position: relative;
-            background: #000;
-        }
-        .slider {
-            /* 이제 헤더 아래에서 시작! */
-            position: absolute;
-            top: 70px; left: 0; /* 헤더 높이만큼 내려오게 */
-            width: 100vw;
-            height: calc(100vh - 70px);
-            overflow: hidden;
-            background: #000;
-        }
-        .slide-img {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100vw; height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity 1.5s ease-in-out;
-            will-change: opacity;
-            z-index: 1;
-            pointer-events: none;
-            background: none;
-        }
-        .slide-img.active { opacity: 1; z-index: 2; }
+/* [4. 슬라이더 전체화면] */
+main {
+width: 100vw;
+height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+padding: 0;
+position: relative;
+background: #000;
+}
+.slider {
+position: relative;
+width: 100vw;
+height: 100vh;
+overflow: hidden;
+background: #000;
+}
+.slide-img {
+position: absolute;
+top: 0; left: 0;
+width: 100vw; height: 100vh;
+object-fit: cover;
+opacity: 0;
+transition: opacity 1.5s ease-in-out;
+will-change: opacity;
+z-index: 1;
+pointer-events: none;
+}
+.slide-img.active { opacity: 1; z-index: 2; }
 
-        /* [5. 하단 고정 문구 - 선명도 개선] */
-        footer {
-            position: fixed;
-            bottom: 30px;
-            left: 0;
-            width: 100%;
-            background: transparent;
-            color: #d1d1d1;
-            text-align: center;
-            font-size: 10px;
-            letter-spacing: 0.2em;
-            z-index: 3000;
-            font-weight: 300;
-            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            transform: translateZ(0);
-        }
+/* [5. 하단 고정 문구 - 선명도 개선] */
+footer {
+position: fixed;
+bottom: 30px;
+left: 0;
+width: 100%;
+background: transparent;
+color: #d1d1d1;
+text-align: center;
+font-size: 10px;
+letter-spacing: 0.2em; /* [수정] 자간을 조금 더 넓혀 가독성 확보 */
+z-index: 3000;
+font-weight: 300;
 
-        @media (max-width: 1023px) {
-            .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
-            .nav-overlay.active { top: 0; }
-            header { height: 60px; padding: 20px 20px 20px 20px; }
-            .slider {
-                top: 60px;
-                height: calc(100vh - 60px);
-            }
-            .slide-img {
-                object-fit: contain !important;
-                background: none !important;
-                height: 100%; /* 부모 높이 기준 */
-            }
-        }
+/* [수정] 그림자 반경을 4px에서 2px로 줄여 번짐 방지 및 가독성 향상 */
+text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
 
-        @media (min-width: 1024px) {
-            header { padding: 60px 80px; height: 90px; }
-            .logo { font-size: 1.3rem; }
-            .slider {
-                top: 90px;
-                height: calc(100vh - 90px);
-            }
-            .slide-img {
-                height: 100%;
-            }
-            .nav-overlay {
-                top: 0; left: 100%; width: 450px; height: 100vh;
-                border-left: 1px solid #eee;
-                justify-content: flex-start; align-items: flex-start;
-                padding: 180px 0 0 80px;
-                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            }
-            .nav-overlay.active { left: calc(100% - 450px);}
-            .nav-list { text-align: left;}
-        }
-    </style>
+/* [추가] 브라우저 폰트 렌더링 최적화 (뭉침 방지) */
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+transform: translateZ(0); /* 하드웨어 가속 강제로 뿌연 현상 방지 */
+}
+
+@media (max-width: 1023px) {
+.nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
+.nav-overlay.active { top: 0; }
+}
+
+@media (min-width: 1024px) {
+header { padding: 60px 80px; }
+.logo { font-size: 1.3rem; }
+.nav-overlay {
+top: 0; left: 100%; width: 450px; height: 100vh;
+border-left: 1px solid #eee;
+justify-content: flex-start; align-items: flex-start;
+padding: 180px 0 0 80px;
+transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+.nav-overlay.active { left: calc(100% - 450px);}
+.nav-list { text-align: left;}
+}
+</style>
 </head>
 <body>
 
-    <header>
-        <div class="logo"><a href="index.html">Bongeum</a></div>
-        <div class="menu-trigger" id="menuBtn" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </header>
+<header>
+<div class="logo"><a href="index.html">Bongeum</a></div>
+<div class="menu-trigger" id="menuBtn" onclick="toggleMenu()">
+<span></span>
+<span></span>
+<span></span>
+</div>
+</header>
 
-    <nav class="nav-overlay" id="navOverlay">
-        <ul class="nav-list">
-            <li><a href="about.html" onclick="toggleMenu()">About</a></li>
-            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
-            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
-        </ul>
-    </nav>
+<nav class="nav-overlay" id="navOverlay">
+<ul class="nav-list">
+<li><a href="about.html" onclick="toggleMenu()">About</a></li>
+<li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
+<li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+</ul>
+</nav>
 
-    <main>
-        <div class="slider" id="slider"></div>
-    </main>
+<main>
+<div class="slider" id="slider"></div>
+</main>
 
-    <footer>
-        © BONGEUM. All rights reserved.
-    </footer>
+<footer>
+© BONGEUM. All rights reserved.
+</footer>
 
-    <script>
-        const sliderImagesPC = [
-            "images/index/index_images_PC_1.jpeg",
-            "images/index/index_images_PC_2.jpeg",
-            "images/index/index_images_PC_3.jpeg"
-        ];
-        const sliderImagesMobile = [
-            "images/index/index_images_mobile_1.jpeg",
-            "images/index/index_images_mobile_2.jpeg",
-            "images/index/index_images_mobile_3.jpeg"
-        ];
+<script>
+const sliderImagesPC = [
+"images/index/index_images_PC_1.jpeg",
+"images/index/index_images_PC_2.jpeg",
+"images/index/index_images_PC_3.jpeg"
+];
+const sliderImagesMobile = [
+"images/index/index_images_mobile_1.jpeg",
+"images/index/index_images_mobile_2.jpeg",
+"images/index/index_images_mobile_3.jpeg"
+];
 
-        let sliderImages = [];
-        let currentMode = null;
-        const breakpoint = 1024;
-        const slider = document.getElementById('slider');
-        let currentIdx = 0;
-        let slides = [];
-        let timer = null;
+let sliderImages = [];
+let currentMode = null;
+const breakpoint = 1024;
+const slider = document.getElementById('slider');
+let currentIdx = 0;
+let slides = [];
+let timer = null;
 
-        function getCurrentMode() {
-            return window.innerWidth >= breakpoint ? 'pc' : 'mobile';
-        }
+function getCurrentMode() {
+return window.innerWidth >= breakpoint ? 'pc' : 'mobile';
+}
 
-        function createSlides() {
-            slider.innerHTML = '';
-            slides = [];
-            sliderImages.forEach((src, idx) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = '슬라이드 이미지 ' + (idx + 1);
-                img.className = 'slide-img' + (idx === 0 ? ' active' : '');
-                slider.appendChild(img);
-                slides.push(img);
-            });
-        }
+function createSlides() {
+slider.innerHTML = '';
+slides = [];
+sliderImages.forEach((src, idx) => {
+const img = document.createElement('img');
+img.src = src;
+img.alt = '슬라이드 이미지 ' + (idx + 1);
+img.className = 'slide-img' + (idx === 0 ? ' active' : '');
+slider.appendChild(img);
+slides.push(img);
+});
+}
 
-        function showSlide(nextIdx) {
-            slides.forEach((img, idx) => {
-                if (idx === currentIdx) {
-                    img.classList.remove('active');
-                    img.style.zIndex = "1";
-                }
-                if (idx === nextIdx) {
-                    img.classList.add('active');
-                    img.style.zIndex = "2";
-                }
-            });
-            currentIdx = nextIdx;
-        }
+function showSlide(nextIdx) {
+slides.forEach((img, idx) => {
+if (idx === currentIdx) {
+img.classList.remove('active');
+img.style.zIndex = "1";
+}
+if (idx === nextIdx) {
+img.classList.add('active');
+img.style.zIndex = "2";
+}
+});
+currentIdx = nextIdx;
+}
 
-        function nextSlideAuto() {
-            let nextIdx = (currentIdx+1) % slides.length;
-            showSlide(nextIdx);
-            timer = setTimeout(nextSlideAuto, 5000);
-        }
+function nextSlideAuto() {
+let nextIdx = (currentIdx+1) % slides.length;
+showSlide(nextIdx);
+timer = setTimeout(nextSlideAuto, 5000);
+}
 
-        function startSlider() {
-            clearTimeout(timer);
-            createSlides();
-            currentIdx = 0;
-            setTimeout(() => {
-                timer = setTimeout(nextSlideAuto, 5000);
-            }, 350);
-        }
+function startSlider() {
+clearTimeout(timer);
+createSlides();
+currentIdx = 0;
+setTimeout(() => {
+timer = setTimeout(nextSlideAuto, 5000);
+}, 350);
+}
 
-        function checkModeAndUpdate() {
-            const mode = getCurrentMode();
-            if(mode !== currentMode) {
-                currentMode = mode;
-                sliderImages = (mode === 'pc') ? sliderImagesPC : sliderImagesMobile;
-                startSlider();
-            }
-        }
+function checkModeAndUpdate() {
+const mode = getCurrentMode();
+if(mode !== currentMode) {
+currentMode = mode;
+sliderImages = (mode === 'pc') ? sliderImagesPC : sliderImagesMobile;
+startSlider();
+}
+}
 
-        window.addEventListener('resize', checkModeAndUpdate);
-        checkModeAndUpdate();
+window.addEventListener('resize', checkModeAndUpdate);
+checkModeAndUpdate();
 
-        function toggleMenu() {
-            const nav = document.getElementById('navOverlay');
-            const spans = document.querySelectorAll('.menu-trigger span');
-            nav.classList.toggle('active');
-            if(nav.classList.contains('active')) {
-                spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
-        }
-    </script>
+function toggleMenu() {
+const nav = document.getElementById('navOverlay');
+const spans = document.querySelectorAll('.menu-trigger span');
+nav.classList.toggle('active');
+if(nav.classList.contains('active')) {
+spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
+spans[1].style.opacity = '0';
+spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+} else {
+spans[0].style.transform = 'none';
+spans[1].style.opacity = '1';
+spans[2].style.transform = 'none';
+}
+}
+</script>
 
 </body>
 </html>
