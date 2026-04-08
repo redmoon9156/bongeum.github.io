@@ -72,10 +72,7 @@ header {
     header { padding: 60px 80px; }
     .logo { font-size: 1.3rem; }
     .nav-overlay {
-        top: 0;
-        left: 100%;
-        width: 450px;
-        height: 100vh;
+        top: 0; left: 100%; width: 450px; height: 100vh;
         transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
         border-left: 1px solid #eee;
         justify-content: flex-start;
@@ -148,17 +145,13 @@ footer {
     </footer>
     <script>
     document.addEventListener("DOMContentLoaded", function(){
-        // 헤더 삽입 후, header.js가 반드시 삽입된 뒤 실행되도록 보장
         fetch('header.html')
             .then(res => res.text())
             .then(data => {
                 document.getElementById('header').innerHTML = data;
+                // header.js가 완전히 로드된 뒤에만 동작하도록 Onload 처리
                 var script = document.createElement('script');
                 script.src = 'header.js';
-                // 반드시 script 로드 후 이벤트 연결
-                script.onload = function(){
-                    // nothing: 함수를 window.toggleMenu로 만들었으므로 OK
-                };
                 document.body.appendChild(script);
             });
     });
