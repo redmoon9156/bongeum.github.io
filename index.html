@@ -67,21 +67,27 @@
         }
         .slide-img.active { opacity: 1; z-index: 2; }
 
-        /* [5. 하단 고정 문구 - [수정] 밝은 회색 적용] */
+        /* [5. 하단 고정 문구 - 선명도 개선] */
         footer {
             position: fixed;
             bottom: 30px;
             left: 0;
             width: 100%;
             background: transparent;
-            color: #d1d1d1; /* [수정] 흰색(#fff)에서 밝은 회색으로 변경 */
+            color: #d1d1d1;
             text-align: center;
             font-size: 10px;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.2em; /* [수정] 자간을 조금 더 넓혀 가독성 확보 */
             z-index: 3000;
             font-weight: 300;
-            /* 윤곽 그림자 유지 */
-            text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.4); 
+            
+            /* [수정] 그림자 반경을 4px에서 2px로 줄여 번짐 방지 및 가독성 향상 */
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6); 
+            
+            /* [추가] 브라우저 폰트 렌더링 최적화 (뭉침 방지) */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            transform: translateZ(0); /* 하드웨어 가속 강제로 뿌연 현상 방지 */
         }
 
         @media (max-width: 1023px) {
