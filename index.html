@@ -7,18 +7,19 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-background: #fff;
-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-overflow: hidden;
+    background: #fff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow: hidden;
 }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
 /* [2. 헤더 및 햄버거 버튼] */
 header {
-position: fixed;
-top: 0; width: 100%; padding: 30px 20px;
-display: flex; justify-content: space-between; align-items: center; z-index: 2000;
+    position: fixed;
+    top: 0; width: 100%; padding: 30px 20px;
+    display: flex; justify-content: space-between; align-items: center; z-index: 2000;
+    background: none;
 }
 .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
 .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -26,10 +27,10 @@ display: flex; justify-content: space-between; align-items: center; z-index: 200
 
 /* [3. 햄버거/네비 오버레이] */
 .nav-overlay {
-position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
-background-color: #fff; z-index: 1500;
-transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+    position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
+    background-color: #fff; z-index: 1500;
+    transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
 }
 .nav-overlay.active { top: 0; }
 .nav-list { text-align: center; }
@@ -38,75 +39,72 @@ display: flex; justify-content: center; align-items: flex-start; padding-top: 12
 
 /* [4. 슬라이더 전체화면] */
 main {
-width: 100vw;
-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
-padding: 0;
-position: relative;
-background: #000;
+    width: 100vw;
+    margin-top: 70px;              /* ← 추가: 헤더 높이만큼 내림 */
+    height: calc(100vh - 70px);    /* ← 추가: 헤더만큼 높이 뺌 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    position: relative;
+    background: #000;
 }
 .slider {
-position: relative;
-width: 100vw;
-height: 100vh;
-overflow: hidden;
-background: #000;
+    position: relative;
+    width: 100vw;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
 }
 .slide-img {
-position: absolute;
-top: 0; left: 0;
-width: 100vw; height: 100vh;
-object-fit: cover;
-opacity: 0;
-transition: opacity 1.5s ease-in-out;
-will-change: opacity;
-z-index: 1;
-pointer-events: none;
+    position: absolute;
+    top: 0; left: 0;
+    width: 100vw; height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+    will-change: opacity;
+    z-index: 1;
+    pointer-events: none;
 }
 .slide-img.active { opacity: 1; z-index: 2; }
 
 /* [5. 하단 고정 문구 - 선명도 개선] */
 footer {
-position: fixed;
-bottom: 30px;
-left: 0;
-width: 100%;
-background: transparent;
-color: #d1d1d1;
-text-align: center;
-font-size: 10px;
-letter-spacing: 0.2em; /* [수정] 자간을 조금 더 넓혀 가독성 확보 */
-z-index: 3000;
-font-weight: 300;
-
-/* [수정] 그림자 반경을 4px에서 2px로 줄여 번짐 방지 및 가독성 향상 */
-text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
-
-/* [추가] 브라우저 폰트 렌더링 최적화 (뭉침 방지) */
--webkit-font-smoothing: antialiased;
--moz-osx-font-smoothing: grayscale;
-transform: translateZ(0); /* 하드웨어 가속 강제로 뿌연 현상 방지 */
+    position: fixed;
+    bottom: 30px;
+    left: 0;
+    width: 100%;
+    background: transparent;
+    color: #d1d1d1;
+    text-align: center;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    z-index: 3000;
+    font-weight: 300;
+    text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translateZ(0);
 }
 
 @media (max-width: 1023px) {
-.nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
-.nav-overlay.active { top: 0; }
+    .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
+    .nav-overlay.active { top: 0; }
 }
 
 @media (min-width: 1024px) {
-header { padding: 60px 80px; }
-.logo { font-size: 1.3rem; }
-.nav-overlay {
-top: 0; left: 100%; width: 450px; height: 100vh;
-border-left: 1px solid #eee;
-justify-content: flex-start; align-items: flex-start;
-padding: 180px 0 0 80px;
-transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-}
-.nav-overlay.active { left: calc(100% - 450px);}
-.nav-list { text-align: left;}
+    header { padding: 60px 80px; }
+    .logo { font-size: 1.3rem; }
+    .nav-overlay {
+        top: 0; left: 100%; width: 450px; height: 100vh;
+        border-left: 1px solid #eee;
+        justify-content: flex-start; align-items: flex-start;
+        padding: 180px 0 0 80px;
+        transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .nav-overlay.active { left: calc(100% - 450px);}
+    .nav-list { text-align: left;}
 }
 </style>
 </head>
