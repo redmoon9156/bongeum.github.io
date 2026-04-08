@@ -1,4 +1,3 @@
-// 반드시 전역(window) 할당!
 window.toggleMenu = function() {
     const nav = document.getElementById('navOverlay');
     const spans = document.querySelectorAll('.menu-trigger span');
@@ -7,8 +6,7 @@ window.toggleMenu = function() {
         spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
         spans[1].style.opacity = '0';
         spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-    }
-    else {
+    } else {
         spans[0].style.transform = 'none';
         spans[1].style.opacity = '1';
         spans[2].style.transform = 'none';
