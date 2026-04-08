@@ -1,5 +1,5 @@
-// header.js
-function toggleMenu() {
+// 반드시 전역(window) 할당!
+window.toggleMenu = function() {
     const nav = document.getElementById('navOverlay');
     const spans = document.querySelectorAll('.menu-trigger span');
     nav.classList.toggle('active');
@@ -13,4 +13,4 @@ function toggleMenu() {
         spans[1].style.opacity = '1';
         spans[2].style.transform = 'none';
     }
-}
+};
