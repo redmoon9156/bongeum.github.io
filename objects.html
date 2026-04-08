@@ -56,7 +56,7 @@
             .dot.active { background: #000; }
         }
 
-        /* [4. PC 환경 - 대규모 수정 적용] */
+        /* [4. PC 환경 - 수정 반영] */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
@@ -69,41 +69,49 @@
             .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
 
-            /* 3) page-title 씹힘 방지: 여백 및 z-index 조정 */
             main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
             .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; }
 
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; align-items: flex-start; }
             
-            /* 1, 2) 사이드바 폰트 수정: 감각적인 얇은 폰트 및 사이즈 축소 */
+            /* 사이드바 수정: Select by Category 및 제품명 볼드체 */
             .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
-            .side-title { font-size: 0.75rem; color: #888; letter-spacing: 0.2em; text-transform: lowercase; font-weight: 300; } /* 햄버거 메뉴 폰트 느낌 */
-            .side-nav a { display: block; font-size: 0.9rem; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; color: #555; transition: color 0.3s; }
-            .side-nav a:hover { color: #000; }
+            .side-title { font-size: 0.75rem; color: #888; letter-spacing: 0.15em; font-weight: 300; } 
+            .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #000; transition: opacity 0.3s; }
+            .side-nav a:hover { opacity: 0.5; }
 
-            /* 4) PC 이미지 그리드 레이아웃 */
+            /* PC 이미지 그리드 레이아웃 */
             .content-area { flex: 1; display: flex; flex-direction: column; gap: 120px; }
             .pc-category-group { width: 100%; }
             .pc-category-name { 
                 display: block; font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; 
-                text-transform: uppercase; margin-bottom: 20px; text-align: left; /* 좌측 정렬 */
+                text-transform: uppercase; margin-bottom: 20px; text-align: left;
             }
-            .pc-image-grid { display: flex; gap: 20px; align-items: center; }
             
-            /* 정방형 이미지 박스 */
+            /* 이미지와 버튼이 왼쪽부터 밀착되도록 배치 */
+            .pc-image-grid { display: flex; gap: 20px; align-items: center; justify-content: flex-start; }
+            
+            /* 정방형 이미지 박스 크기 고정 (이미지 개수 상관없이 일정하게) */
             .pc-img-item { 
-                flex: 1; aspect-ratio: 1 / 1; background: #f7f7f7; overflow: hidden; 
+                width: calc((100% - 40px) / 3); /* 3개 기준 간격을 뺀 크기 */
+                max-width: 300px; /* 최대 크기 제한 */
+                aspect-ratio: 1 / 1; 
+                background: #f7f7f7; overflow: hidden; 
                 cursor: pointer; transition: opacity 0.3s;
+                flex-shrink: 0; /* 크기 줄어듦 방지 */
             }
-            .pc-img-item:hover { opacity: 0.8; }
             .pc-img-item img { width: 100%; height: 100%; object-fit: cover; }
 
-            /* 더보기 버튼 (...) */
+            /* 더보기 버튼 (...) 상하 중앙 정렬 완벽화 */
             .pc-more-circle {
                 width: 60px; height: 60px; border: 1px solid #eee; border-radius: 50%;
                 display: flex; justify-content: center; align-items: center;
-                cursor: pointer; font-size: 1.2rem; transition: all 0.3s; color: #aaa;
-                flex-shrink: 0; margin-left: 20px;
+                cursor: pointer; transition: all 0.3s; color: #aaa;
+                flex-shrink: 0; line-height: 1; /* 상하 위치 보정 */
+            }
+            .pc-more-circle span {
+                font-size: 1.5rem;
+                transform: translateY(-3px); /* 점 세개의 시각적 상하 중앙 보정 */
             }
             .pc-more-circle:hover { border-color: #000; color: #000; }
 
@@ -135,7 +143,7 @@
 
         <div class="pc-only container">
             <aside class="sidebar">
-                <div class="side-title">select by category</div>
+                <div class="side-title">Select by Category</div>
                 <nav class="side-nav">
                     <a href="kettle.html">Kettle</a>
                     <a href="vase.html">Vase</a>
@@ -167,7 +175,6 @@
         }
     ];
 
-    // 모바일용 슬라이더 생성 함수 (기존 로직 유지)
     function initMobileSlider(item) {
         const container = document.getElementById('mobileContent');
         const section = document.createElement('div');
@@ -199,23 +206,19 @@
         });
     }
 
-    // PC용 그리드 생성 함수 (새로운 로직)
     function initPcGrid(item) {
         const container = document.getElementById('pcContent');
         const group = document.createElement('div');
         group.className = 'pc-category-group';
 
-        // 제목 (좌측 정렬)
         const title = document.createElement('a');
         title.href = item.page;
         title.className = 'pc-category-name';
         title.textContent = item.name;
 
-        // 이미지 그리드 레이아웃
         const grid = document.createElement('div');
         grid.className = 'pc-image-grid';
 
-        // 이미지는 최대 3개까지만 노출
         const displayImages = item.images.slice(0, 3);
         displayImages.forEach(src => {
             const imgItem = document.createElement('div');
@@ -225,10 +228,9 @@
             grid.appendChild(imgItem);
         });
 
-        // 우측 끝에 "..." 버튼 추가
         const moreBtn = document.createElement('div');
         moreBtn.className = 'pc-more-circle';
-        moreBtn.innerHTML = '...';
+        moreBtn.innerHTML = '<span>...</span>';
         moreBtn.onclick = () => { window.location.href = item.page; };
         grid.appendChild(moreBtn);
 
