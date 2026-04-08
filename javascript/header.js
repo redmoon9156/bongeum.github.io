@@ -1,3 +1,4 @@
+// header.js
 function toggleMenu() {
     const nav = document.getElementById('navOverlay');
     const spans = document.querySelectorAll('.menu-trigger span');
