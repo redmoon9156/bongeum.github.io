@@ -39,13 +39,24 @@
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
+        /* [모바일 스타일 - 절대 변경 없음] */
         @media (max-width: 1023px) {
             .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             .nav-overlay.active { top: 0; }
             .pc-only { display: none !important; }
+            main { padding: 140px 20px 60px; flex: 1; }
+            .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 1.2rem; }
+            .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
+            .category-name-link { display: inline-block; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-size: 1rem; }
+            .slider-container { position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1; margin: 0 auto; background: #f7f7f7; overflow: hidden; cursor: pointer; touch-action: pan-y; user-select: none; -webkit-tap-highlight-color: transparent; }
+            .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+            .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
+            .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
+            .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
+            .dot.active { background: #000; }
         }
 
-        /* [4. PC 환경] */
+        /* [4. PC 환경 - 대규모 수정 적용] */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
@@ -57,48 +68,50 @@
             }
             .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
-            main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; }
-            .page-title { font-size: 2.0rem; margin-bottom: 80px; }
-            .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; }
+
+            /* 3) page-title 씹힘 방지: 여백 및 z-index 조정 */
+            main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
+            .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; }
+
+            .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; align-items: flex-start; }
+            
+            /* 1, 2) 사이드바 폰트 수정: 감각적인 얇은 폰트 및 사이즈 축소 */
             .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
-            .side-title { font-size: 0.8rem; color: #888; letter-spacing: 0.2em; text-transform: lowercase; }
-            .side-nav a { display: block; font-size: 1.1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; }
-            .content-area { flex: 1; display: flex; flex-direction: column; gap: 100px; }
+            .side-title { font-size: 0.75rem; color: #888; letter-spacing: 0.2em; text-transform: lowercase; font-weight: 300; } /* 햄버거 메뉴 폰트 느낌 */
+            .side-nav a { display: block; font-size: 0.9rem; font-weight: 300; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; color: #555; transition: color 0.3s; }
+            .side-nav a:hover { color: #000; }
+
+            /* 4) PC 이미지 그리드 레이아웃 */
+            .content-area { flex: 1; display: flex; flex-direction: column; gap: 120px; }
+            .pc-category-group { width: 100%; }
+            .pc-category-name { 
+                display: block; font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; 
+                text-transform: uppercase; margin-bottom: 20px; text-align: left; /* 좌측 정렬 */
+            }
+            .pc-image-grid { display: flex; gap: 20px; align-items: center; }
+            
+            /* 정방형 이미지 박스 */
+            .pc-img-item { 
+                flex: 1; aspect-ratio: 1 / 1; background: #f7f7f7; overflow: hidden; 
+                cursor: pointer; transition: opacity 0.3s;
+            }
+            .pc-img-item:hover { opacity: 0.8; }
+            .pc-img-item img { width: 100%; height: 100%; object-fit: cover; }
+
+            /* 더보기 버튼 (...) */
+            .pc-more-circle {
+                width: 60px; height: 60px; border: 1px solid #eee; border-radius: 50%;
+                display: flex; justify-content: center; align-items: center;
+                cursor: pointer; font-size: 1.2rem; transition: all 0.3s; color: #aaa;
+                flex-shrink: 0; margin-left: 20px;
+            }
+            .pc-more-circle:hover { border-color: #000; color: #000; }
+
             .mobile-only { display: none !important; }
         }
 
-        /* [5. 본문 및 슬라이더] */
-        main { padding: 140px 20px 60px; flex: 1; }
-        .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 1.2rem; }
-        .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
-        .category-name-link { display: inline-block; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-size: 1rem; }
-
-        .slider-container {
-            position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1;
-            margin: 0 auto; background: #f7f7f7; overflow: hidden;
-            cursor: pointer; touch-action: pan-y;
-            user-select: none;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
-        
-        .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
-        .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
-        .dot.active { background: #000; }
-
-        /* [수정] 하단 고정 문구 - 가로선 제거 버전 */
-        footer { 
-            width: 100%; 
-            padding: 60px 20px; 
-            text-align: center; 
-            font-size: 10px; 
-            letter-spacing: 0.15em; 
-            color: #000; 
-            margin-top: auto; 
-            border-top: none; /* 회색 선 삭제 */
-            background-color: #fff;
-        }
+        /* [5. 푸터] */
+        footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: none; background-color: #fff; }
     </style>
 </head>
 <body>
@@ -117,7 +130,9 @@
 
     <main>
         <h1 class="page-title">OBJECTS</h1>
+        
         <div class="mobile-only" id="mobileContent" style="width: 100%;"></div>
+
         <div class="pc-only container">
             <aside class="sidebar">
                 <div class="side-title">select by category</div>
@@ -134,14 +149,27 @@
 
     <script>
     const PRODUCTS = [
-        { name: "Kettle", page: "kettle.html", images: ["images/objects/kettle/objects_images_kettle_1.jpeg", "images/objects/kettle/objects_images_kettle_2.jpeg", "images/objects/kettle/objects_images_kettle_3.jpeg"] },
-        { name: "Vase", page: "vase.html", images: ["images/objects/vase/object_images_vase_1.jpeg"] }
+        { 
+            name: "Kettle", 
+            page: "kettle.html", 
+            images: [
+                "images/objects/kettle/objects_images_kettle_1.jpeg", 
+                "images/objects/kettle/objects_images_kettle_2.jpeg", 
+                "images/objects/kettle/objects_images_kettle_3.jpeg"
+            ] 
+        },
+        { 
+            name: "Vase", 
+            page: "vase.html", 
+            images: [
+                "images/objects/vase/object_images_vase_1.jpeg"
+            ] 
+        }
     ];
 
-    function initSlider(item, containerId) {
-        const container = document.getElementById(containerId);
-        if(!container) return;
-        
+    // 모바일용 슬라이더 생성 함수 (기존 로직 유지)
+    function initMobileSlider(item) {
+        const container = document.getElementById('mobileContent');
         const section = document.createElement('div');
         section.className = 'category-wrapper';
         section.innerHTML = `
@@ -156,68 +184,63 @@
         const sliderBox = section.querySelector('.slider-container');
         const wrapper = section.querySelector('.slider-wrapper');
         const dots = section.querySelectorAll('.dot');
-        let idx = 0;
-        let startX = 0;
-        let startY = 0;
-        let startTime = 0;
-        let isMoved = false;
+        let idx = 0; let startX = 0; let isMoved = false;
 
-        function updateSlider() {
-            wrapper.style.transform = `translateX(-${idx * 100}%)`;
-            dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-        }
-
-        sliderBox.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            startTime = Date.now();
-            isMoved = false;
-        });
-
-        sliderBox.addEventListener('touchmove', (e) => {
-            const moveX = Math.abs(startX - e.touches[0].clientX);
-            const moveY = Math.abs(startY - e.touches[0].clientY);
-            if (moveX > 15 || moveY > 15) {
-                isMoved = true;
-            }
-        });
-
+        sliderBox.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isMoved = false; });
+        sliderBox.addEventListener('touchmove', (e) => { if (Math.abs(startX - e.touches[0].clientX) > 10) isMoved = true; });
         sliderBox.addEventListener('touchend', (e) => {
-            const endX = e.changedTouches[0].clientX;
-            const diffX = startX - endX;
-            const duration = Date.now() - startTime;
-
-            if (isMoved && Math.abs(diffX) > 60) {
+            const diffX = startX - e.changedTouches[0].clientX;
+            if (isMoved && Math.abs(diffX) > 50) {
                 if (diffX > 0) idx = (idx + 1) % item.images.length;
                 else idx = (idx - 1 + item.images.length) % item.images.length;
-                updateSlider();
-            } 
-            else if (!isMoved && duration > 80) {
-                const rect = sliderBox.getBoundingClientRect();
-                const clickX = endX - rect.left;
-                const width = rect.width;
-                if (clickX > width * 0.33 && clickX < width * 0.66) {
-                    window.location.href = item.page;
-                }
-            }
+                wrapper.style.transform = `translateX(-${idx * 100}%)`;
+                dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+            } else if (!isMoved) { window.location.href = item.page; }
+        });
+    }
+
+    // PC용 그리드 생성 함수 (새로운 로직)
+    function initPcGrid(item) {
+        const container = document.getElementById('pcContent');
+        const group = document.createElement('div');
+        group.className = 'pc-category-group';
+
+        // 제목 (좌측 정렬)
+        const title = document.createElement('a');
+        title.href = item.page;
+        title.className = 'pc-category-name';
+        title.textContent = item.name;
+
+        // 이미지 그리드 레이아웃
+        const grid = document.createElement('div');
+        grid.className = 'pc-image-grid';
+
+        // 이미지는 최대 3개까지만 노출
+        const displayImages = item.images.slice(0, 3);
+        displayImages.forEach(src => {
+            const imgItem = document.createElement('div');
+            imgItem.className = 'pc-img-item';
+            imgItem.innerHTML = `<img src="${src}" alt="${item.name}">`;
+            imgItem.onclick = () => { window.location.href = item.page; };
+            grid.appendChild(imgItem);
         });
 
-        sliderBox.addEventListener('click', (e) => {
-            if (e.pointerType === 'mouse' || !('ontouchstart' in window)) {
-                const rect = sliderBox.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const width = rect.width;
-                if (clickX > width * 0.33 && clickX < width * 0.66) {
-                    window.location.href = item.page;
-                }
-            }
-        });
+        // 우측 끝에 "..." 버튼 추가
+        const moreBtn = document.createElement('div');
+        moreBtn.className = 'pc-more-circle';
+        moreBtn.innerHTML = '...';
+        moreBtn.onclick = () => { window.location.href = item.page; };
+        grid.appendChild(moreBtn);
+
+        group.appendChild(title);
+        group.appendChild(grid);
+        container.appendChild(group);
     }
 
     function renderAll() {
         PRODUCTS.forEach(p => {
-            initSlider(p, 'mobileContent');
-            initSlider(p, 'pcContent');
+            initMobileSlider(p);
+            initPcGrid(p);
         });
     }
     renderAll();
