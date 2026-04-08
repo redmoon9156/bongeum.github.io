@@ -17,9 +17,11 @@
         /* [2. 헤더 및 햄버거 버튼] */
         header {
             position: fixed;
-            top: 0; width: 100%; padding: 30px 20px;
+            top: 0; left: 0; width: 100%; height: 70px;
+            padding: 30px 20px 30px 20px;
             display: flex; justify-content: space-between; align-items: center; z-index: 2000;
-            background-color: transparent; /* 헤더는 투명! */
+            background-color: transparent;
+            pointer-events: auto;
         }
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -28,7 +30,7 @@
         /* [3. 햄버거/네비 오버레이] */
         .nav-overlay {
             position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
-            background-color: #fff; z-index: 1500;
+            background-color: #fff; z-index: 3000;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
             display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
         }
@@ -37,7 +39,7 @@
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [4. 슬라이더 전체화면] */
+        /* [4. 슬라이더 전체화면(헤더 아래부터)] */
         main {
             width: 100vw;
             height: 100vh;
@@ -49,23 +51,25 @@
             background: #000;
         }
         .slider {
-            position: relative;
+            /* 이제 헤더 아래에서 시작! */
+            position: absolute;
+            top: 70px; left: 0; /* 헤더 높이만큼 내려오게 */
             width: 100vw;
-            height: 100vh;
+            height: calc(100vh - 70px);
             overflow: hidden;
             background: #000;
         }
         .slide-img {
             position: absolute;
             top: 0; left: 0;
-            width: 100vw; height: 100vh;
+            width: 100vw; height: 100%;
             object-fit: cover;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
             will-change: opacity;
             z-index: 1;
             pointer-events: none;
-            background: none; /* 이미지 뒤 배경 없앰! */
+            background: none;
         }
         .slide-img.active { opacity: 1; z-index: 2; }
 
@@ -91,15 +95,28 @@
         @media (max-width: 1023px) {
             .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             .nav-overlay.active { top: 0; }
+            header { height: 60px; padding: 20px 20px 20px 20px; }
+            .slider {
+                top: 60px;
+                height: calc(100vh - 60px);
+            }
             .slide-img {
                 object-fit: contain !important;
-                background: none !important; /* 모바일에서도 이미지 뒤 배경 X */
+                background: none !important;
+                height: 100%; /* 부모 높이 기준 */
             }
         }
 
         @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
+            header { padding: 60px 80px; height: 90px; }
             .logo { font-size: 1.3rem; }
+            .slider {
+                top: 90px;
+                height: calc(100vh - 90px);
+            }
+            .slide-img {
+                height: 100%;
+            }
             .nav-overlay {
                 top: 0; left: 100%; width: 450px; height: 100vh;
                 border-left: 1px solid #eee;
