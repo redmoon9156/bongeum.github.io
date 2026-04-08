@@ -1,7 +1,7 @@
-<!-- 헤더 구조와 네비만 담아둡니다. (스타일, 스크립트 X) -->
+<!-- header.html - (구조만! 스타일·JS 없음) -->
 <header>
     <div class="logo"><a href="index.html">Bongeum</a></div>
-    <div class="menu-trigger" onclick="toggleMenu()">
+    <div class="menu-trigger" onclick="window.toggleMenu()">
         <span></span>
         <span></span>
         <span></span>
@@ -9,8 +9,8 @@
 </header>
 <nav class="nav-overlay" id="navOverlay">
     <ul class="nav-list">
-        <li><a href="about.html" onclick="toggleMenu()">About</a></li>
-        <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
-        <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+        <li><a href="about.html" onclick="window.toggleMenu()">About</a></li>
+        <li><a href="objects.html" onclick="window.toggleMenu()">Objects</a></li>
+        <li><a href="contact.html" onclick="window.toggleMenu()">Contact</a></li>
     </ul>
 </nav>
