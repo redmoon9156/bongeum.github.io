@@ -5,24 +5,95 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ABOUT | Bongeum</title>
 <style>
-/* [공통 리셋 및 레이아웃만 남겨둠] */
-/* ... (네가 보내준 스타일 그대로) ... */
+/* [1. 공통 리셋 및 기본 설정] ------------------------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
     background-color: #ffffff;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #000;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    /* 푸터 하단 고정을 위한 설정 */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
+a { text-decoration: none; color: inherit; }
+ul { list-style: none; }
+img { max-width: 100%; height: auto; display: block; border-radius: 0; }
+
+/* [2. 헤더 - 하얀색 불투명 고정] ----------------------- */
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 30px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2000;
+    background-color: rgba(255,255,255,0); /* 투명하게! */
+    transition: background 0.3s;
+}
+.logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+.menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+.menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+
+/* [3. 네비게이션 오버레이] ---------------------------- */
+.nav-overlay {
+    position: fixed;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #fff;
+    z-index: 1500;
+    transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 120px;
+    box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
+}
+.nav-overlay.active { top: 0; }
+.nav-list { text-align: center; }
+.nav-list li { margin: 25px 0; }
+.nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
+
+@media (max-width: 1023px) {
+    .nav-overlay {
+        height: 50dvh;
+        top: -50dvh;
+        padding-top: 90px;
+    }
+    .nav-overlay.active { top: 0; }
+}
+
+@media (min-width: 1024px) {
+    header { padding: 60px 80px; }
+    .logo { font-size: 1.3rem; }
+    .nav-overlay {
+        top: 0; left: 100%; width: 450px; height: 100vh;
+        transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+        border-left: 1px solid #eee;
+        justify-content: flex-start;
+        align-items: flex-start;
+        padding: 180px 0 0 80px;
+        box-shadow: none;
+    }
+    .nav-overlay.active { left: calc(100% - 450px);}
+    .nav-list { text-align: left; }
+    .nav-list li { margin: 35px 0;}
+    .nav-list li a { font-size: 1rem;}
+}
+
+/* [4. 메인 콘텐츠 레이아웃] --------------------------- */
 main {
     padding: 140px 20px 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
+    flex: 1; /* 푸터를 하단으로 밀어내기 위해 가변 영역 설정 */
 }
 .page-title {
     width: 100%;
@@ -35,6 +106,7 @@ main {
 }
 .about-image { width: 100%; margin-bottom: 40px; }
 .about-text { width: 100%; text-align: left; font-size: 1rem; line-height: 1.8; letter-spacing: 0.02em; }
+
 @media (min-width: 1024px) {
     main { padding: 220px 10vw 100px; }
     .page-title { font-size: 2.0rem; margin-bottom: 60px;}
@@ -42,6 +114,8 @@ main {
     .about-image { width: 45%; margin-bottom: 0; }
     .about-text { width: 45%; font-size: 1.2rem; }
 }
+
+/* [5. 하단 고정 푸터] --------------------------------- */
 footer {
     width: 100%;
     padding: 30px 20px;
@@ -49,14 +123,14 @@ footer {
     background-color: #fff;
     font-size: 10px;
     letter-spacing: 0.15em;
-    color: #000;
-    margin-top: auto;
+    color: #000; /* [수정] 검은색 글자 적용 */
+    margin-top: auto; /* 페이지 끝에 고정 */
 }
 </style>
 </head>
 <body>
-    <div id="header"></div> <!-- 헤더자리에 header.html이 들어옴! -->
-
+    <!-- 여기서 header는 fetch로 동적으로 삽입됩니다 -->
+    <div id="header"></div>
     <main>
         <h1 class="page-title">ABOUT</h1>
         <div class="content-container">
@@ -72,20 +146,16 @@ footer {
         © BONGEUM. All rights reserved.
     </footer>
     <script>
-    // 헤더 동적 로드
+    // 헤더를 비동기로 불러오고, header.js를 불러옵니다.
     document.addEventListener("DOMContentLoaded", function(){
         fetch('header.html')
-        .then(res => res.text())
-        .then(data => {
-            const headerWrapper = document.getElementById('header');
-            headerWrapper.innerHTML = data;
-
-            // 동적으로 삽입된 스크립트 실행 (이렇게 해야 toggleMenu 바로 동작)
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = data;
-            const script = tempDiv.querySelector('script');
-            if (script) eval(script.innerHTML);
-        });
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById('header').innerHTML = data;
+                var script = document.createElement('script');
+                script.src = 'header.js';
+                document.body.appendChild(script);
+            });
     });
     </script>
 </body>
