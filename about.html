@@ -13,7 +13,6 @@ body {
     color: #000;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
-    /* 푸터 하단 고정을 위한 설정 */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -32,7 +31,7 @@ header {
     justify-content: space-between;
     align-items: center;
     z-index: 2000;
-    background-color: rgba(255,255,255,0); /* 투명하게! */
+    background-color: rgba(255,255,255,0); /* 투명 */
     transition: background 0.3s;
 }
 .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
@@ -73,7 +72,10 @@ header {
     header { padding: 60px 80px; }
     .logo { font-size: 1.3rem; }
     .nav-overlay {
-        top: 0; left: 100%; width: 450px; height: 100vh;
+        top: 0;
+        left: 100%;
+        width: 450px;
+        height: 100vh;
         transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
         border-left: 1px solid #eee;
         justify-content: flex-start;
@@ -93,7 +95,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1; /* 푸터를 하단으로 밀어내기 위해 가변 영역 설정 */
+    flex: 1;
 }
 .page-title {
     width: 100%;
@@ -123,13 +125,12 @@ footer {
     background-color: #fff;
     font-size: 10px;
     letter-spacing: 0.15em;
-    color: #000; /* [수정] 검은색 글자 적용 */
-    margin-top: auto; /* 페이지 끝에 고정 */
+    color: #000;
+    margin-top: auto;
 }
 </style>
 </head>
 <body>
-    <!-- 여기서 header는 fetch로 동적으로 삽입됩니다 -->
     <div id="header"></div>
     <main>
         <h1 class="page-title">ABOUT</h1>
@@ -146,14 +147,18 @@ footer {
         © BONGEUM. All rights reserved.
     </footer>
     <script>
-    // 헤더를 비동기로 불러오고, header.js를 불러옵니다.
     document.addEventListener("DOMContentLoaded", function(){
+        // 헤더 삽입 후, header.js가 반드시 삽입된 뒤 실행되도록 보장
         fetch('header.html')
             .then(res => res.text())
             .then(data => {
                 document.getElementById('header').innerHTML = data;
                 var script = document.createElement('script');
                 script.src = 'header.js';
+                // 반드시 script 로드 후 이벤트 연결
+                script.onload = function(){
+                    // nothing: 함수를 window.toggleMenu로 만들었으므로 OK
+                };
                 document.body.appendChild(script);
             });
     });
