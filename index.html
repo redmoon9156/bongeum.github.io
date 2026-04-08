@@ -14,12 +14,13 @@ body {
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
-/* [2. 헤더 및 햄버거 버튼] */
+/* [2. 헤더 및 햄버거 버튼: 배경 완전 투명] */
 header {
     position: fixed;
     top: 0; width: 100%; padding: 30px 20px;
-    display: flex; justify-content: space-between; align-items: center; z-index: 2000;
-    background: none;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 2000;
+    background: transparent; /* 반드시 투명! */
 }
 .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
 .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -37,39 +38,42 @@ header {
 .nav-list li { margin: 25px 0; }
 .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-/* [4. 슬라이더 전체화면] */
+/* [4. 슬라이더 전체화면: 헤더와 겹치는 구조] */
 main {
     width: 100vw;
-    margin-top: 70px;              /* ← 추가: 헤더 높이만큼 내림 */
-    height: calc(100vh - 70px);    /* ← 추가: 헤더만큼 높이 뺌 */
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0;
     position: relative;
     background: #000;
+    z-index: 1;
 }
 .slider {
-    position: relative;
+    position: absolute;
+    top: 0; left: 0;
     width: 100vw;
-    height: 100%;
+    height: 100vh;
     overflow: hidden;
     background: #000;
+    z-index: 1;
 }
 .slide-img {
     position: absolute;
     top: 0; left: 0;
-    width: 100vw; height: 100%;
+    width: 100vw; height: 100vh;
     object-fit: cover;
     opacity: 0;
     transition: opacity 1.5s ease-in-out;
     will-change: opacity;
     z-index: 1;
     pointer-events: none;
+    background: none;
 }
 .slide-img.active { opacity: 1; z-index: 2; }
 
-/* [5. 하단 고정 문구 - 선명도 개선] */
+/* [5. 하단 고정 문구] */
 footer {
     position: fixed;
     bottom: 30px;
@@ -91,6 +95,10 @@ footer {
 @media (max-width: 1023px) {
     .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
     .nav-overlay.active { top: 0; }
+    .slide-img {
+        object-fit: contain !important;
+        background: #000 !important;
+    }
 }
 
 @media (min-width: 1024px) {
