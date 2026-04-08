@@ -23,7 +23,7 @@ header {
     justify-content: space-between;
     align-items: center;
     z-index: 2000;
-    background: transparent; /* 배경 투명 */
+    background: transparent;
 }
 .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
 .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -41,12 +41,12 @@ header {
 .nav-list li { margin: 25px 0; }
 .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-/* [4. 슬라이더 - dvh 적용으로 하단 잘림 방지] */
+/* [4. 슬라이더] */
 .slider {
     position: fixed;
     left: 0; top: 0;
     width: 100vw; 
-    height: 100dvh; /* 아이폰 툴바 대응 */
+    height: 100dvh; 
     overflow: hidden;
     background: #000;
     z-index: 0;
@@ -65,23 +65,24 @@ header {
 }
 .slide-img.active { opacity: 1; z-index: 2; }
 
-/* [5. 푸터 - 그림자 효과 제거] */
+/* [5. 푸터 - 배경 반응형 설정 수정] */
 footer {
     position: fixed;
     bottom: 30px;
     left: 0;
     width: 100%;
     background: transparent;
-    color: #d1d1d1;
+    
+    /* [핵심 수정] 글자색을 흰색으로 하고 블렌드 모드 차이(difference) 적용 */
+    color: #fff; 
+    mix-blend-mode: difference; 
+
     text-align: center;
     font-size: 10px;
     letter-spacing: 0.2em;
     z-index: 4000;
     font-weight: 300;
-    
-    /* [수정] 그림자 효과(text-shadow) 완전 제거 */
     text-shadow: none; 
-    
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     transform: translateZ(0);
