@@ -1,60 +1,62 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ABOUT | Bongeum</title>
-    <style>
-        body {
-            background-color: #fff;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #000;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        main {
-            padding: 140px 20px 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-        }
-        .page-title {
-            width: 100%;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 40px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-        .about-image { width: 100%; margin-bottom: 40px; }
-        .about-text { width: 100%; text-align: left; font-size: 1rem; line-height: 1.8; letter-spacing: 0.02em; }
-        @media (min-width: 1024px) {
-            main { padding: 220px 10vw 100px; }
-            .page-title { font-size: 2.0rem; margin-bottom: 60px;}
-            .content-container { display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; }
-            .about-image { width: 45%; margin-bottom: 0; }
-            .about-text { width: 45%; font-size: 1.2rem; }
-        }
-        footer {
-            width: 100%;
-            padding: 30px 20px;
-            text-align: center;
-            background: #fff;
-            font-size: 10px;
-            letter-spacing: 0.15em;
-            color: #000;
-            margin-top: auto;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABOUT | Bongeum</title>
+<style>
+/* [공통 리셋 및 레이아웃만 남겨둠] */
+/* ... (네가 보내준 스타일 그대로) ... */
+body {
+    background-color: #ffffff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: #000;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+main {
+    padding: 140px 20px 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+.page-title {
+    width: 100%;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 40px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+.about-image { width: 100%; margin-bottom: 40px; }
+.about-text { width: 100%; text-align: left; font-size: 1rem; line-height: 1.8; letter-spacing: 0.02em; }
+@media (min-width: 1024px) {
+    main { padding: 220px 10vw 100px; }
+    .page-title { font-size: 2.0rem; margin-bottom: 60px;}
+    .content-container { display: flex; flex-direction: row; justify-content: space-between; align-items: center; width: 100%; }
+    .about-image { width: 45%; margin-bottom: 0; }
+    .about-text { width: 45%; font-size: 1.2rem; }
+}
+footer {
+    width: 100%;
+    padding: 30px 20px;
+    text-align: center;
+    background-color: #fff;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: #000;
+    margin-top: auto;
+}
+</style>
 </head>
 <body>
-    <!-- 헤더 동적 삽입 -->
-    <div id="header"></div>
+    <div id="header"></div> <!-- 헤더자리에 header.html이 들어옴! -->
+
     <main>
         <h1 class="page-title">ABOUT</h1>
         <div class="content-container">
@@ -70,17 +72,21 @@
         © BONGEUM. All rights reserved.
     </footer>
     <script>
-        document.addEventListener("DOMContentLoaded", function(){
-            fetch('header.html')
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById('header').innerHTML = data;
-                // header.js 연동
-                var script = document.createElement('script');
-                script.src = 'header.js';
-                document.body.appendChild(script);
-            });
+    // 헤더 동적 로드
+    document.addEventListener("DOMContentLoaded", function(){
+        fetch('header.html')
+        .then(res => res.text())
+        .then(data => {
+            const headerWrapper = document.getElementById('header');
+            headerWrapper.innerHTML = data;
+
+            // 동적으로 삽입된 스크립트 실행 (이렇게 해야 toggleMenu 바로 동작)
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = data;
+            const script = tempDiv.querySelector('script');
+            if (script) eval(script.innerHTML);
         });
+    });
     </script>
 </body>
 </html>
