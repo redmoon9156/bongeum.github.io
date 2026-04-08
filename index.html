@@ -6,10 +6,10 @@
     <title>Bongeum</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background: #fff; 
+        body {
+            background: #fff;
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            overflow: hidden; 
+            overflow: hidden;
         }
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
@@ -45,7 +45,7 @@
             align-items: center;
             padding: 0;
             position: relative;
-            background: #000; 
+            background: #000;
         }
         .slider {
             position: relative;
@@ -58,9 +58,9 @@
             position: absolute;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
-            object-fit: cover; 
+            object-fit: cover;
             opacity: 0;
-            transition: opacity 1.5s ease-in-out; 
+            transition: opacity 1.5s ease-in-out;
             will-change: opacity;
             z-index: 1;
             pointer-events: none;
@@ -77,22 +77,22 @@
             color: #d1d1d1;
             text-align: center;
             font-size: 10px;
-            letter-spacing: 0.2em; /* [수정] 자간을 조금 더 넓혀 가독성 확보 */
+            letter-spacing: 0.2em;
             z-index: 3000;
             font-weight: 300;
-            
-            /* [수정] 그림자 반경을 4px에서 2px로 줄여 번짐 방지 및 가독성 향상 */
-            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6); 
-            
-            /* [추가] 브라우저 폰트 렌더링 최적화 (뭉침 방지) */
+            text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.6);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            transform: translateZ(0); /* 하드웨어 가속 강제로 뿌연 현상 방지 */
+            transform: translateZ(0);
         }
 
         @media (max-width: 1023px) {
             .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             .nav-overlay.active { top: 0; }
+            .slide-img {
+                object-fit: contain !important;
+                background: #000;
+            }
         }
 
         @media (min-width: 1024px) {
@@ -178,11 +178,11 @@
             slides.forEach((img, idx) => {
                 if (idx === currentIdx) {
                     img.classList.remove('active');
-                    img.style.zIndex = "1"; 
+                    img.style.zIndex = "1";
                 }
                 if (idx === nextIdx) {
                     img.classList.add('active');
-                    img.style.zIndex = "2"; 
+                    img.style.zIndex = "2";
                 }
             });
             currentIdx = nextIdx;
@@ -233,3 +233,4 @@
 
 </body>
 </html>
+
