@@ -140,7 +140,6 @@
             letter-spacing: .02em;
             color: rgba(0,0,0,.72);
             transition: opacity 0.3s;
-            /* 텍스트 대문자 강제 변환 방지 */
             text-transform: none; 
         }
 
@@ -160,7 +159,7 @@
 <body>
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
-        <div class="menu-trigger" onclick="toggleMenu()">
+        <div class="menu-trigger" id="menuBtn" onclick="toggleMenu()">
             <span></span>
             <span></span>
             <span></span>
@@ -222,6 +221,18 @@
                 spans[2].style.transform = 'none';
             }
         }
+
+        // 메뉴 영역 밖 클릭 시 닫기 로직
+        document.addEventListener('mousedown', function(e) {
+            const nav = document.getElementById('navOverlay');
+            const menuBtn = document.getElementById('menuBtn');
+            
+            if (nav.classList.contains('active')) {
+                if (!nav.contains(e.target) && !menuBtn.contains(e.target)) {
+                    toggleMenu();
+                }
+            }
+        });
     </script>
 </body>
 </html>
