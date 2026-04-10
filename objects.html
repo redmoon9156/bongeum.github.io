@@ -53,7 +53,6 @@
             .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
             .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
             
-            /* more.jpeg 전용 스타일 (중앙 클릭 가이드가 필요할 경우 사용) */
             .img-more { cursor: pointer; }
 
             .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
@@ -137,15 +136,20 @@
         const section = document.createElement('div');
         section.className = 'category-wrapper';
         
-        // 이미지 배열 끝에 more.jpeg 추가
-        const finalImages = [...item.images, "more.jpeg"];
+        // 1. 첫 번째 이미지의 경로를 기반으로 해당 폴더 내의 more.jpeg 경로 생성
+        const firstImgPath = item.images[0];
+        const folderPath = firstImgPath.substring(0, firstImgPath.lastIndexOf("/") + 1);
+        const moreImgPath = folderPath + "more.jpeg";
+        
+        // 2. 이미지 배열 끝에 해당 폴더의 more.jpeg 추가
+        const finalImages = [...item.images, moreImgPath];
         
         section.innerHTML = `
             <div class="category-name-link">${item.name}</div>
             <div class="slider-container">
                 <div class="slider-wrapper">
                     ${finalImages.map((src, i) => {
-                        const isMore = src === "more.jpeg";
+                        const isMore = src.endsWith("more.jpeg");
                         return `<img src="${src}" class="${isMore ? 'img-more' : ''}" data-index="${i}">`;
                     }).join('')}
                 </div>
@@ -185,14 +189,14 @@
                 wrapper.style.transform = `translateX(-${idx * 100}%)`;
                 dots.forEach((d, i) => d.classList.toggle('active', i === idx));
             } 
-            // 2. 클릭 로직 (가장 마지막 사진이 more.jpeg일 때만 동작)
+            // 2. 클릭 로직 (가장 마지막 사진인 more.jpeg일 때만 중앙 클릭 시 동작)
             else if (!isMoved && duration > 300) { 
-                if (finalImages[idx] === "more.jpeg") {
+                if (finalImages[idx].endsWith("more.jpeg")) {
                     const rect = sliderBox.getBoundingClientRect();
                     const clickX = endX - rect.left;
                     const clickY = endY - rect.top;
                     
-                    // 사진의 정중앙 영역(가로세로 40%~60% 범위) 클릭 시에만 이동
+                    // 사진의 정중앙 영역(가로세로 30%~70% 범위) 클릭 시에만 이동
                     if (clickX > rect.width * 0.3 && clickX < rect.width * 0.7 &&
                         clickY > rect.height * 0.3 && clickY < rect.height * 0.7) {
                         window.location.href = item.page; 
