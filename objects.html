@@ -63,7 +63,7 @@
         /* [4. PC 환경] */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
+            .logo { font-size: 1rem; }
             .nav-overlay {
                 top: 0; left: 100%; width: 450px; height: 100vh;
                 border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
@@ -136,12 +136,9 @@
         const section = document.createElement('div');
         section.className = 'category-wrapper';
         
-        // 1. 첫 번째 이미지의 경로를 기반으로 해당 폴더 내의 more.jpeg 경로 생성
         const firstImgPath = item.images[0];
         const folderPath = firstImgPath.substring(0, firstImgPath.lastIndexOf("/") + 1);
         const moreImgPath = folderPath + "more.jpeg";
-        
-        // 2. 이미지 배열 끝에 해당 폴더의 more.jpeg 추가
         const finalImages = [...item.images, moreImgPath];
         
         section.innerHTML = `
@@ -173,7 +170,8 @@
         sliderBox.addEventListener('touchmove', (e) => { 
             const moveX = Math.abs(startX - e.touches[0].clientX);
             const moveY = Math.abs(startY - e.touches[0].clientY);
-            if (moveX > 10 || moveY > 10) isMoved = true; 
+            // 클릭 감도를 방해하지 않도록 최소 이동값 설정
+            if (moveX > 5 || moveY > 5) isMoved = true; 
         });
 
         sliderBox.addEventListener('touchend', (e) => {
@@ -183,22 +181,22 @@
             const duration = Date.now() - startTime; 
 
             // 1. 스와이프 로직
-            if (isMoved && Math.abs(diffX) > 60) {
+            if (isMoved && Math.abs(diffX) > 40) {
                 if (diffX > 0) idx = (idx + 1) % finalImages.length;
                 else idx = (idx - 1 + finalImages.length) % finalImages.length;
                 wrapper.style.transform = `translateX(-${idx * 100}%)`;
                 dots.forEach((d, i) => d.classList.toggle('active', i === idx));
             } 
-            // 2. 클릭 로직 (가장 마지막 사진인 more.jpeg일 때만 중앙 클릭 시 동작)
-            else if (!isMoved && duration > 300) { 
+            // 2. [수정] 클릭 로직 (감도 0.1초 적용)
+            else if (!isMoved && duration > 100) { 
                 if (finalImages[idx].endsWith("more.jpeg")) {
                     const rect = sliderBox.getBoundingClientRect();
                     const clickX = endX - rect.left;
                     const clickY = endY - rect.top;
                     
-                    // 사진의 정중앙 영역(가로세로 30%~70% 범위) 클릭 시에만 이동
-                    if (clickX > rect.width * 0.3 && clickX < rect.width * 0.7 &&
-                        clickY > rect.height * 0.3 && clickY < rect.height * 0.7) {
+                    // 중앙 클릭 판정 (중앙 범위를 25%~75%로 소폭 확대)
+                    if (clickX > rect.width * 0.25 && clickX < rect.width * 0.75 &&
+                        clickY > rect.height * 0.25 && clickY < rect.height * 0.75) {
                         window.location.href = item.page; 
                     }
                 }
