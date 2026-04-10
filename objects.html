@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OBJECTS | Bongeum</title>
     <style>
-        /* [1. 공통 설정] */
+        /* [1. 공통 설정] - 기존 유지 */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #fff;
@@ -18,7 +18,7 @@
         a { text-decoration: none; color: inherit; display: inline-block; }
         ul { list-style: none; }
 
-        /* [2. 헤더] */
+        /* [2. 헤더] - 기존 유지 */
         header {
             position: fixed; top: 0; width: 100%; padding: 30px 20px;
             display: flex; justify-content: space-between; align-items: center; 
@@ -28,7 +28,7 @@
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* [3. 네비게이션 오버레이] */
+        /* [3. 네비게이션 오버레이] - 기존 유지 */
         .nav-overlay {
             position: fixed; left: 0; width: 100%; background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
@@ -49,18 +49,48 @@
             .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 1.2rem; }
             .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
             .category-name-link { display: inline-block; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-size: 1rem; }
-            .slider-container { position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1; margin: 0 auto; background: #f7f7f7; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-tap-highlight-color: transparent; }
+            .slider-container { position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1; margin: 0 auto; background: transparent; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-tap-highlight-color: transparent; }
             .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
             .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
             
-            .img-more { cursor: pointer; }
+            /* [4. 핵심 추가: 점 세 개 슬라이드 스타일] */
+            .more-slide {
+                width: 100%;
+                height: 100%;
+                flex-shrink: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+                background-color: #fff; /* 깨끗한 흰색 배경 */
+            }
+
+            .more-circle {
+                width: 70px; /* 원의 크기 */
+                height: 70px;
+                border: 1px solid #ddd; /* 테두리 선 */
+                border-radius: 50%; /* 완벽한 원 */
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 5px; /* 점 사이의 간격 */
+                padding-bottom: 3px; /* 점들을 원 중앙에 맞추기 위한 약간의 조정 */
+            }
+
+            .more-circle span {
+                width: 4px; /* 점의 크기 */
+                height: 4px;
+                background-color: #999; /* 점의 색상 */
+                border-radius: 50%; /* 완벽한 점 */
+                display: block;
+            }
 
             .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
             .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
             .dot.active { background: #000; }
         }
 
-        /* [4. PC 환경] */
+        /* [5. PC 환경] - 기존 유지 */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1rem; }
@@ -91,7 +121,10 @@
             .mobile-only { display: none !important; }
         }
 
+        /* [6. 푸터] - 기존 유지 */
         footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: none; background-color: #fff; }
+        
+        img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
 <body>
@@ -136,22 +169,30 @@
         const section = document.createElement('div');
         section.className = 'category-wrapper';
         
-        const firstImgPath = item.images[0];
-        const folderPath = firstImgPath.substring(0, firstImgPath.lastIndexOf("/") + 1);
-        const moreImgPath = folderPath + "more.jpeg";
-        const finalImages = [...item.images, moreImgPath];
+        // 1. 이미지 배열에 특별한 값("MORE_ACTION")을 추가합니다.
+        const sliderItems = [...item.images, "MORE_ACTION"]; 
         
         section.innerHTML = `
             <div class="category-name-link">${item.name}</div>
             <div class="slider-container">
                 <div class="slider-wrapper">
-                    ${finalImages.map((src, i) => {
-                        const isMore = src.endsWith("more.jpeg");
-                        return `<img src="${src}" class="${isMore ? 'img-more' : ''}" data-index="${i}">`;
+                    ${sliderItems.map((src, i) => {
+                        if (src === "MORE_ACTION") {
+                            // [수정 포인트] 이미지 대신 점 세 개 HTML 구조를 직접 삽입
+                            return `
+                            <div class="more-slide" data-index="${i}">
+                                <div class="more-circle">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </div>
+                            </div>`;
+                        }
+                        return `<img src="${src}" data-index="${i}">`;
                     }).join('')}
                 </div>
             </div>
-            <div class="dots">${finalImages.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}"></div>`).join('')}</div>
+            <div class="dots">${sliderItems.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}"></div>`).join('')}</div>
         `;
         container.appendChild(section);
 
@@ -170,35 +211,26 @@
         sliderBox.addEventListener('touchmove', (e) => { 
             const moveX = Math.abs(startX - e.touches[0].clientX);
             const moveY = Math.abs(startY - e.touches[0].clientY);
-            // 클릭 감도를 방해하지 않도록 최소 이동값 설정
             if (moveX > 5 || moveY > 5) isMoved = true; 
         });
 
         sliderBox.addEventListener('touchend', (e) => {
             const endX = e.changedTouches[0].clientX;
-            const endY = e.changedTouches[0].clientY;
             const diffX = startX - endX;
             const duration = Date.now() - startTime; 
 
-            // 1. 스와이프 로직
+            // 스와이프 로직 - 0.5초(500ms) cubic-bezier 이동
             if (isMoved && Math.abs(diffX) > 40) {
-                if (diffX > 0) idx = (idx + 1) % finalImages.length;
-                else idx = (idx - 1 + finalImages.length) % finalImages.length;
+                if (diffX > 0) idx = (idx + 1) % sliderItems.length;
+                else idx = (idx - 1 + sliderItems.length) % sliderItems.length;
                 wrapper.style.transform = `translateX(-${idx * 100}%)`;
                 dots.forEach((d, i) => d.classList.toggle('active', i === idx));
             } 
-            // 2. [수정] 클릭 로직 (감도 0.1초 적용)
+            // 0.1초 반응형 클릭 로직
             else if (!isMoved && duration > 100) { 
-                if (finalImages[idx].endsWith("more.jpeg")) {
-                    const rect = sliderBox.getBoundingClientRect();
-                    const clickX = endX - rect.left;
-                    const clickY = endY - rect.top;
-                    
-                    // 중앙 클릭 판정 (중앙 범위를 25%~75%로 소폭 확대)
-                    if (clickX > rect.width * 0.25 && clickX < rect.width * 0.75 &&
-                        clickY > rect.height * 0.25 && clickY < rect.height * 0.75) {
-                        window.location.href = item.page; 
-                    }
+                if (sliderItems[idx] === "MORE_ACTION") {
+                    // 점 세 개 슬라이드일 때만 링크 연결
+                    window.location.href = item.page; 
                 }
             }
         });
