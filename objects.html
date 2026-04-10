@@ -65,16 +65,18 @@
             }
 
             .more-circle {
-                width: 70px;
-                height: 70px;
-                border: 1px solid #000;
+                /* [수정 포인트 1: 지름 30% 축소] 기존 70px -> 50px */
+                width: 50px;
+                height: 50px;
+                /* [수정 포인트 2: 감각적인 연한 회색] 투박한 검은색 대신 흐릿하고 은은한 회색 적용 */
+                border: 1px solid #e0e0e0; 
                 border-radius: 50%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 gap: 5px;
-                /* [수정 포인트: 미묘하게 위에 있는 점들을 아래로 내림] */
-                padding-top: 2px; /* 위쪽에 패딩을 주어 점들을 아래로 미세하게 밉니다. */
+                /* [미세 정렬 유지] */
+                padding-top: 1px; /* 원이 작아졌으므로 패딩값도 소폭 조정 */
             }
 
             .more-circle span {
@@ -90,7 +92,7 @@
             .dot.active { background: #000; }
         }
 
-        /* [PC 환경 - 기존 유지] */
+        /* [5. PC 환경 - 기존 유지] */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1rem; }
@@ -121,9 +123,10 @@
             .mobile-only { display: none !important; }
         }
 
+        /* [6. 푸터 - 기존 유지] */
         footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: none; background-color: #fff; }
         
-        img{ -webkit-user-drag: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+        img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
 <body>
@@ -224,7 +227,7 @@
                 wrapper.style.transform = `translateX(-${idx * 100}%)`;
                 dots.forEach((d, i) => d.classList.toggle('active', i === idx));
             } 
-            // 클릭 감도 0.05초 적용
+            // 클릭 감도 0.05초 적용 (기존 유지)
             else if (!isMoved && duration > 50) { 
                 if (sliderItems[idx] === "MORE_ACTION") {
                     window.location.href = item.page; 
