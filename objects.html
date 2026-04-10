@@ -52,7 +52,7 @@
             .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
             .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
             
-            /* [수정: 점 세 개 슬라이드 블랙 테마] */
+            /* [점 세 개 슬라이드 블랙 테마] */
             .more-slide {
                 width: 100%;
                 height: 100%;
@@ -67,19 +67,20 @@
             .more-circle {
                 width: 70px;
                 height: 70px;
-                border: 1px solid #000; /* [변경] 검은색 선 */
+                border: 1px solid #000;
                 border-radius: 50%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 gap: 5px;
-                padding-bottom: 3px;
+                /* [수정 포인트: 미묘하게 위에 있는 점들을 아래로 내림] */
+                padding-top: 2px; /* 위쪽에 패딩을 주어 점들을 아래로 미세하게 밉니다. */
             }
 
             .more-circle span {
                 width: 4px;
                 height: 4px;
-                background-color: #000; /* [변경] 검은색 점 */
+                background-color: #000;
                 border-radius: 50%;
                 display: block;
             }
@@ -122,7 +123,7 @@
 
         footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: none; background-color: #fff; }
         
-        img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
+        img{ -webkit-user-drag: none; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
 <body>
@@ -223,7 +224,7 @@
                 wrapper.style.transform = `translateX(-${idx * 100}%)`;
                 dots.forEach((d, i) => d.classList.toggle('active', i === idx));
             } 
-            // [수정: 클릭 감도 0.05초 적용]
+            // 클릭 감도 0.05초 적용
             else if (!isMoved && duration > 50) { 
                 if (sliderItems[idx] === "MORE_ACTION") {
                     window.location.href = item.page; 
