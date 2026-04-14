@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>OBJECTS | Bongeum</title>
     <style>
-        /* [1. 공통 설정] - 기존 유지 */
+        /* [1. 공통 설정] */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #fff;
@@ -18,7 +18,7 @@
         a { text-decoration: none; color: inherit; display: inline-block; }
         ul { list-style: none; }
 
-        /* [2. 헤더] - 기존 유지 */
+        /* [2. 헤더 - 모바일 기준] */
         header {
             position: fixed; top: 0; width: 100%; padding: 30px 20px;
             display: flex; justify-content: space-between; align-items: center; 
@@ -28,7 +28,7 @@
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
-        /* [3. 네비게이션 오버레이] - 기존 유지 */
+        /* [3. 네비게이션 오버레이 - 모바일 기준] */
         .nav-overlay {
             position: fixed; left: 0; width: 100%; background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
@@ -65,78 +65,57 @@
             .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
             .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
             
-            /* [점 세 개 슬라이드 스타일] */
-            .more-slide {
-                width: 100%;
-                height: 100%;
-                flex-shrink: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-                background-color: #fff;
-            }
-
-            .more-circle {
-                width: 50px;
-                height: 50px;
-                border: 1px solid #e0e0e0; 
-                border-radius: 50%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 5px;
-                padding-top: 1px; 
-            }
-
-            .more-circle span {
-                /* [수정: 점 색상을 한 단계 더 연한 회색으로 변경] #555 -> #888 적용 */
-                width: 3.4px; 
-                height: 3.4px;
-                background-color: #888; /* 은은하고 감각적인 회색 */
-                border-radius: 50%;
-                display: block;
-            }
-
+            .more-slide { width: 100%; height: 100%; flex-shrink: 0; display: flex; justify-content: center; align-items: center; cursor: pointer; background-color: #fff; }
+            .more-circle { width: 50px; height: 50px; border: 1px solid #e0e0e0; border-radius: 50%; display: flex; justify-content: center; align-items: center; gap: 5px; padding-top: 1px; }
+            .more-circle span { width: 3.4px; height: 3.4px; background-color: #888; border-radius: 50%; display: block; }
             .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
             .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
             .dot.active { background: #000; }
         }
 
-        /* [5. PC 환경] - 절대 수정 금지 (원본 유지) */
+        /* [5. PC 환경 - About.html 기준 적용] */
         @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1rem; }
+            header { padding: 60px 80px; } /* About.html 기준 패딩 */
+            .logo { font-size: 1.3rem; } /* About.html 기준 로고 크기 */
+            
             .nav-overlay {
                 top: 0; left: 100%; width: 450px; height: 100vh;
-                border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
+                transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                border-left: 1px solid #eee;
+                justify-content: flex-start;
+                align-items: flex-start;
+                padding: 180px 0 0 80px; /* About.html 기준 패딩 */
                 box-shadow: none;
             }
             .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
+            .nav-list li { margin: 35px 0; } /* About.html 기준 리스트 간격 */
+            .nav-list li a { font-size: 1rem; font-weight: 300; } /* About.html 기준 글자 크기 */
+
             main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
             .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; }
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; align-items: flex-start; }
+            
             .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
             .side-title { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; font-weight: 300; margin-bottom: 5px; } 
             .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #000; transition: opacity 0.3s; }
             .side-nav a:hover { opacity: 0.5; }
+
             .content-area { flex: 1; display: flex; flex-direction: column; gap: 120px; }
             .pc-category-group { width: 100%; }
             .pc-category-name { display: block; font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-align: left; }
             .pc-image-grid { display: flex; gap: 20px; align-items: center; justify-content: flex-start; }
             .pc-img-item { width: calc((100% - 40px) / 3); max-width: 300px; aspect-ratio: 1 / 1; background: #f7f7f7; overflow: hidden; cursor: pointer; transition: opacity 0.3s; flex-shrink: 0; }
             .pc-img-item img { width: 100%; height: 100%; object-fit: cover; }
+            
             .pc-more-circle { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s; color: #aaa; flex-shrink: 0; line-height: 1; }
             .pc-more-circle span { font-size: 1.5rem; transform: translateY(-3px); }
             .pc-more-circle:hover { border-color: #000; color: #000; }
+            
             .mobile-only { display: none !important; }
         }
 
-        /* [6. 푸터] - 기존 유지 */
         footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: none; background-color: #fff; }
-        
         img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
@@ -181,23 +160,14 @@
         const container = document.getElementById('mobileContent');
         const section = document.createElement('div');
         section.className = 'category-wrapper';
-        
         const sliderItems = [...item.images, "MORE_ACTION"]; 
-        
         section.innerHTML = `
             <a href="${item.page}" class="category-name-link">${item.name}</a>
             <div class="slider-container">
                 <div class="slider-wrapper">
                     ${sliderItems.map((src, i) => {
                         if (src === "MORE_ACTION") {
-                            return `
-                            <div class="more-slide" data-index="${i}">
-                                <div class="more-circle">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                            </div>`;
+                            return `<div class="more-slide" data-index="${i}"><div class="more-circle"><span></span><span></span><span></span></div></div>`;
                         }
                         return `<img src="${src}" data-index="${i}">`;
                     }).join('')}
@@ -212,39 +182,27 @@
         const dots = section.querySelectorAll('.dot');
         let idx = 0; let startX = 0; let startY = 0; let startTime = 0; let isMoved = false;
 
-        sliderBox.addEventListener('touchstart', (e) => { 
-            startX = e.touches[0].clientX; 
-            startY = e.touches[0].clientY;
-            startTime = Date.now(); 
-            isMoved = false; 
-        });
-
+        sliderBox.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; startTime = Date.now(); isMoved = false; });
         sliderBox.addEventListener('touchmove', (e) => { 
             const moveX = Math.abs(startX - e.touches[0].clientX);
             const moveY = Math.abs(startY - e.touches[0].clientY);
             if (moveX > 3 || moveY > 3) isMoved = true; 
         });
-
         sliderBox.addEventListener('touchend', (e) => {
             const endX = e.changedTouches[0].clientX;
             const diffX = startX - endX;
             const duration = Date.now() - startTime; 
-
             if (isMoved && Math.abs(diffX) > 40) {
                 if (diffX > 0) idx = (idx + 1) % sliderItems.length;
                 else idx = (idx - 1 + sliderItems.length) % sliderItems.length;
                 wrapper.style.transform = `translateX(-${idx * 100}%)`;
                 dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-            } 
-            else if (!isMoved && duration > 50) { 
-                if (sliderItems[idx] === "MORE_ACTION") {
-                    window.location.href = item.page; 
-                }
+            } else if (!isMoved && duration > 50) { 
+                if (sliderItems[idx] === "MORE_ACTION") window.location.href = item.page; 
             }
         });
     }
 
-    // PC 전용 함수 (원본 유지)
     function initPcGrid(item) {
         const container = document.getElementById('pcContent');
         const group = document.createElement('div');
@@ -259,12 +217,7 @@
         container.appendChild(group);
     }
 
-    function renderAll() {
-        PRODUCTS.forEach(p => {
-            initMobileSlider(p);
-            initPcGrid(p);
-        });
-    }
+    function renderAll() { PRODUCTS.forEach(p => { initMobileSlider(p); initPcGrid(p); }); }
     renderAll();
 
     function toggleMenu() {
