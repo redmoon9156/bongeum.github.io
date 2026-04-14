@@ -35,6 +35,16 @@
             box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-overlay.active { top: 0; }
+        
+        /* [추가] 메뉴 밖 영역 보호를 위한 투명막 */
+        .overlay-dimmer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0); /* 투명하게 */
+            z-index: 1400; /* 메뉴 오버레이(1500)보다는 낮고 콘텐츠보다는 높게 */
+            display: none;
+        }
+        .overlay-dimmer.active { display: block; }
+
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
@@ -45,12 +55,8 @@
             .nav-overlay.active { top: 0; }
             .pc-only { display: none !important; }
             main { padding: 140px 20px 60px; flex: 1; }
-            
             .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; font-size: 1.2rem; cursor: pointer; }
-            
-            /* [수정] Kettle 글자색을 검정(#000)으로 변경 */
             .sub-title { width: 100%; text-align: center; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 0.9rem; color: #000; cursor: pointer; }
-            
             .breadcrumb { display: none; }
             .mobile-grid { width: 100%; display: flex; flex-direction: column; gap: 60px; }
             .product-item { width: 100%; text-align: center; cursor: pointer; }
@@ -60,7 +66,7 @@
             .info-box .desc { font-size: 12px; color: #666; line-height: 1.6; font-weight: 300; padding: 0 10px; }
         }
 
-        /* [4. PC 레이아웃 - 원본 유지] */
+        /* [4. PC 레이아웃] */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
@@ -71,32 +77,28 @@
                 box-shadow: none;
             }
             .nav-overlay.active { left: calc(100% - 450px); }
+            
+            /* PC에서도 바깥 영역을 막기 위해 디머 위치 조정 */
+            .overlay-dimmer { width: calc(100% - 450px); height: 100vh; }
+
             .nav-list { text-align: left; }
             .nav-list li { margin: 35px 0; }
             .nav-list li a { font-size: 1rem; font-weight: 300; }
-
             main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
-            
             .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; cursor: pointer; transition: opacity 0.3s; }
             .page-title:hover { opacity: 0.5; }
-            
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; align-items: flex-start; }
-            
             .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
             .side-title { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; font-weight: 300; margin-bottom: 5px; } 
             .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #000; transition: opacity 0.3s; }
             .side-nav a.active { text-decoration: underline; text-underline-offset: 8px; }
             .side-nav a:hover { opacity: 0.5; }
-
             .content-area { flex: 1; display: flex; flex-direction: column; }
-            
             .breadcrumb { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; margin-bottom: 10px; text-transform: capitalize; font-weight: 300; }
             .breadcrumb a:hover { color: #000; }
             .breadcrumb span { margin: 0 8px; }
-
             .sub-title { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-align: left; cursor: pointer; transition: opacity 0.3s; }
             .sub-title:hover { opacity: 0.5; }
-
             .pc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 20px; width: 100%; }
             .product-item { cursor: pointer; transition: opacity 0.3s; }
             .product-item:hover { opacity: 0.7; }
@@ -104,7 +106,6 @@
             .img-box img { width: 100%; height: 100%; object-fit: cover; }
             .info-box .name { font-size: 14px; font-weight: 600; margin-bottom: 5px; text-transform: uppercase; }
             .info-box .desc { font-size: 12px; color: #666; line-height: 1.5; }
-
             .mobile-only { display: none !important; }
         }
 
@@ -118,6 +119,8 @@
         <div class="menu-trigger" id="menuBtn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
     </header>
 
+    <div id="overlayDimmer" class="overlay-dimmer" onclick="toggleMenu()"></div>
+
     <nav class="nav-overlay" id="navOverlay">
         <ul class="nav-list">
             <li><a href="about.html" onclick="toggleMenu()">About</a></li>
@@ -128,9 +131,7 @@
 
     <main>
         <h1 class="page-title" onclick="location.href='objects.html'">OBJECTS</h1>
-        
         <h2 class="sub-title mobile-only" onclick="location.href='kettle.html'">KETTLE</h2>
-
         <div class="container">
             <aside class="sidebar pc-only">
                 <div class="side-title">Select by Category</div>
@@ -139,13 +140,11 @@
                     <a href="vase.html">Vase</a>
                 </nav>
             </aside>
-
             <section class="content-area">
                 <div class="breadcrumb pc-only">
                     <a href="objects.html">Objects</a> <span>&gt;</span> Kettle
                 </div>
                 <h2 class="sub-title pc-only" onclick="location.href='kettle.html'">KETTLE</h2>
-
                 <div class="pc-grid pc-only" id="pcProductList"></div>
                 <div class="mobile-grid mobile-only" id="mobileProductList"></div>
             </section>
@@ -184,23 +183,26 @@
 
     function toggleMenu() {
         const nav = document.getElementById('navOverlay');
+        const dimmer = document.getElementById('overlayDimmer');
         const spans = document.querySelectorAll('.menu-trigger span');
+        
         nav.classList.toggle('active');
+        dimmer.classList.toggle('active');
+        
         if(nav.classList.contains('active')) {
             spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
             spans[1].style.opacity = '0';
             spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+            document.body.style.overflow = 'hidden'; // 메뉴 열릴 때 배경 스크롤 방지
         } else {
-            spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
+            spans[0].style.transform = 'none'; 
+            spans[1].style.opacity = '1'; 
+            spans[2].style.transform = 'none';
+            document.body.style.overflow = ''; // 메뉴 닫힐 때 스크롤 복구
         }
     }
-    document.addEventListener('mousedown', function(e) {
-        const nav = document.getElementById('navOverlay');
-        const menuBtn = document.getElementById('menuBtn');
-        if (nav.classList.contains('active')) {
-            if (!nav.contains(e.target) && !menuBtn.contains(e.target)) toggleMenu();
-        }
-    });
+
+    // [기존 mousedown 방식은 제거하고 더 확실한 클릭막기 방식을 사용합니다]
     </script>
 </body>
 </html>
