@@ -18,7 +18,7 @@
         a { text-decoration: none; color: inherit; display: inline-block; }
         ul { list-style: none; }
 
-        /* [2. 헤더 - About/Objects 기준 완벽 동기화] */
+        /* [2. 헤더 - 공통 가이드] */
         header {
             position: fixed; top: 0; width: 100%; padding: 30px 20px;
             display: flex; justify-content: space-between; align-items: center; 
@@ -39,7 +39,7 @@
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [3. 모바일 전용 스타일] */
+        /* [3. 모바일 레이아웃 - 요청 반영] */
         @media (max-width: 1023px) {
             .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             .nav-overlay.active { top: 0; }
@@ -47,24 +47,23 @@
             main { padding: 140px 20px 60px; flex: 1; }
             
             /* 메인 타이틀 (Objects) */
-            .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 5px; font-size: 1.2rem; cursor: pointer; }
+            .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; font-size: 1.2rem; cursor: pointer; }
             
-            /* [수정 1] 브레드크럼 위치 및 스타일 (첫글자 대문자) */
-            .breadcrumb { text-align: center; font-size: 10px; color: #888; margin-bottom: 15px; text-transform: capitalize; font-weight: 300; }
-            .breadcrumb span { margin: 0 5px; }
+            /* [수정] 서브 제목 (Kettle) 위치 조정: Objects 바로 아래 */
+            .sub-title { width: 100%; text-align: center; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 0.9rem; color: #888; cursor: pointer; }
+            
+            /* [수정] 모바일 브레드크럼(>) 삭제 */
+            .breadcrumb { display: none; }
 
-            /* [수정 2] 서브 제목 위치 (이미지 바로 위) */
-            .sub-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 30px; font-size: 1rem; color: #000; cursor: pointer; }
-            
-            .mobile-grid { width: 100%; display: flex; flex-direction: column; gap: 50px; }
-            .product-item { width: 100%; text-align: left; cursor: pointer; }
-            .img-box { width: 100%; aspect-ratio: 1 / 1; background: #f7f7f7; margin-bottom: 12px; overflow: hidden; }
+            .mobile-grid { width: 100%; display: flex; flex-direction: column; gap: 60px; }
+            .product-item { width: 100%; text-align: center; cursor: pointer; }
+            .img-box { width: 100%; aspect-ratio: 1 / 1; background: #f7f7f7; margin-bottom: 15px; overflow: hidden; }
             .img-box img { width: 100%; height: 100%; object-fit: cover; }
-            .info-box .name { font-size: 13px; font-weight: 600; margin-bottom: 4px; text-transform: uppercase; }
-            .info-box .desc { font-size: 11px; color: #666; line-height: 1.5; font-weight: 300; }
+            .info-box .name { font-size: 14px; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
+            .info-box .desc { font-size: 12px; color: #666; line-height: 1.6; font-weight: 300; padding: 0 10px; }
         }
 
-        /* [4. PC 환경 - 마스터 가이드 완벽 준수] */
+        /* [4. PC 레이아웃 - 만족하신 상태 그대로 유지] */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
@@ -79,16 +78,13 @@
             .nav-list li { margin: 35px 0; }
             .nav-list li a { font-size: 1rem; font-weight: 300; }
 
-            /* 메인 위치 고정 */
             main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
             
-            /* 메인 타이틀 (Objects) */
             .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; cursor: pointer; transition: opacity 0.3s; }
             .page-title:hover { opacity: 0.5; }
             
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; align-items: flex-start; }
             
-            /* 사이드바 스타일 및 위치 고정 */
             .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
             .side-title { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; font-weight: 300; margin-bottom: 5px; } 
             .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #000; transition: opacity 0.3s; }
@@ -97,17 +93,13 @@
 
             .content-area { flex: 1; display: flex; flex-direction: column; }
             
-            /* [수정 3] 브레드크럼 스타일 교정 (첫글자 대문자, Select by Category와 동일한 크기) */
             .breadcrumb { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; margin-bottom: 10px; text-transform: capitalize; font-weight: 300; }
-            .breadcrumb a { transition: color 0.3s; }
             .breadcrumb a:hover { color: #000; }
             .breadcrumb span { margin: 0 8px; }
 
-            /* [수정 4] 서브 제목 위치 (이미지 그리드 바로 위) 및 스타일 */
             .sub-title { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-align: left; cursor: pointer; transition: opacity 0.3s; }
             .sub-title:hover { opacity: 0.5; }
 
-            /* 3열 정방형 그리드 */
             .pc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px 20px; width: 100%; }
             .product-item { cursor: pointer; transition: opacity 0.3s; }
             .product-item:hover { opacity: 0.7; }
@@ -139,6 +131,8 @@
 
     <main>
         <h1 class="page-title" onclick="location.href='objects.html'">OBJECTS</h1>
+        
+        <h2 class="sub-title mobile-only" onclick="location.href='kettle.html'">KETTLE</h2>
 
         <div class="container">
             <aside class="sidebar pc-only">
@@ -150,10 +144,10 @@
             </aside>
 
             <section class="content-area">
-                <div class="breadcrumb">
+                <div class="breadcrumb pc-only">
                     <a href="objects.html">Objects</a> <span>&gt;</span> Kettle
                 </div>
-                <h2 class="sub-title" onclick="location.href='kettle.html'">KETTLE</h2>
+                <h2 class="sub-title pc-only" onclick="location.href='kettle.html'">KETTLE</h2>
 
                 <div class="pc-grid pc-only" id="pcProductList"></div>
                 <div class="mobile-grid mobile-only" id="mobileProductList"></div>
