@@ -75,8 +75,8 @@
 
         /* [5. PC 환경 - About.html 기준 적용] */
         @media (min-width: 1024px) {
-            header { padding: 60px 80px; } /* About.html 기준 패딩 */
-            .logo { font-size: 1.3rem; } /* About.html 기준 로고 크기 */
+            header { padding: 60px 80px; }
+            .logo { font-size: 1.3rem; }
             
             .nav-overlay {
                 top: 0; left: 100%; width: 450px; height: 100vh;
@@ -84,13 +84,13 @@
                 border-left: 1px solid #eee;
                 justify-content: flex-start;
                 align-items: flex-start;
-                padding: 180px 0 0 80px; /* About.html 기준 패딩 */
+                padding: 180px 0 0 80px;
                 box-shadow: none;
             }
             .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0; } /* About.html 기준 리스트 간격 */
-            .nav-list li a { font-size: 1rem; font-weight: 300; } /* About.html 기준 글자 크기 */
+            .nav-list li { margin: 35px 0; }
+            .nav-list li a { font-size: 1rem; font-weight: 300; }
 
             main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
             .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; }
@@ -102,6 +102,18 @@
             .side-nav a:hover { opacity: 0.5; }
 
             .content-area { flex: 1; display: flex; flex-direction: column; gap: 120px; }
+
+            /* [수정] PC 전용 브레드크럼 스타일 - kettle.html과 완벽 동기화 */
+            .breadcrumb { 
+                font-size: 0.9rem; 
+                color: #888; 
+                letter-spacing: 0.1em; 
+                margin-bottom: 10px; 
+                text-transform: capitalize; 
+                font-weight: 300; 
+                text-align: left;
+            }
+
             .pc-category-group { width: 100%; }
             .pc-category-name { display: block; font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-align: left; }
             .pc-image-grid { display: flex; gap: 20px; align-items: center; justify-content: flex-start; }
@@ -144,7 +156,10 @@
                     <a href="vase.html">Vase</a>
                 </nav>
             </aside>
-            <section class="content-area" id="pcContent"></section>
+            <section class="content-area">
+                <div class="breadcrumb pc-only">Objects</div>
+                <div id="pcContent"></div>
+            </section>
         </div>
     </main>
 
