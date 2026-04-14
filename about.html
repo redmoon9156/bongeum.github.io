@@ -13,7 +13,6 @@ font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 color: #000;
 -webkit-font-smoothing: antialiased;
 overflow-x: hidden;
-/* 푸터 하단 고정을 위한 설정 */
 display: flex;
 flex-direction: column;
 min-height: 100vh;
@@ -22,7 +21,7 @@ a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 img { max-width: 100%; height: auto; display: block; border-radius: 0; }
 
-/* [2. 헤더 - 하얀색 불투명 고정] ----------------------- */
+/* [2. 헤더] ----------------------- */
 header {
 position: fixed;
 top: 0;
@@ -35,7 +34,7 @@ z-index: 2000;
 background-color: #ffffff;
 }
 .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-.menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
+.menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2001; }
 .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
 /* [3. 네비게이션 오버레이] ---------------------------- */
@@ -55,6 +54,16 @@ padding-top: 120px;
 box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
 }
 .nav-overlay.active { top: 0; }
+
+/* [추가] 외부 클릭 방지용 투명 방어막 */
+.overlay-dimmer {
+position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+background: rgba(255, 255, 255, 0); 
+z-index: 1400; 
+display: none;
+}
+.overlay-dimmer.active { display: block; }
+
 .nav-list { text-align: center; }
 .nav-list li { margin: 25px 0; }
 .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
@@ -81,6 +90,10 @@ padding: 180px 0 0 80px;
 box-shadow: none;
 }
 .nav-overlay.active { left: calc(100% - 450px);}
+
+/* PC 디머 위치 조정 */
+.overlay-dimmer { width: calc(100% - 450px); height: 100vh; }
+
 .nav-list { text-align: left; }
 .nav-list li { margin: 35px 0;}
 .nav-list li a { font-size: 1rem;}
@@ -92,7 +105,7 @@ padding: 140px 20px 60px;
 display: flex;
 flex-direction: column;
 align-items: center;
-flex: 1; /* 푸터를 하단으로 밀어내기 위해 가변 영역 설정 */
+flex: 1;
 }
 .page-title {
 width: 100%;
@@ -123,7 +136,7 @@ background-color: #fff;
 font-size: 10px;
 letter-spacing: 0.15em;
 color: #000; 
-margin-top: auto; /* 페이지 끝에 고정 */
+margin-top: auto;
 }
 </style>
 </head>
@@ -136,6 +149,8 @@ margin-top: auto; /* 페이지 끝에 고정 */
 <span></span>
 </div>
 </header>
+
+<div id="overlayDimmer" class="overlay-dimmer" onclick="toggleMenu()"></div>
 
 <nav class="nav-overlay" id="navOverlay">
 <ul class="nav-list">
@@ -164,32 +179,27 @@ I am designer Bongeum.
 <script>
 function toggleMenu() {
 const nav = document.getElementById('navOverlay');
+const dimmer = document.getElementById('overlayDimmer');
 const spans = document.querySelectorAll('.menu-trigger span');
+
 nav.classList.toggle('active');
+dimmer.classList.toggle('active');
 
 if(nav.classList.contains('active')) {
 spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
 spans[1].style.opacity = '0';
 spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+document.body.style.overflow = 'hidden'; 
 }
 else {
 spans[0].style.transform = 'none';
 spans[1].style.opacity = '1';
 spans[2].style.transform = 'none';
+document.body.style.overflow = '';
 }
 }
 
-// 메뉴 영역 밖 클릭 시 닫기 기능 추가
-document.addEventListener('mousedown', function(e) {
-    const nav = document.getElementById('navOverlay');
-    const menuBtn = document.getElementById('menuBtn');
-    
-    if (nav.classList.contains('active')) {
-        if (!nav.contains(e.target) && !menuBtn.contains(e.target)) {
-            toggleMenu();
-        }
-    }
-});
+// 기존 mousedown 리스너 대신 dimmer(onclick) 방식을 사용하여 클릭 우선순위 문제를 해결했습니다.
 </script>
 </body>
 </html>
