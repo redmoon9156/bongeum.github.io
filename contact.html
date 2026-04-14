@@ -37,6 +37,16 @@
             box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-overlay.active { top: 0; }
+
+        /* [추가] 외부 클릭 방지용 투명 방어막 */
+        .overlay-dimmer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0); 
+            z-index: 1400; 
+            display: none;
+        }
+        .overlay-dimmer.active { display: block; }
+
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
@@ -57,69 +67,32 @@
                 box-shadow: none;
             }
             .nav-overlay.active { left: calc(100% - 450px); }
+            
+            /* PC 디머 위치 조정 */
+            .overlay-dimmer { width: calc(100% - 450px); height: 100vh; }
+
             .nav-list { text-align: left; }
             .nav-list li { margin: 35px 0; }
             .nav-list li a { font-size: 1rem; }
         }
 
-        /* [4. 메인 콘텐츠 - About.html 위치 기준 적용] */
+        /* [4. 메인 콘텐츠] */
         main {
-            padding: 140px 20px 60px; /* 모바일 여백 */
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* 가로 중앙 */
-            flex: 1;
-            width: 100%;
+            padding: 140px 20px 60px;
+            display: flex; flex-direction: column; align-items: center;
+            flex: 1; width: 100%;
         }
-
-        .page-title {
-            width: 100%;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 40px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .contact-area {
-            width: 100%;
-            max-width: 500px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .contact-stack {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-        }
-
-        .contact-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-
+        .page-title { width: 100%; text-align: center; font-size: 1.2rem; font-weight: 700; margin-bottom: 40px; letter-spacing: 0.1em; text-transform: uppercase; }
+        .contact-area { width: 100%; max-width: 500px; display: flex; flex-direction: column; align-items: center; }
+        .contact-stack { display: flex; flex-direction: column; align-items: center; gap: 40px; }
+        .contact-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .contact-icon { color: #000; line-height: 0; transition: opacity 0.3s; }
-        .contact-link { 
-            font-size: 15px; 
-            letter-spacing: 0.02em; 
-            color: #000; 
-            transition: opacity 0.3s;
-            text-align: center;
-        }
-
+        .contact-link { font-size: 15px; letter-spacing: 0.02em; color: #000; transition: opacity 0.3s; text-align: center; }
         .contact-icon:hover, .contact-link:hover { opacity: 0.5; }
 
         @media (min-width: 1024px) {
-            /* [중요] About.html과 동일한 상단 여백 적용 */
             main { padding: 220px 10vw 100px; } 
-            .page-title { font-size: 2.0rem; margin-bottom: 60px; } /* About.html과 동일한 타이틀 크기 및 여백 */
-            
+            .page-title { font-size: 2.0rem; margin-bottom: 60px; } 
             .contact-stack { gap: 50px; }
             .contact-link { font-size: 16px; }
         }
@@ -139,6 +112,8 @@
         </div>
     </header>
 
+    <div id="overlayDimmer" class="overlay-dimmer" onclick="toggleMenu()"></div>
+
     <nav class="nav-overlay" id="navOverlay">
         <ul class="nav-list">
             <li><a href="about.html" onclick="toggleMenu()">About</a></li>
@@ -152,7 +127,6 @@
         
         <section class="contact-area">
             <div class="contact-stack">
-
                 <div class="contact-item">
                     <a href="mailto:bongeum@bongeum.com" class="contact-icon" aria-label="Send Email">
                         <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -173,7 +147,6 @@
                     </a>
                     <a class="contact-link" href="https://www.instagram.com/bongeum" target="_blank" rel="noopener">Instagram</a>
                 </div>
-
             </div>
         </section>
     </main>
@@ -183,23 +156,23 @@
     <script>
     function toggleMenu() {
         const nav = document.getElementById('navOverlay');
+        const dimmer = document.getElementById('overlayDimmer');
         const spans = document.querySelectorAll('.menu-trigger span');
+        
         nav.classList.toggle('active');
+        dimmer.classList.toggle('active');
+        
         if(nav.classList.contains('active')) {
             spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
             spans[1].style.opacity = '0';
             spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+            document.body.style.overflow = 'hidden';
         } else {
             spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
+            document.body.style.overflow = '';
         }
     }
-    document.addEventListener('mousedown', function(e) {
-        const nav = document.getElementById('navOverlay');
-        const menuBtn = document.getElementById('menuBtn');
-        if (nav.classList.contains('active')) {
-            if (!nav.contains(e.target) && !menuBtn.contains(e.target)) { toggleMenu(); }
-        }
-    });
+    // 기존의 mousedown 이벤트 리스너를 제거하고 dimmer(onclick) 제어 방식으로 일원화하여 우선순위 문제를 해결했습니다.
     </script>
 </body>
 </html>
