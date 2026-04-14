@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>KETTLE | Bongeum</title>
     <style>
-        /* [1. 공통 설정 - 가이드 준수] */
+        /* [1. 공통 설정 - About/Objects와 100% 동일] */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #fff;
@@ -18,7 +18,7 @@
         a { text-decoration: none; color: inherit; display: inline-block; }
         ul { list-style: none; }
 
-        /* [2. 헤더 및 네비게이션 - 기존과 동일] */
+        /* [2. 헤더 - 위치 고정 기준] */
         header {
             position: fixed; top: 0; width: 100%; padding: 30px 20px;
             display: flex; justify-content: space-between; align-items: center; 
@@ -29,72 +29,71 @@
         .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
 
         .nav-overlay {
-            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
-            background-color: #fff; z-index: 1500;
+            position: fixed; left: 0; width: 100%; background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
+            display: flex; justify-content: center; align-items: flex-start;
+            box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-overlay.active { top: 0; }
         .nav-list { text-align: center; }
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* [3. 브레드크럼 (경로 표시)] */
-        .breadcrumb {
-            font-size: 11px; letter-spacing: 0.05em; color: #888;
-            margin-bottom: 20px; text-transform: uppercase;
-        }
-        .breadcrumb a { color: #888; transition: color 0.3s; }
-        .breadcrumb a:hover { color: #000; }
-        .breadcrumb span { margin: 0 8px; }
-
-        /* [4. 모바일 레이아웃] */
+        /* [3. 모바일 전용 스타일] */
         @media (max-width: 1023px) {
             .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
+            .nav-overlay.active { top: 0; }
             .pc-only { display: none !important; }
             main { padding: 140px 20px 60px; flex: 1; }
+            .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 40px; font-size: 1.2rem; }
             
-            .page-title { font-size: 1.2rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; text-align: center; }
-            .breadcrumb { text-align: center; margin-bottom: 40px; }
-
+            .breadcrumb { text-align: center; font-size: 11px; color: #888; margin-bottom: 20px; text-transform: uppercase; }
             .mobile-grid { width: 100%; display: flex; flex-direction: column; gap: 60px; }
-            .product-item { width: 100%; text-align: left; }
+            .product-item { width: 100%; text-align: left; cursor: pointer; }
             .img-box { width: 100%; aspect-ratio: 1 / 1; background: #f7f7f7; margin-bottom: 15px; overflow: hidden; }
             .img-box img { width: 100%; height: 100%; object-fit: cover; }
             .info-box .name { font-size: 14px; font-weight: 600; margin-bottom: 5px; text-transform: uppercase; }
             .info-box .desc { font-size: 12px; color: #666; line-height: 1.5; font-weight: 300; }
         }
 
-        /* [5. PC 레이아웃 - About/Objects 기준 동기화] */
+        /* [4. PC 환경 - Objects.html의 수치와 위치 완벽 동기화] */
         @media (min-width: 1024px) {
             header { padding: 60px 80px; }
             .logo { font-size: 1.3rem; }
-            
             .nav-overlay {
                 top: 0; left: 100%; width: 450px; height: 100vh;
-                border-left: 1px solid #eee; justify-content: flex-start; padding: 180px 0 0 80px;
+                border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+                justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
+                box-shadow: none;
             }
             .nav-overlay.active { left: calc(100% - 450px); }
             .nav-list { text-align: left; }
             .nav-list li { margin: 35px 0; }
-            .nav-list li a { font-size: 1rem; }
+            .nav-list li a { font-size: 1rem; font-weight: 300; }
 
-            main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; }
+            /* 메인 위치 고정: Objects.html과 동일한 패딩 */
+            main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
+            .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; }
+            
             .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; align-items: flex-start; }
             
-            /* 사이드바 */
-            .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; }
-            .side-title { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; font-weight: 300; } 
-            .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #ccc; transition: all 0.3s; }
-            /* 활성화된 메뉴 밑줄 */
-            .side-nav a.active { color: #000; text-decoration: underline; text-underline-offset: 8px; }
-            .side-nav a:hover:not(.active) { color: #000; }
-
-            /* 콘텐츠 영역 */
-            .content-area { flex: 1; }
-            .page-header { margin-bottom: 60px; }
-            .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+            /* 사이드바 위치 고정 */
+            .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
+            .side-title { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; font-weight: 300; margin-bottom: 5px; } 
+            .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #000; transition: opacity 0.3s; }
             
+            /* [수정] Kettle 활성화 표시: 밑줄 */
+            .side-nav a.active { text-decoration: underline; text-underline-offset: 8px; }
+            .side-nav a:hover { opacity: 0.5; }
+
+            .content-area { flex: 1; display: flex; flex-direction: column; }
+            
+            /* 브레드크럼 */
+            .breadcrumb { font-size: 11px; letter-spacing: 0.05em; color: #888; margin-bottom: 15px; text-transform: uppercase; }
+            .breadcrumb a { transition: color 0.3s; }
+            .breadcrumb a:hover { color: #000; }
+
+            /* [수정] 3열 정방형 그리드 */
             .pc-grid { 
                 display: grid; 
                 grid-template-columns: repeat(3, 1fr); 
@@ -111,7 +110,8 @@
             .mobile-only { display: none !important; }
         }
 
-        footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; }
+        footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: none; background-color: #fff; }
+        img{ -webkit-user-drag: none; user-select: none; -webkit-touch-callout: none; }
     </style>
 </head>
 <body>
@@ -129,6 +129,8 @@
     </nav>
 
     <main>
+        <h1 class="page-title">OBJECTS</h1>
+
         <div class="container">
             <aside class="sidebar pc-only">
                 <div class="side-title">Select by Category</div>
@@ -139,17 +141,12 @@
             </aside>
 
             <section class="content-area">
-                <div class="page-header">
-                    <div class="breadcrumb">
-                        <a href="objects.html">Objects</a><span>&gt;</span>Kettle
-                    </div>
-                    <h1 class="page-title">Kettle</h1>
+                <div class="breadcrumb">
+                    <a href="objects.html">Objects</a> <span>&gt;</span> Kettle
                 </div>
 
-                <div class="pc-grid pc-only" id="pcProductList">
-                    </div>
-                <div class="mobile-grid mobile-only" id="mobileProductList">
-                    </div>
+                <div class="pc-grid pc-only" id="pcProductList"></div>
+                <div class="mobile-grid mobile-only" id="mobileProductList"></div>
             </section>
         </div>
     </main>
@@ -157,13 +154,12 @@
     <footer>© BONGEUM. All rights reserved.</footer>
 
     <script>
-    // 작품 데이터 (상세 페이지 경로는 임의로 설정)
     const KETTLE_PRODUCTS = [
-        { id: "kettle-01", name: "Traditional Clay Kettle", desc: "고운 흙의 질감을 살려 빚어낸 전통미가 돋보이는 다기입니다.", img: "images/objects/kettle/objects_images_kettle_1.jpeg" },
-        { id: "kettle-02", name: "Modern White Kettle", desc: "현대적인 주거 공간에 어우러지는 미니멀한 실루엣의 화이트 케틀입니다.", img: "images/objects/kettle/objects_images_kettle_2.jpeg" },
-        { id: "kettle-03", name: "Deep Forest Kettle", desc: "깊은 숲의 색감을 담은 유약 처리가 특징인 유니크한 작품입니다.", img: "images/objects/kettle/objects_images_kettle_3.jpeg" },
-        { id: "kettle-04", name: "Hand-brushed Kettle", desc: "작가의 붓 터치가 그대로 살아있는 거친 질감의 수제 케틀입니다.", img: "images/objects/kettle/objects_images_kettle_1.jpeg" },
-        { id: "kettle-05", name: "Stone Texture Kettle", desc: "돌의 단단함을 닮은 무게감 있는 하단 설계로 안정감을 더했습니다.", img: "images/objects/kettle/objects_images_kettle_2.jpeg" }
+        { id: "01", name: "Kettle No.1", desc: "고운 흙의 질감을 살린 전통 다기입니다.", img: "images/objects/kettle/objects_images_kettle_1.jpeg" },
+        { id: "02", name: "Kettle No.2", desc: "미니멀한 실루엣의 화이트 케틀입니다.", img: "images/objects/kettle/objects_images_kettle_2.jpeg" },
+        { id: "03", name: "Kettle No.3", desc: "깊은 숲의 색감을 담은 유약 작품입니다.", img: "images/objects/kettle/objects_images_kettle_3.jpeg" },
+        { id: "04", name: "Kettle No.4", desc: "거친 붓 터치가 살아있는 수제 작품입니다.", img: "images/objects/kettle/objects_images_kettle_1.jpeg" },
+        { id: "05", name: "Kettle No.5", desc: "단단한 바위의 무게감을 담은 설계입니다.", img: "images/objects/kettle/objects_images_kettle_2.jpeg" }
     ];
 
     function renderProducts() {
@@ -173,9 +169,7 @@
         KETTLE_PRODUCTS.forEach(p => {
             const itemHtml = `
                 <div class="product-item" onclick="location.href='product_detail.html?id=${p.id}'">
-                    <div class="img-box">
-                        <img src="${p.img}" alt="${p.name}">
-                    </div>
+                    <div class="img-box"><img src="${p.img}" alt="${p.name}"></div>
                     <div class="info-box">
                         <p class="name">${p.name}</p>
                         <p class="desc">${p.desc}</p>
@@ -201,7 +195,14 @@
             spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
         }
     }
+
+    document.addEventListener('mousedown', function(e) {
+        const nav = document.getElementById('navOverlay');
+        const menuBtn = document.getElementById('menuBtn');
+        if (nav.classList.contains('active')) {
+            if (!nav.contains(e.target) && !menuBtn.contains(e.target)) toggleMenu();
+        }
+    });
     </script>
 </body>
 </html>
-
