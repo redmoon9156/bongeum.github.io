@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CONTACT | Bongeum</title>
     <style>
-        /* [1. 공통 리셋 및 기본 설정] */
+        /* [1. 공통 리셋] */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             background-color: #ffffff;
@@ -13,24 +13,16 @@
             color: #000;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
+            display: flex; flex-direction: column; min-height: 100vh;
         }
         a { text-decoration: none; color: inherit; display: inline-block; }
         ul { list-style: none; }
 
-        /* [2. 헤더 - About.html 기준] */
+        /* [2. 헤더 - About.html 기준 완벽 동기화] */
         header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 30px 20px; /* 모바일 패딩 */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 2000;
-            background-color: #ffffff;
+            position: fixed; top: 0; width: 100%; padding: 30px 20px;
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 2000; background-color: #ffffff; 
         }
         .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
         .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; }
@@ -38,18 +30,10 @@
 
         /* [3. 네비게이션 오버레이 - About.html 기준] */
         .nav-overlay {
-            position: fixed;
-            top: -100%;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background-color: #fff;
-            z-index: 1500;
+            position: fixed; top: -100%; left: 0; width: 100%; height: 100vh;
+            background-color: #fff; z-index: 1500;
             transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            padding-top: 120px;
+            display: flex; justify-content: center; align-items: flex-start; padding-top: 120px;
             box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
         }
         .nav-overlay.active { top: 0; }
@@ -57,28 +41,19 @@
         .nav-list li { margin: 25px 0; }
         .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        /* 모바일 네비게이션 높이 조정 */
         @media (max-width: 1023px) {
-            .nav-overlay {
-                height: 50dvh;
-                top: -50dvh;
-                padding-top: 90px;
-            }
+            .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
             .nav-overlay.active { top: 0; }
         }
 
-        /* [PC 환경 - About.html 기준 적용] */
+        /* PC 환경 헤더/메뉴 동기화 */
         @media (min-width: 1024px) {
-            header { padding: 60px 80px; } /* 헤더 패딩 일치 */
-            .logo { font-size: 1.3rem; } /* 로고 크기 일치 */
-            
+            header { padding: 60px 80px; } 
+            .logo { font-size: 1.3rem; } 
             .nav-overlay {
                 top: 0; left: 100%; width: 450px; height: 100vh;
                 transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                border-left: 1px solid #eee;
-                justify-content: flex-start;
-                align-items: flex-start;
-                padding: 180px 0 0 80px;
+                border-left: 1px solid #eee; justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
                 box-shadow: none;
             }
             .nav-overlay.active { left: calc(100% - 450px); }
@@ -87,48 +62,30 @@
             .nav-list li a { font-size: 1rem; }
         }
 
-        /* [4. 메인 콘텐츠 - 잘림 문제 수정] */
+        /* [4. 메인 콘텐츠 - 잘림 수정 및 레이아웃] */
         main {
             padding: 140px 20px 60px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
+            display: flex; flex-direction: column; align-items: center; flex: 1;
         }
         .page-title {
-            width: 100%;
-            text-align: center;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 40px;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
+            width: 100%; text-align: center; font-size: 1.2rem; font-weight: 700;
+            margin-bottom: 40px; letter-spacing: 0.1em; text-transform: uppercase;
         }
-        .contact-info {
-            width: 100%;
-            text-align: center;
-            font-size: 1rem;
-            line-height: 2;
-            letter-spacing: 0.05em;
-        }
+        
+        /* 연락처 이미지 및 텍스트 정렬 */
+        .contact-container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 30px; align-items: center; }
+        .contact-item { display: flex; align-items: center; gap: 15px; }
+        .contact-item img { width: 30px; height: auto; } /* 이미지 크기는 적절히 조절하세요 */
 
         @media (min-width: 1024px) {
-            /* 상단 padding을 220px로 늘려 타이틀이 잘리지 않게 조정 */
             main { padding: 220px 10vw 100px; } 
-            .page-title { font-size: 2.0rem; margin-bottom: 60px; } /* 타이틀 크기 일치 */
-            .contact-info { font-size: 1.2rem; }
+            .page-title { font-size: 2.0rem; margin-bottom: 60px; }
         }
 
-        /* [5. 하단 고정 푸터] */
+        /* [5. 푸터] */
         footer {
-            width: 100%;
-            padding: 30px 20px;
-            text-align: center;
-            background-color: #fff;
-            font-size: 10px;
-            letter-spacing: 0.15em;
-            color: #000; 
-            margin-top: auto;
+            width: 100%; padding: 30px 20px; text-align: center;
+            background-color: #fff; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto;
         }
     </style>
 </head>
@@ -136,9 +93,7 @@
     <header>
         <div class="logo"><a href="index.html">Bongeum</a></div>
         <div class="menu-trigger" id="menuBtn" onclick="toggleMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
+            <span></span><span></span><span></span>
         </div>
     </header>
 
@@ -152,43 +107,40 @@
 
     <main>
         <h1 class="page-title">CONTACT</h1>
-        <div class="contact-info">
-            <p>E-MAIL: bongeum@bongeum.com</p>
-            <p>INSTAGRAM: @bongeum</p>
+        <div class="contact-container">
+            <div class="contact-item">
+                <img src="images/contact/mail_icon.png" alt="Email">
+                <span>bongeum@bongeum.com</span>
+            </div>
+            <div class="contact-item">
+                <a href="https://www.instagram.com/bongeum" target="_blank" class="contact-item">
+                    <img src="images/contact/instagram_icon.png" alt="Instagram">
+                    <span>@bongeum</span>
+                </a>
+            </div>
         </div>
     </main>
 
-    <footer>
-        © BONGEUM. All rights reserved.
-    </footer>
+    <footer>© BONGEUM. All rights reserved.</footer>
 
     <script>
     function toggleMenu() {
         const nav = document.getElementById('navOverlay');
         const spans = document.querySelectorAll('.menu-trigger span');
         nav.classList.toggle('active');
-
         if(nav.classList.contains('active')) {
             spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
             spans[1].style.opacity = '0';
             spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-        }
-        else {
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
+        } else {
+            spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
         }
     }
-
-    // 메뉴 영역 밖 클릭 시 닫기 기능 추가
     document.addEventListener('mousedown', function(e) {
         const nav = document.getElementById('navOverlay');
         const menuBtn = document.getElementById('menuBtn');
-        
         if (nav.classList.contains('active')) {
-            if (!nav.contains(e.target) && !menuBtn.contains(e.target)) {
-                toggleMenu();
-            }
+            if (!nav.contains(e.target) && !menuBtn.contains(e.target)) { toggleMenu(); }
         }
     });
     </script>
