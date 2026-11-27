@@ -1,243 +1,235 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>OBJECTS | Bongeum</title>
-    <style>
-        /* [1. 공통 설정] */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background-color: #fff;
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            color: #000;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-            display: flex; flex-direction: column; min-height: 100vh;
-        }
-        a { text-decoration: none; color: inherit; display: inline-block; }
-        ul { list-style: none; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>OBJECTS | Bongeum</title>
+<style>
+/* [1. 공통 설정] */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background-color: #fff; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: #000; -webkit-font-smoothing: antialiased; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+a { text-decoration: none; color: inherit; display: inline-block; }
+ul { list-style: none; }
 
-        /* [2. 헤더] */
-        header {
-            position: fixed; top: 0; width: 100%; padding: 30px 20px;
-            display: flex; justify-content: space-between; align-items: center; 
-            z-index: 2000; background-color: #ffffff; 
-        }
-        .logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
-        .menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2001; }
-        .menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+/* [2. 헤더] */
+header { position: fixed; top: 0; width: 100%; padding: 30px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 2000; background-color: #ffffff; }
+.logo { font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; }
+.menu-trigger { cursor: pointer; width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; z-index: 2001; }
+.menu-trigger span { display: block; width: 100%; height: 1px; background-color: #000; transition: 0.3s; }
+.nav-overlay { position: fixed; left: 0; width: 100%; background-color: #fff; z-index: 1500; transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1); display: flex; justify-content: center; align-items: flex-start; box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07); }
+.nav-overlay.active { top: 0; }
+/* [추가] 외부 클릭 방지용 투명 방어막 */
+.overlay-dimmer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0); z-index: 1400; display: none; }
+.overlay-dimmer.active { display: block; }
+.nav-list { text-align: center; }
+.nav-list li { margin: 25px 0; }
+.nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
 
-        .nav-overlay {
-            position: fixed; left: 0; width: 100%; background-color: #fff; z-index: 1500;
-            transition: top 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-            display: flex; justify-content: center; align-items: flex-start;
-            box-shadow: 0 8px 28px 0 rgba(0,0,0,0.07);
-        }
-        .nav-overlay.active { top: 0; }
+/* [3. 모바일 스타일] */
+@media (max-width: 1023px) {
+  .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
+  .nav-overlay.active { top: 0; }
+  .pc-only { display: none !important; }
+  main { padding: 140px 20px 60px; flex: 1; }
+  .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; font-size: 1.2rem; cursor: pointer; }
+  .sub-title-placeholder { width: 100%; height: 0.9rem; margin-bottom: 40px; visibility: hidden; }
+  .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
+  .category-name-link { display: inline-block; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-size: 1rem; color: #000; cursor: pointer; }
+  .slider-container { position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1; margin: 0 auto; background: transparent; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-tap-highlight-color: transparent; }
+  .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+  .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
+  .more-slide { width: 100%; height: 100%; flex-shrink: 0; display: flex; justify-content: center; align-items: center; cursor: pointer; background-color: #fff; }
+  .more-circle { width: 50px; height: 50px; border: 1px solid #e0e0e0; border-radius: 50%; display: flex; justify-content: center; align-items: center; gap: 5px; padding-top: 1px; }
+  .more-circle span { width: 3.4px; height: 3.4px; background-color: #888; border-radius: 50%; display: block; }
+  .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
+  .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
+  .dot.active { background: #000; }
+}
 
-        /* [추가] 외부 클릭 방지용 투명 방어막 */
-        .overlay-dimmer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0); 
-            z-index: 1400; 
-            display: none;
-        }
-        .overlay-dimmer.active { display: block; }
+/* [4. PC 환경] */
+@media (min-width: 1024px) {
+  header { padding: 60px 80px; }
+  .logo { font-size: 1.3rem; }
+  .nav-overlay { top: 0; left: 100%; width: 450px; height: 100vh; border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1); justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px; box-shadow: none; }
+  .nav-overlay.active { left: calc(100% - 450px); }
+  /* PC 디머 위치 조정 */
+  .overlay-dimmer { width: calc(100% - 450px); height: 100vh; }
+  .nav-list { text-align: left; }
+  .nav-list li { margin: 35px 0; }
+  .nav-list li a { font-size: 1rem; font-weight: 300; }
+  main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
+  .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; }
+  .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; align-items: flex-start; }
+  .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
+  .side-title { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; font-weight: 300; margin-bottom: 5px; }
+  .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #000; transition: opacity 0.3s; }
+  .side-nav a:hover { opacity: 0.5; }
+  .content-area { flex: 1; display: flex; flex-direction: column; }
+  .breadcrumb { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; margin-bottom: 10px; text-transform: capitalize; font-weight: 300; text-align: left; }
+  .sub-title-placeholder { font-size: 1rem; margin-bottom: 20px; visibility: hidden; }
+  .pc-category-group { width: 100%; margin-bottom: 120px; }
+  .pc-category-name { display: block; font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-align: left; }
+  .pc-image-grid { display: flex; gap: 20px; align-items: center; justify-content: flex-start; }
+  .pc-img-item { width: calc((100% - 40px) / 3); max-width: 300px; aspect-ratio: 1 / 1; background: #f7f7f7; overflow: hidden; cursor: pointer; transition: opacity 0.3s; flex-shrink: 0; }
+  .pc-img-item img { width: 100%; height: 100%; object-fit: cover; }
+  .pc-more-circle { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s; color: #aaa; flex-shrink: 0; line-height: 1; user-select: none; }
+  .pc-more-circle span { font-size: 1.2rem; transform: translateY(-1px); }
+  .pc-more-circle:hover { border-color: #000; color: #000; }
+  .mobile-only { display: none !important; }
+}
 
-        .nav-list { text-align: center; }
-        .nav-list li { margin: 25px 0; }
-        .nav-list li a { font-size: 1.1rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 300; }
-
-        /* [3. 모바일 스타일] */
-        @media (max-width: 1023px) {
-            .nav-overlay { height: 50dvh; top: -50dvh; padding-top: 90px; }
-            .nav-overlay.active { top: 0; }
-            .pc-only { display: none !important; }
-            main { padding: 140px 20px 60px; flex: 1; }
-            .page-title { width: 100%; text-align: center; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; font-size: 1.2rem; cursor: pointer; }
-            .sub-title-placeholder { width: 100%; height: 0.9rem; margin-bottom: 40px; visibility: hidden; }
-            .category-wrapper { width: 100%; margin-bottom: 100px; text-align: center; }
-            .category-name-link { display: inline-block; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 12px; font-size: 1rem; color: #000; cursor: pointer; }
-            .slider-container { position: relative; width: 100%; max-width: 500px; aspect-ratio: 1 / 1; margin: 0 auto; background: transparent; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-tap-highlight-color: transparent; }
-            .slider-wrapper { display: flex; width: 100%; height: 100%; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-            .slider-wrapper img { width: 100%; height: 100%; object-fit: cover; flex-shrink: 0; -webkit-user-drag: none; }
-            .more-slide { width: 100%; height: 100%; flex-shrink: 0; display: flex; justify-content: center; align-items: center; cursor: pointer; background-color: #fff; }
-            .more-circle { width: 50px; height: 50px; border: 1px solid #e0e0e0; border-radius: 50%; display: flex; justify-content: center; align-items: center; gap: 5px; padding-top: 1px; }
-            .more-circle span { width: 3.4px; height: 3.4px; background-color: #888; border-radius: 50%; display: block; }
-            .dots { display: flex; justify-content: center; gap: 8px; margin-top: 15px; min-height: 10px; }
-            .dot { width: 5px; height: 5px; background: #eee; border-radius: 50%; transition: 0.3s; }
-            .dot.active { background: #000; }
-        }
-
-        /* [4. PC 환경] */
-        @media (min-width: 1024px) {
-            header { padding: 60px 80px; }
-            .logo { font-size: 1.3rem; }
-            .nav-overlay {
-                top: 0; left: 100%; width: 450px; height: 100vh;
-                border-left: 1px solid #eee; transition: left 0.5s cubic-bezier(0.77, 0, 0.175, 1);
-                justify-content: flex-start; align-items: flex-start; padding: 180px 0 0 80px;
-                box-shadow: none;
-            }
-            .nav-overlay.active { left: calc(100% - 450px); }
-
-            /* PC 디머 위치 조정 */
-            .overlay-dimmer { width: calc(100% - 450px); height: 100vh; }
-
-            .nav-list { text-align: left; }
-            .nav-list li { margin: 35px 0; }
-            .nav-list li a { font-size: 1rem; font-weight: 300; }
-            main { padding: 220px 80px 100px; display: flex; flex-direction: column; align-items: center; position: relative; }
-            .page-title { font-size: 2.0rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 100px; text-align: center; }
-            .container { max-width: 1400px; width: 100%; display: flex; gap: 80px; align-items: flex-start; }
-            .sidebar { min-width: 220px; border-right: 1px solid #eee; display: flex; flex-direction: column; gap: 40px; text-align: left; }
-            .side-title { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; font-weight: 300; margin-bottom: 5px; } 
-            .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #000; transition: opacity 0.3s; }
-            .side-nav a:hover { opacity: 0.5; }
-            .content-area { flex: 1; display: flex; flex-direction: column; }
-            .breadcrumb { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; margin-bottom: 10px; text-transform: capitalize; font-weight: 300; text-align: left; }
-            .sub-title-placeholder { font-size: 1rem; margin-bottom: 20px; visibility: hidden; }
-            .pc-category-group { width: 100%; margin-bottom: 120px; }
-            .pc-category-name { display: block; font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-align: left; }
-            .pc-image-grid { display: flex; gap: 20px; align-items: center; justify-content: flex-start; }
-            .pc-img-item { width: calc((100% - 40px) / 3); max-width: 300px; aspect-ratio: 1 / 1; background: #f7f7f7; overflow: hidden; cursor: pointer; transition: opacity 0.3s; flex-shrink: 0; }
-            .pc-img-item img { width: 100%; height: 100%; object-fit: cover; }
-            .pc-more-circle { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s; color: #aaa; flex-shrink: 0; line-height: 1; }
-            .pc-more-circle span { font-size: 1.5rem; transform: translateY(-3px); }
-            .pc-more-circle:hover { border-color: #000; color: #000; }
-            .mobile-only { display: none !important; }
-        }
-
-        footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: none; background-color: #fff; }
-    </style>
+footer { width: 100%; padding: 60px 20px; text-align: center; font-size: 10px; letter-spacing: 0.15em; color: #000; margin-top: auto; border-top: none; background-color: #fff; }
+</style>
 </head>
 <body>
-    <header>
-        <div class="logo"><a href="index.html">Bongeum</a></div>
-        <div class="menu-trigger" id="menuBtn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
-    </header>
 
-    <div id="overlayDimmer" class="overlay-dimmer" onclick="toggleMenu()"></div>
+<header>
+  <div class="logo"><a href="index.html">Bongeum</a></div>
+  <div class="menu-trigger" id="menuBtn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</header>
 
-    <nav class="nav-overlay" id="navOverlay">
-        <ul class="nav-list">
-            <li><a href="about.html" onclick="toggleMenu()">About</a></li>
-            <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
-            <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
-        </ul>
-    </nav>
+<div id="overlayDimmer" class="overlay-dimmer" onclick="toggleMenu()"></div>
 
-    <main>
-        <h1 class="page-title">OBJECTS</h1>
-        <div class="sub-title-placeholder mobile-only"></div>
-        <div class="mobile-only" id="mobileContent" style="width: 100%;"></div>
-        <div class="pc-only container">
-            <aside class="sidebar">
-                <div class="side-title">Select by Category</div>
-                <nav class="side-nav">
-                    <a href="kettle.html">Kettle</a>
-                    <a href="vase.html">Vase</a>
-                </nav>
-            </aside>
-            <section class="content-area">
-                <div class="breadcrumb pc-only">Objects</div>
-                <div class="sub-title-placeholder pc-only">KETTLE SPACE</div>
-                <div id="pcContent"></div>
-            </section>
-        </div>
-    </main>
+<nav class="nav-overlay" id="navOverlay">
+  <ul class="nav-list">
+    <li><a href="about.html" onclick="toggleMenu()">About</a></li>
+    <li><a href="objects.html" onclick="toggleMenu()">Objects</a></li>
+    <li><a href="contact.html" onclick="toggleMenu()">Contact</a></li>
+  </ul>
+</nav>
 
-    <footer>© BONGEUM. All rights reserved.</footer>
+<main>
+  <h1 class="page-title">OBJECTS</h1>
+  <div class="sub-title-placeholder mobile-only"></div>
+  <div class="mobile-only" id="mobileContent" style="width: 100%;"></div>
+  <div class="pc-only container">
+    <aside class="sidebar">
+      <div class="side-title">Select by Category</div>
+      <nav class="side-nav">
+        <a href="kettle.html">Kettle</a>
+        <a href="vase.html">Vase</a>
+      </nav>
+    </aside>
+    <section class="content-area">
+      <div class="breadcrumb pc-only">Objects</div>
+      <div class="sub-title-placeholder pc-only">KETTLE SPACE</div>
+      <div id="pcContent"></div>
+    </section>
+  </div>
+</main>
 
-    <script>
-    const PRODUCTS = [
-        { name: "Kettle", page: "kettle.html", images: ["images/objects/kettle/objects_images_kettle_1.jpeg", "images/objects/kettle/objects_images_kettle_2.jpeg", "images/objects/kettle/objects_images_kettle_3.jpeg"] },
-        { name: "Vase", page: "vase.html", images: ["images/objects/vase/object_images_vase_1.jpeg"] }
-    ];
+<footer>© BONGEUM. All rights reserved.</footer>
 
-    function initMobileSlider(item) {
-        const container = document.getElementById('mobileContent');
-        const section = document.createElement('div');
-        section.className = 'category-wrapper';
-        const sliderItems = [...item.images, "MORE_ACTION"]; 
-        section.innerHTML = `
-            <a href="${item.page}" class="category-name-link">${item.name}</a>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    ${sliderItems.map((src, i) => {
-                        if (src === "MORE_ACTION") {
-                            return `<div class="more-slide" data-index="${i}"><div class="more-circle"><span></span><span></span><span></span></div></div>`;
-                        }
-                        return `<img src="${src}" data-index="${i}">`;
-                    }).join('')}
-                </div>
-            </div>
-            <div class="dots">${sliderItems.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}"></div>`).join('')}</div>
-        `;
-        container.appendChild(section);
+<script>
+const PRODUCTS = [
+  { name: "Kettle", page: "kettle.html", images: ["images/objects/kettle/objects_images_kettle_1.jpeg", "images/objects/kettle/objects_images_kettle_2.jpeg", "images/objects/kettle/objects_images_kettle_3.jpeg"] },
+  { name: "Vase", page: "vase.html", images: ["images/objects/vase/object_images_vase_1.jpeg"] }
+];
 
-        const sliderBox = section.querySelector('.slider-container');
-        const wrapper = section.querySelector('.slider-wrapper');
-        const dots = section.querySelectorAll('.dot');
-        let idx = 0; let startX = 0; let startY = 0; let startTime = 0; let isMoved = false;
+function initMobileSlider(item) {
+  const container = document.getElementById('mobileContent');
+  const section = document.createElement('div');
+  section.className = 'category-wrapper';
+  const sliderItems = [...item.images, "MORE_ACTION"];
+  section.innerHTML = `
+    <a href="${item.page}" class="category-name-link">${item.name}</a>
+    <div class="slider-container">
+      <div class="slider-wrapper">
+        ${sliderItems.map((src, i) => {
+          if (src === "MORE_ACTION") {
+            return `<div class="more-slide" data-index="${i}"><div class="more-circle"><span></span><span></span><span></span></div></div>`;
+          }
+          return `<img src="${src}" data-index="${i}">`;
+        }).join('')}
+      </div>
+    </div>
+    <div class="dots">${sliderItems.map((_, i) => `<div class="dot ${i === 0 ? 'active' : ''}"></div>`).join('')}</div>
+  `;
+  container.appendChild(section);
 
-        sliderBox.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; startTime = Date.now(); isMoved = false; });
-        sliderBox.addEventListener('touchmove', (e) => { 
-            const moveX = Math.abs(startX - e.touches[0].clientX);
-            const moveY = Math.abs(startY - e.touches[0].clientY);
-            if (moveX > 3 || moveY > 3) isMoved = true; 
-        });
-        sliderBox.addEventListener('touchend', (e) => {
-            const endX = e.changedTouches[0].clientX;
-            const diffX = startX - endX;
-            const duration = Date.now() - startTime; 
-            if (isMoved && Math.abs(diffX) > 40) {
-                if (diffX > 0) idx = (idx + 1) % sliderItems.length;
-                else idx = (idx - 1 + sliderItems.length) % sliderItems.length;
-                wrapper.style.transform = `translateX(-${idx * 100}%)`;
-                dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-            } else if (!isMoved && duration > 50) { 
-                if (sliderItems[idx] === "MORE_ACTION") window.location.href = item.page; 
-            }
-        });
+  const sliderBox = section.querySelector('.slider-container');
+  const wrapper = section.querySelector('.slider-wrapper');
+  const dots = section.querySelectorAll('.dot');
+  let idx = 0; let startX = 0; let startY = 0; let startTime = 0; let isMoved = false;
+
+  sliderBox.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; startTime = Date.now(); isMoved = false; });
+  sliderBox.addEventListener('touchmove', (e) => { const moveX = Math.abs(startX - e.touches[0].clientX); const moveY = Math.abs(startY - e.touches[0].clientY); if (moveX > 3 || moveY > 3) isMoved = true; });
+  sliderBox.addEventListener('touchend', (e) => {
+    const endX = e.changedTouches[0].clientX;
+    const diffX = startX - endX;
+    const duration = Date.now() - startTime;
+    if (isMoved && Math.abs(diffX) > 40) {
+      if (diffX > 0) idx = (idx + 1) % sliderItems.length;
+      else idx = (idx - 1 + sliderItems.length) % sliderItems.length;
+      wrapper.style.transform = `translateX(-${idx * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+    } else if (!isMoved && duration > 50) {
+      if (sliderItems[idx] === "MORE_ACTION") window.location.href = item.page;
     }
+  });
+}
 
-    function initPcGrid(item) {
-        const container = document.getElementById('pcContent');
-        const group = document.createElement('div');
-        group.className = 'pc-category-group';
-        group.innerHTML = `
-            <a href="${item.page}" class="pc-category-name">${item.name}</a>
-            <div class="pc-image-grid">
-                ${item.images.slice(0, 3).map(src => `<div class="pc-img-item" onclick="location.href='${item.page}'"><img src="${src}"></div>`).join('')}
-                <div class="pc-more-circle" onclick="location.href='${item.page}'"><span>...</span></div>
-            </div>
-        `;
-        container.appendChild(group);
+function initPcGrid(item) {
+  const container = document.getElementById('pcContent');
+  const group = document.createElement('div');
+  group.className = 'pc-category-group';
+
+  let startIndex = 0;
+  const hasMore = item.images.length > 3;
+
+  group.innerHTML = `
+    <a href="${item.page}" class="pc-category-name">${item.name}</a>
+    <div class="pc-image-grid"></div>
+  `;
+
+  const grid = group.querySelector('.pc-image-grid');
+
+  function renderGrid() {
+    const visibleImages = item.images.slice(startIndex, startIndex + 3);
+    grid.innerHTML = `
+      ${visibleImages.map(src => `<div class="pc-img-item" onclick="location.href='${item.page}'"><img src="${src}"></div>`).join('')}
+      ${hasMore ? `<div class="pc-more-circle"><span>&rarr;</span></div>` : ''}
+    `;
+
+    if (hasMore) {
+      const nextBtn = grid.querySelector('.pc-more-circle');
+      nextBtn.addEventListener('click', () => {
+        startIndex = (startIndex + 1 >= item.images.length - 2) ? 0 : startIndex + 1;
+        renderGrid();
+      });
     }
+  }
 
-    function renderAll() { PRODUCTS.forEach(p => { initMobileSlider(p); initPcGrid(p); }); }
-    renderAll();
+  renderGrid();
+  container.appendChild(group);
+}
 
-    function toggleMenu() {
-        const nav = document.getElementById('navOverlay');
-        const dimmer = document.getElementById('overlayDimmer');
-        const spans = document.querySelectorAll('.menu-trigger span');
-        
-        nav.classList.toggle('active');
-        dimmer.classList.toggle('active');
-        
-        if(nav.classList.contains('active')) {
-            spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
-            document.body.style.overflow = 'hidden'; 
-        } else {
-            spans[0].style.transform = 'none'; spans[1].style.opacity = '1'; spans[2].style.transform = 'none';
-            document.body.style.overflow = '';
-        }
-    }
-    </script>
+function renderAll() {
+  PRODUCTS.forEach(p => {
+    initMobileSlider(p);
+    initPcGrid(p);
+  });
+}
+renderAll();
+
+function toggleMenu() {
+  const nav = document.getElementById('navOverlay');
+  const dimmer = document.getElementById('overlayDimmer');
+  const spans = document.querySelectorAll('.menu-trigger span');
+  nav.classList.toggle('active');
+  dimmer.classList.toggle('active');
+  if(nav.classList.contains('active')) {
+    spans[0].style.transform = 'translateY(8.5px) rotate(45deg)';
+    spans[1].style.opacity = '0';
+    spans[2].style.transform = 'translateY(-8.5px) rotate(-45deg)';
+    document.body.style.overflow = 'hidden';
+  } else {
+    spans[0].style.transform = 'none';
+    spans[1].style.opacity = '1';
+    spans[2].style.transform = 'none';
+    document.body.style.overflow = '';
+  }
+}
+</script>
 </body>
 </html>
