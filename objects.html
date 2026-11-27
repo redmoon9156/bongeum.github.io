@@ -64,14 +64,17 @@ header { position: fixed; top: 0; width: 100%; padding: 30px 20px; display: flex
   .side-title { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; font-weight: 300; margin-bottom: 5px; }
   .side-nav a { display: block; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 20px; color: #000; transition: opacity 0.3s; }
   .side-nav a:hover { opacity: 0.5; }
-  .content-area { flex: 1; display: flex; flex-direction: column; }
+  .content-area { flex: 1; display: flex; flex-direction: column; min-width: 0; }
   .breadcrumb { font-size: 0.9rem; color: #888; letter-spacing: 0.1em; margin-bottom: 10px; text-transform: capitalize; font-weight: 300; text-align: left; }
   .sub-title-placeholder { font-size: 1rem; margin-bottom: 20px; visibility: hidden; }
   .pc-category-group { width: 100%; margin-bottom: 120px; }
   .pc-category-name { display: block; font-size: 1rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 20px; text-align: left; }
   .pc-image-grid { display: flex; gap: 20px; align-items: center; justify-content: flex-start; }
-  .pc-img-item { width: calc((100% - 40px) / 3); max-width: 300px; aspect-ratio: 1 / 1; background: #f7f7f7; overflow: hidden; cursor: pointer; transition: opacity 0.3s; flex-shrink: 0; }
-  .pc-img-item img { width: 100%; height: 100%; object-fit: cover; }
+  /* 부드러운 슬라이드를 위한 뷰포트 및 트랙 */
+  .pc-slider-viewport { flex: 1; max-width: 940px; overflow: hidden; }
+  .pc-slider-track { display: flex; gap: 20px; transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); will-change: transform; }
+  .pc-img-item { width: calc((100% - 40px) / 3); aspect-ratio: 1 / 1; background: #f7f7f7; overflow: hidden; cursor: pointer; transition: opacity 0.3s; flex-shrink: 0; }
+  .pc-img-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .pc-more-circle { width: 60px; height: 60px; border: 1px solid #eee; border-radius: 50%; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: all 0.3s; color: #aaa; flex-shrink: 0; line-height: 1; user-select: none; }
   .pc-more-circle span { font-size: 1.2rem; transform: translateY(-1px); }
   .pc-more-circle:hover { border-color: #000; color: #000; }
@@ -179,29 +182,27 @@ function initPcGrid(item) {
 
   group.innerHTML = `
     <a href="${item.page}" class="pc-category-name">${item.name}</a>
-    <div class="pc-image-grid"></div>
+    <div class="pc-image-grid">
+      <div class="pc-slider-viewport">
+        <div class="pc-slider-track">
+          ${item.images.map(src => `<div class="pc-img-item" onclick="location.href='${item.page}'"><img src="${src}"></div>`).join('')}
+        </div>
+      </div>
+      ${hasMore ? `<div class="pc-more-circle"><span>&rarr;</span></div>` : ''}
+    </div>
   `;
 
-  const grid = group.querySelector('.pc-image-grid');
-
-  function renderGrid() {
-    const visibleImages = item.images.slice(startIndex, startIndex + 3);
-    grid.innerHTML = `
-      ${visibleImages.map(src => `<div class="pc-img-item" onclick="location.href='${item.page}'"><img src="${src}"></div>`).join('')}
-      ${hasMore ? `<div class="pc-more-circle"><span>&rarr;</span></div>` : ''}
-    `;
-
-    if (hasMore) {
-      const nextBtn = grid.querySelector('.pc-more-circle');
-      nextBtn.addEventListener('click', () => {
-        startIndex = (startIndex + 1 >= item.images.length - 2) ? 0 : startIndex + 1;
-        renderGrid();
-      });
-    }
-  }
-
-  renderGrid();
   container.appendChild(group);
+
+  if (hasMore) {
+    const track = group.querySelector('.pc-slider-track');
+    const nextBtn = group.querySelector('.pc-more-circle');
+
+    nextBtn.addEventListener('click', () => {
+      startIndex = (startIndex + 1 > item.images.length - 3) ? 0 : startIndex + 1;
+      track.style.transform = `translateX(calc(-${startIndex} * ((100% + 20px) / 3)))`;
+    });
+  }
 }
 
 function renderAll() {
@@ -232,4 +233,6 @@ function toggleMenu() {
 }
 </script>
 </body>
+</html>
+
 </html>
